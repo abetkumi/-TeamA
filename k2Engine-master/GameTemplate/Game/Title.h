@@ -10,4 +10,4 @@ public:
 
 	Vector3 m_position;
 	SpriteRender spriteRender;
-}
+};

@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-
+	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 }
 

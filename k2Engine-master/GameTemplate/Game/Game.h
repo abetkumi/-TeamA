@@ -6,6 +6,7 @@ class GameCamera;
 class BackGround;
 class Item;
 class Status;
+class Boat;
 
 class Game : public IGameObject
 {
@@ -19,5 +20,6 @@ public:
 	BackGround* backGround;
 	Item* item;
 	Status* status;
+	Boat* boat;
 };
 

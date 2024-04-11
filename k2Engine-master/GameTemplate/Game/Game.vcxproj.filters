@@ -20,6 +20,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Status.cpp" />
+    <ClCompile Include="Boat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -35,5 +36,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Status.h" />
+    <ClInclude Include="Boat.h" />
   </ItemGroup>
 </Project>

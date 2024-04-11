@@ -1,5 +1,6 @@
 #pragma once
 
+class Game;
 class Title : public IGameObject
 {
 public:
@@ -10,4 +11,5 @@ public:
 
 	Vector3 m_position;
 	SpriteRender spriteRender;
+	Game* game;
 };

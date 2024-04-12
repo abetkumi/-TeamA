@@ -3,7 +3,7 @@
 
 Boat::Boat()
 {
-	m_modelRender.Init("Assets/modelData/boat_fake.tkm");
+	m_modelRender.Init("Assets/modelData/Boat.tkm");
 
 	m_modelRender.SetScale(Vector3(3.0f, 1.0f, 3.0f));
 	m_modelRender.Update();

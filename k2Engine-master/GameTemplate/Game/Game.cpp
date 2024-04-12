@@ -15,6 +15,8 @@ Game::Game()
 	boat = NewGO<Boat>(0, "boat");
 
 	status = FindGO<Status>("status");
+
+	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
 }
 
 Game::~Game()
@@ -29,5 +31,11 @@ Game::~Game()
 
 void Game::Update()
 {
-	
+	spriteRender.SetPosition(position);
+	spriteRender.Update();
+}
+
+void Game::Render(RenderContext& rc)
+{
+	spriteRender.Draw(rc);
 }

@@ -4,7 +4,7 @@
 
 Enemy::Enemy()
 {
-	m_modelRender.Init("Assets/modelData/enemy.tkm");
+	m_modelRender.Init("Assets/modelData/enemy2.tkm");
 	player = FindGO<Player>("player");
 }
 
@@ -27,5 +27,16 @@ void Enemy::Render(RenderContext& rc)
 
 void Enemy::Rotation()
 {
-	m_modelRender.SetPosition(m_position);
+	Vector3 v = player -> m_position - m_position;
+	v.Normalize();
+	float distToPlayer = v.Length();
+	if (distToPlayer < 500)
+	{
+		m_moveSpeed = v * 4.5f;
+		m_position += m_moveSpeed;
+		m_modelRender.SetPosition(m_position);
+	}
+
+	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
+	m_modelRender.SetRotation(m_rotation);
 }

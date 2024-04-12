@@ -4,7 +4,7 @@
 
 Title::Title()
 {
-	spriteRender.Init("Assets/modelData/drex.dds", 1920.0f, 1080.0f);
+	spriteRender.Init("Assets/modelData/Title.dds", 1920.0f, 1080.0f);
 }
 
 Title::~Title()

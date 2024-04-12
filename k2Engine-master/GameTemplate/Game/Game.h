@@ -14,6 +14,7 @@ public:
 	Game();
 	~Game();
 	void Update();
+	void Render(RenderContext& rc);
 
 	Player* player;
 	GameCamera* gameCamera;
@@ -21,5 +22,7 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
+	SpriteRender spriteRender;
+	Vector3 position;
 };
 

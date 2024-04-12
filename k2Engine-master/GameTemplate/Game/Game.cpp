@@ -19,6 +19,8 @@ Game::Game()
 	enemy->m_position = { 100.0f,150.0f,-200.0f };
 
 	status = FindGO<Status>("status");
+
+	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
 }
 
 Game::~Game()
@@ -33,5 +35,11 @@ Game::~Game()
 
 void Game::Update()
 {
-	
+	spriteRender.SetPosition(position);
+	spriteRender.Update();
+}
+
+void Game::Render(RenderContext& rc)
+{
+	spriteRender.Draw(rc);
 }

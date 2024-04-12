@@ -4,7 +4,7 @@
 
 Enemy::Enemy()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_modelRender.Init("Assets/modelData/enemy.tkm");
 	player = FindGO<Player>("player");
 }
 

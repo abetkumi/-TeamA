@@ -20,7 +20,7 @@ void Boat::Update()
 	Move();
 
 	m_modelRender.Update();
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//”»’è
 }
 
 void Boat::Render(RenderContext& rc)
@@ -31,6 +31,8 @@ void Boat::Render(RenderContext& rc)
 void Boat::Move()
 {
 	m_position.z += 1.0f;
-	m_modelRender.SetPosition(m_position);
+
 	characterController.SetPosition(m_position);
+	m_modelRender.SetPosition(m_position);
+	
 }

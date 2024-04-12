@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Status.h"
 #include "Boat.h"
+#include "Enemy.h"
 
 Game::Game()
 {
@@ -13,6 +14,9 @@ Game::Game()
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	backGround = NewGO<BackGround>(0, "backGround");
 	boat = NewGO<Boat>(0, "boat");
+
+	Enemy* enemy = NewGO<Enemy>(0, "enemy");
+	enemy->m_position = { 100.0f,150.0f,-200.0f };
 
 	status = FindGO<Status>("status");
 

@@ -16,7 +16,7 @@ Game::Game()
 	boat = NewGO<Boat>(0, "boat");
 
 	Enemy* enemy = NewGO<Enemy>(0, "enemy");
-	enemy->m_position = { 100.0f,0.0f,-200.0f };
+	enemy->m_position = { 1500.0f,20.0f,-2000.0f };
 
 	status = FindGO<Status>("status");
 

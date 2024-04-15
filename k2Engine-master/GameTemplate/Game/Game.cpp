@@ -8,6 +8,8 @@
 #include "Boat.h"
 #include "Enemy.h"
 
+#include "sound/SoundSource.h"
+
 Game::Game()
 {
 
@@ -61,6 +63,11 @@ Game::Game()
 
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	status = FindGO<Status>("status");
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/GameBGM.wav");
+	bgm = NewGO<SoundSource>(1);
+	bgm->Init(1);
+	bgm->Play(true);
 
 	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
 }

@@ -23,6 +23,7 @@ public:
 	Status* status;
 	Boat* boat;
 	SpriteRender spriteRender;
+	LevelRender m_levelRender;
 	Vector3 position;
 };
 

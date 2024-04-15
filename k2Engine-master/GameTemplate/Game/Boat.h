@@ -1,4 +1,5 @@
 #pragma once
+
 class Boat : public IGameObject
 {
 public:
@@ -10,7 +11,8 @@ public:
 
 	ModelRender m_modelRender;
 	PhysicsStaticObject m_physicsStaticObject;
-	CharacterController characterController;
+
 	Vector3 m_position;
+	Vector3 m_scale;
 };
 

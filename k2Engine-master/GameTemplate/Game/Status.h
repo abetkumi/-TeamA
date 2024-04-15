@@ -2,13 +2,30 @@
 class Status : public IGameObject
 {
 public:
-	Status();
-	~Status();
 
-	int p_HP, i_HP, g_HP, s_HP, boss_HP;   //HP
-	int p_ST;                              //スタミナ
-	int p_ATK, g_ATK, s_ATK, boss_ATK;     //攻撃力
-	int g_IT, s_IT;                        //アイテムポイント
-	double g_AS, s_AS, boss_AS;            //攻撃速度
+	//プレイヤー
+	int p_HP = 100;
+	int p_ST = 100;
+	int p_ATK = 10;
+
+	//イカダ
+	int i_HP = 100;
+
+	//ゴブリン
+	int g_HP = 10;
+	int g_ATK = 5;
+	double g_AS = 6.0;
+	int g_IT = 2;
+
+	//スケルトン
+	int s_HP = 15;
+	int s_ATK = 8;
+	double s_AS = 4.5;
+	int s_IT = 5;
+
+	//BOSS
+	int boss_HP = 200;
+	double boss_ATK = 10;
+	int boss_AS = 8.0;
 };
 

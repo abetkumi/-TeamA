@@ -7,6 +7,8 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
+#include "GameOver.h"
+	
 
 Game::Game()
 {
@@ -21,6 +23,8 @@ Game::Game()
 	status = FindGO<Status>("status");
 
 	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
+
+	/*p_HP += status->p_HP;*/
 }
 
 Game::~Game()
@@ -37,6 +41,15 @@ void Game::Update()
 {
 	spriteRender.SetPosition(position);
 	spriteRender.Update();
+
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		p_HP = 0;
+	}
+	if (p_HP <= 0) {
+		NewGO<GameOver>(0, "gameOver");
+		DeleteGO(this);
+	}
 }
 
 void Game::Render(RenderContext& rc)

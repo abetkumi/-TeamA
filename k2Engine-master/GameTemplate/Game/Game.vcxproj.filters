@@ -19,7 +19,6 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="Status.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
   </ItemGroup>

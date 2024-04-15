@@ -7,6 +7,8 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
+class GameOver;
+
 
 class Game : public IGameObject
 {
@@ -22,7 +24,11 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
+	GameOver* gameOver;
+
 	SpriteRender spriteRender;
 	Vector3 position;
+
+	int p_HP = 100;
 };
 

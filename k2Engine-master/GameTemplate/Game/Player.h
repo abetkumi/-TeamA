@@ -1,8 +1,5 @@
 #pragma once
 
-class Game;
-class Status;
-class GameOver;
 class Player : public IGameObject
 {
 public:
@@ -23,9 +20,4 @@ public:
 
 	Quaternion m_rotation;
 
-	Game* game;
-	Status* status;
-	GameOver* gameOver;
-
-	int HP;
 };

@@ -10,14 +10,56 @@
 
 Game::Game()
 {
-	player = NewGO<Player>(0, "player");
+
+
+
+	m_levelRender.Init("Assets/Level/stage1.tkl", [&](LevelObjectData& objData)
+		{
+			if (objData.EqualObjectName(L"unityChan") == true)
+			{
+				player = NewGO<Player>(0, "player");
+
+				player->m_position=objData.position;
+				
+				player->m_rotation=objData.rotation;
+
+				return true;
+			}
+			
+			else if (objData.EqualObjectName(L"river") == true)
+			{
+				backGround = NewGO<BackGround>(0, "backGround");
+
+				backGround->m_position = objData.position;
+
+				return true;
+			}
+			else if (objData.EqualObjectName(L"boat") == true)
+			{
+				boat = NewGO<Boat>(0, "boat");
+
+				boat->m_position = objData.position;
+
+				//boat->m_rotation = objData.rotation;
+
+				//boat->m_scale = objData.scale;
+
+				return true;
+			}
+
+			else if (objData.EqualObjectName(L"enemy") == true)
+			{
+				Enemy* enemy = NewGO<Enemy>(0, "enemy");
+
+				enemy->m_position = objData.position;
+
+				return true;
+
+			}
+			return true;
+		});
+
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
-	backGround = NewGO<BackGround>(0, "backGround");
-	boat = NewGO<Boat>(0, "boat");
-
-	Enemy* enemy = NewGO<Enemy>(0, "enemy");
-	enemy->m_position = { 100.0f,150.0f,-200.0f };
-
 	status = FindGO<Status>("status");
 
 	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);

@@ -10,7 +10,9 @@ public:
 
 	ModelRender m_modelRender;
 	PhysicsStaticObject m_physicsStaticObject;
-	CharacterController characterController;
+	CollisionObject collisonObject;
 	Vector3 m_position;
+	Quaternion m_rotation;
+	Vector3 size;
 };
 

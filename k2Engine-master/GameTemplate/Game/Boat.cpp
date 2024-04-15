@@ -7,7 +7,7 @@ Boat::Boat()
 
 	m_modelRender.SetScale(Vector3(3.0f, 1.0f, 3.0f));
 	m_modelRender.Update();
-	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+	collisonObject.CreateBox(m_position, m_rotation,size );
 }
 
 Boat::~Boat()
@@ -30,9 +30,8 @@ void Boat::Render(RenderContext& rc)
 
 void Boat::Move()
 {
-	m_position.z += 1.0f;
+	m_position.z -= 1.0f;
 
-	characterController.SetPosition(m_position);
 	m_modelRender.SetPosition(m_position);
-	
+
 }

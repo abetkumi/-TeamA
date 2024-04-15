@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Game.h"
+#include "Status.h"
+#include "GameOver.h"
 
 Player::Player()
 {
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	
+	status = FindGO<Status>("status");
+
+	HP == status->p_HP;
 }
 
 Player::~Player()
@@ -18,6 +25,11 @@ void Player::Update()
 	Rotation();
 
 	m_modelRender.Update();
+
+	if (HP <= 0) {
+		NewGO<GameOver>(0, "gameOver");
+		delete(game);
+	}
 }
 
 void Player::Move()
@@ -58,6 +70,11 @@ void Player::Move()
 	if (g_pad[0]->IsPress(enButtonX))
 	{
 		m_moveSpeed = (right + forward) * 3.5;
+	}
+
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		HP = 0;
 	}
 
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x

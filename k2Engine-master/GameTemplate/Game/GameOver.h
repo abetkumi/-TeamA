@@ -1,4 +1,6 @@
 #pragma once
+
+class Title;
 class GameOver : public IGameObject
 {
 public:
@@ -9,5 +11,7 @@ public:
 
 	Vector3 m_position;
 	SpriteRender spriteRender;
+
+	Title* title;
 };
 

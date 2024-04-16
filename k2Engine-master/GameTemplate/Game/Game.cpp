@@ -57,12 +57,12 @@ Game::Game()
 				return true;
 
 			}
-			else if (objData.EqualObjectName(L"Point") == true)
+	/*		else if (objData.EqualObjectName(L"Point") == true)
 			{
 				point = NewGO<Point>(0, "point");
 				point->m_position = objData.position;
 				return true;
-			}
+			}*/
 			return true;
 		});
 
@@ -80,11 +80,11 @@ Game::~Game()
 	DeleteGO(boat);
 	DeleteGO(enemy);
 	DeleteGO(status);
-	QueryGOs<Point>("point", [&](Point* point) 
-		{
-			DeleteGO(point);
-			return true;
-		});
+	//QueryGOs<Point>("point", [&](Point* point) 
+	//	{
+	//		DeleteGO(point);
+	//		return true;
+	//	});
 }
 
 void Game::Update()

@@ -22,7 +22,6 @@
     <ClCompile Include="Status.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Point.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -40,6 +39,5 @@
     <ClInclude Include="Status.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Point.h" />
   </ItemGroup>
 </Project>

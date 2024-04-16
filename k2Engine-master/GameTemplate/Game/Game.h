@@ -7,6 +7,8 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
+class Enemy;
+class Point;
 
 class Game : public IGameObject
 {
@@ -22,6 +24,8 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
+	Enemy* enemy;
+	Point* point;
 	SpriteRender spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;

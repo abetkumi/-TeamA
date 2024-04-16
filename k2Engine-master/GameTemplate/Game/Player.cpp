@@ -57,7 +57,7 @@ void Player::Move()
 
 	if (g_pad[0]->IsPress(enButtonX))
 	{
-		m_moveSpeed = (right + forward) * 3.5;
+		m_moveSpeed = (right + forward) * 7.5;
 	}
 
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x

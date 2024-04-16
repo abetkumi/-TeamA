@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Boat.h"
 #include "Game.h"
+#include "Point.h"
 
 Boat::Boat()
 {

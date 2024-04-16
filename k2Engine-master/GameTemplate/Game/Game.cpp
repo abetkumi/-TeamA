@@ -7,6 +7,7 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
+#include "Point.h"
 
 #include "sound/SoundSource.h"
 
@@ -15,7 +16,7 @@ Game::Game()
 
 
 
-	m_levelRender.Init("Assets/Level/stage1.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -51,13 +52,19 @@ Game::Game()
 
 			else if (objData.EqualObjectName(L"enemy") == true)
 			{
-				Enemy* enemy = NewGO<Enemy>(0, "enemy");
+				enemy = NewGO<Enemy>(0, "enemy");
 
 				enemy->m_position = objData.position;
 
 				return true;
 
 			}
+	/*		else if (objData.EqualObjectName(L"Point") == true)
+			{
+				point = NewGO<Point>(0, "point");
+				point->m_position = objData.position;
+				return true;
+			}*/
 			return true;
 		});
 
@@ -78,8 +85,13 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-
+	DeleteGO(enemy);
 	DeleteGO(status);
+	//QueryGOs<Point>("point", [&](Point* point) 
+	//	{
+	//		DeleteGO(point);
+	//		return true;
+	//	});
 }
 
 void Game::Update()

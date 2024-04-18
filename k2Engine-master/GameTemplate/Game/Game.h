@@ -9,6 +9,7 @@ class Status;
 class Boat;
 class Enemy;
 class Point;
+class Ship_Gauge;
 
 class Game : public IGameObject
 {
@@ -26,7 +27,8 @@ public:
 	Boat* boat;
 	Enemy* enemy;
 	Point* point;
-	SpriteRender spriteRender;
+	Ship_Gauge* ship_Gauge;
+	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;
 };

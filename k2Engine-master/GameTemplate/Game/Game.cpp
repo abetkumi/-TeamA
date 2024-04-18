@@ -9,10 +9,9 @@
 #include "Enemy.h"
 #include "Point.h"
 
+
 Game::Game()
 {
-
-
 
 	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
 		{
@@ -69,7 +68,7 @@ Game::Game()
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	status = FindGO<Status>("status");
 
-	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
+	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 }
 
 Game::~Game()
@@ -89,11 +88,13 @@ Game::~Game()
 
 void Game::Update()
 {
-	spriteRender.SetPosition(position);
-	spriteRender.Update();
+	position.x = -650.0f;
+	position.y = 400.0f;
+	m_spriteRender.SetPosition(position);
+	m_spriteRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
-	spriteRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }

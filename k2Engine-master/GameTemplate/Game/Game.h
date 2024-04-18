@@ -31,5 +31,6 @@ public:
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;
+	SoundSource* bgm;
 };
 

@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Point.h"
 
+#include "sound/SoundSource.h"
 
 Game::Game()
 {
@@ -69,6 +70,7 @@ Game::Game()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+
 }
 
 Game::~Game()

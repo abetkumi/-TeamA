@@ -6,7 +6,11 @@
 Boat::Boat()
 {
 	m_modelRender.Init("Assets/modelData/Boat.tkm");
+	m_spriteRender.Init("Assets/sprite/ship.dds", 100.0f, 100.0f);
 
+	m_shipposition.x = -850.0f;
+	m_shipposition.y = 410.0f;
+	m_spriteRender.SetPosition(m_shipposition);
 
 	//m_modelRender.SetScale(m_scale);
 	m_modelRender.Update();
@@ -28,10 +32,14 @@ void Boat::Update()
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
 	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//”»’è
+
+	m_spriteRender.SetPosition(m_shipposition);
+	m_spriteRender.Update();
 }
 
 void Boat::Render(RenderContext& rc)
 {
+	m_spriteRender.Draw(rc);
 	m_modelRender.Draw(rc);
 }
 
@@ -41,4 +49,14 @@ void Boat::Move()
 
 	m_modelRender.SetPosition(m_position);
 	
+	ShipMove();
+	i.z = m_position.z;
+}
+
+void Boat::ShipMove()
+{
+	if (m_position.z < i.z)
+	{
+		m_shipposition.x += 0.1f;
+	}
 }

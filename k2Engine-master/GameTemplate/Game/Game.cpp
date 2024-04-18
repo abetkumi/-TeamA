@@ -14,8 +14,6 @@
 Game::Game()
 {
 
-
-
 	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
@@ -71,12 +69,8 @@ Game::Game()
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	status = FindGO<Status>("status");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/GameBGM.wav");
-	bgm = NewGO<SoundSource>(1);
-	bgm->Init(1);
-	bgm->Play(true);
+	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 
-	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
 }
 
 Game::~Game()
@@ -96,11 +90,13 @@ Game::~Game()
 
 void Game::Update()
 {
-	spriteRender.SetPosition(position);
-	spriteRender.Update();
+	position.x = -650.0f;
+	position.y = 400.0f;
+	m_spriteRender.SetPosition(position);
+	m_spriteRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
-	spriteRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }

@@ -40,10 +40,10 @@ void Boat::Render(RenderContext& rc)
 
 void Boat::Move()
 {
-	m_position.z -= 1.0f;
+	/*m_position.z -= 1.0f;*/
 
-	/*m_position = player->m_position;
-	m_position.y -= 34.7f;*/
+	m_position = player->m_position;
+	m_position.y -= 70.0f;
 	
 	m_modelRender.SetPosition(m_position);
 

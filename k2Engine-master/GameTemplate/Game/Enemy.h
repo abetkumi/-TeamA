@@ -1,7 +1,7 @@
 #pragma once
 
 class Player;
-class Amo;
+class Arrow;
 class Enemy : public IGameObject
 {
 public:
@@ -22,7 +22,7 @@ public:
 	Quaternion m_rotation;
 
 	Player* player;
-	Amo* amo;
+	Arrow* arrow;
 	
 };
 

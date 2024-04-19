@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Boat.h"
 #include "Game.h"
-#include "Point.h"
+
 
 Boat::Boat()
 {
@@ -50,12 +50,12 @@ void Boat::Move()
 	m_modelRender.SetPosition(m_position);
 	
 	ShipMove();
-	i.z = m_position.z;
+	m_gauge.z = m_position.z;
 }
 
 void Boat::ShipMove()
 {
-	if (m_position.z < i.z)
+	if (m_position.z < m_gauge.z)
 	{
 		m_shipposition.x += 0.05f;
 	}

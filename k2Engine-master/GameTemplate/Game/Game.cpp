@@ -42,7 +42,7 @@ Game::Game()
 
 				//boat->m_rotation = objData.rotation;
 
-				//boat->m_scale = objData.scale;
+				boat->m_scale = objData.scale;
 
 				return true;
 			}

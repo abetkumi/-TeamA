@@ -7,15 +7,14 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
-#include "GameOver.h"
-	
+#include "Point.h"
+
+#include "sound/SoundSource.h"
 
 Game::Game()
 {
 
-
-
-	m_levelRender.Init("Assets/Level/stage1.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -51,22 +50,27 @@ Game::Game()
 
 			else if (objData.EqualObjectName(L"enemy") == true)
 			{
-				Enemy* enemy = NewGO<Enemy>(0, "enemy");
+				enemy = NewGO<Enemy>(0, "enemy");
 
 				enemy->m_position = objData.position;
 
 				return true;
 
 			}
+	/*		else if (objData.EqualObjectName(L"Point") == true)
+			{
+				point = NewGO<Point>(0, "point");
+				point->m_position = objData.position;
+				return true;
+			}*/
 			return true;
 		});
 
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	status = FindGO<Status>("status");
 
-	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
+	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 
-	/*p_HP += status->p_HP;*/
 }
 
 Game::~Game()
@@ -75,26 +79,24 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-
+	DeleteGO(enemy);
 	DeleteGO(status);
+	//QueryGOs<Point>("point", [&](Point* point) 
+	//	{
+	//		DeleteGO(point);
+	//		return true;
+	//	});
 }
 
 void Game::Update()
 {
-	spriteRender.SetPosition(position);
-	spriteRender.Update();
-
-	if (g_pad[0]->IsPress(enButtonY))
-	{
-		p_HP = 0;
-	}
-	if (p_HP <= 0) {
-		NewGO<GameOver>(0, "gameOver");
-		DeleteGO(this);
-	}
+	position.x = -650.0f;
+	position.y = 400.0f;
+	m_spriteRender.SetPosition(position);
+	m_spriteRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
-	spriteRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }

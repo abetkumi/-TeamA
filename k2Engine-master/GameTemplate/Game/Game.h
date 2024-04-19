@@ -7,8 +7,9 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
-class GameOver;
-
+class Enemy;
+class Point;
+class Ship_Gauge;
 
 class Game : public IGameObject
 {
@@ -24,12 +25,12 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
-	GameOver* gameOver;
-
-	SpriteRender spriteRender;
+	Enemy* enemy;
+	Point* point;
+	Ship_Gauge* ship_Gauge;
+	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;
-
-	int p_HP = 100;
+	SoundSource* bgm;
 };
 

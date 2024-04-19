@@ -14,7 +14,7 @@
 Game::Game()
 {
 
-	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_3.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{

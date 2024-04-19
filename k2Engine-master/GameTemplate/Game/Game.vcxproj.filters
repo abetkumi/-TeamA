@@ -22,6 +22,7 @@
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Status.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

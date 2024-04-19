@@ -19,4 +19,6 @@ public:
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation;
+
+	int HP = 1;
 };

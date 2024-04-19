@@ -3,6 +3,7 @@
 
 class Player;
 class GameCamera;
+class GameOver;
 class BackGround;
 class Item;
 class Status;
@@ -21,6 +22,7 @@ public:
 
 	Player* player;
 	GameCamera* gameCamera;
+	GameOver* gameOver;
 	BackGround* backGround;
 	Item* item;
 	Status* status;

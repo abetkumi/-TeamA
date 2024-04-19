@@ -223,6 +223,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Amo.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -242,6 +244,8 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Amo.h" />
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Enemy.h" />

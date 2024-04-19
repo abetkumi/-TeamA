@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "GameClear.h"
+#include "Title.h"
 
 GameClear::GameClear()
 {
-
+	spriteRender.Init("Assets/modelData/GameClear.dds", 1920.0f, 1080.0f);
 }
 
 GameClear::~GameClear()
@@ -13,7 +14,11 @@ GameClear::~GameClear()
 
 void GameClear::Update()
 {
-	spriteRender.Update();
+	if (g_pad[0]->IsTrigger(enButtonA))
+	{
+		NewGO<Title>(0);
+		DeleteGO(this);
+	}
 }
 
 void GameClear::Render(RenderContext& rc)

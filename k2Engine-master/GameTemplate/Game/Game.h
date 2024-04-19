@@ -27,6 +27,7 @@ public:
 	GameOver* gameOver;
 
 	SpriteRender spriteRender;
+	LevelRender m_levelRender;
 	Vector3 position;
 
 	int p_HP = 100;

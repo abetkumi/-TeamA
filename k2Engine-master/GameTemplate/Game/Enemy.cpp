@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Amo.h"
 
 Enemy::Enemy()
 {
 	m_modelRender.Init("Assets/modelData/enemy.tkm");
 	player = FindGO<Player>("player");
+
+	
 }
 
 Enemy::~Enemy()

@@ -1,5 +1,6 @@
 #pragma once
 
+class Amo;
 class Player : public IGameObject
 {
 public:
@@ -20,4 +21,5 @@ public:
 
 	Quaternion m_rotation;
 
+	Amo* amo;
 };

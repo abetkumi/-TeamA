@@ -21,6 +21,8 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Amo.cpp" />
+    <ClCompile Include="Arrow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -38,5 +40,7 @@
     <ClInclude Include="Status.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Amo.h" />
+    <ClInclude Include="Arrow.h" />
   </ItemGroup>
 </Project>

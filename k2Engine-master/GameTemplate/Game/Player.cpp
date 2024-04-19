@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Amo.h"
 
 Player::Player()
 {
@@ -60,6 +61,11 @@ if (g_pad[0]->IsPress(enButtonA))
 		m_moveSpeed = (right + forward) * 3.5;
 	}
 
+	if (g_pad[0]->IsTrigger(enButtonB))
+	{
+		amo = NewGO<Amo>(0, "amo");
+	}
+	
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x
 
 	m_modelRender.SetPosition(m_position);

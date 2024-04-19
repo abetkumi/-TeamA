@@ -7,15 +7,13 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
+#include "Boss.h"
 
-#include "sound/SoundSource.h"
 
 Game::Game()
 {
 
-
-
-	m_levelRender.Init("Assets/Level/stage1.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -51,12 +49,19 @@ Game::Game()
 
 			else if (objData.EqualObjectName(L"enemy") == true)
 			{
-				Enemy* enemy = NewGO<Enemy>(0, "enemy");
+				enemy = NewGO<Enemy>(0, "enemy");
 
 				enemy->m_position = objData.position;
 
 				return true;
 
+			}
+			else if (objData.EqualObjectName(L"BOSS_fake") == true)
+			{
+				boss = NewGO<Boss>(0, "Boss_fake");
+				boss->m_position = objData.position;
+				boss->m_scale = objData.scale;
+				return true;
 			}
 			return true;
 		});
@@ -64,12 +69,7 @@ Game::Game()
 	gameCamera = NewGO<GameCamera>(0, "gamecamera");
 	status = FindGO<Status>("status");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/GameBGM.wav");
-	bgm = NewGO<SoundSource>(1);
-	bgm->Init(1);
-	bgm->Play(true);
-
-	spriteRender.Init("Assets/sprite/ステージのゲージ.dds", 512.0f, 512.0f);
+	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 }
 
 Game::~Game()
@@ -78,17 +78,24 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-
+	DeleteGO(enemy);
 	DeleteGO(status);
+	//QueryGOs<Point>("point", [&](Point* point) 
+	//	{
+	//		DeleteGO(point);
+	//		return true;
+	//	});
 }
 
 void Game::Update()
 {
-	spriteRender.SetPosition(position);
-	spriteRender.Update();
+	position.x = -650.0f;
+	position.y = 500.0f;
+	m_spriteRender.SetPosition(position);
+	m_spriteRender.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
-	spriteRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }

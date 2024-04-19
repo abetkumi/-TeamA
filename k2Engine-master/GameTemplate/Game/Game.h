@@ -7,6 +7,9 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
+class Enemy;
+class Ship_Gauge;
+class Boss;
 
 class Game : public IGameObject
 {
@@ -22,9 +25,11 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
-	SpriteRender spriteRender;
+	Enemy* enemy;
+	Boss* boss;
+	Ship_Gauge* ship_Gauge;
+	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;
-	SoundSource* bgm;
 };
 

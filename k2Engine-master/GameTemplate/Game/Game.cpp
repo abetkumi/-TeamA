@@ -7,9 +7,8 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
-#include "Point.h"
+#include "Boss.h"
 
-#include "sound/SoundSource.h"
 
 Game::Game()
 {
@@ -57,12 +56,13 @@ Game::Game()
 				return true;
 
 			}
-	/*		else if (objData.EqualObjectName(L"Point") == true)
+			else if (objData.EqualObjectName(L"BOSS_fake") == true)
 			{
-				point = NewGO<Point>(0, "point");
-				point->m_position = objData.position;
+				boss = NewGO<Boss>(0, "Boss_fake");
+				boss->m_position = objData.position;
+				boss->m_scale = objData.scale;
 				return true;
-			}*/
+			}
 			return true;
 		});
 
@@ -70,7 +70,6 @@ Game::Game()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
-
 }
 
 Game::~Game()
@@ -91,7 +90,7 @@ Game::~Game()
 void Game::Update()
 {
 	position.x = -650.0f;
-	position.y = 400.0f;
+	position.y = 500.0f;
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 }

@@ -59,6 +59,10 @@ if (g_pad[0]->IsPress(enButtonA))
 	{
 		m_moveSpeed = (right + forward) * 7.5;
 	}
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		HP += 100;
+	}
 
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x
 

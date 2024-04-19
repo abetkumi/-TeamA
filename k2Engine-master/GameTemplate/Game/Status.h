@@ -1,8 +1,12 @@
 #pragma once
+
+class Player;
 class Status : public IGameObject
 {
 public:
 
+	Status();
+	~Status();
 	//ƒvƒŒƒCƒ„[
 	int p_HP = 100;
 	int p_ST = 100;
@@ -27,5 +31,7 @@ public:
 	int boss_HP = 200;
 	double boss_ATK = 10;
 	int boss_AS = 8.0;
+
+	Player* player;
 };
 

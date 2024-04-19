@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Arrow.h"
 
 Enemy::Enemy()
 {
 	m_modelRender.Init("Assets/modelData/enemy.tkm");
 	player = FindGO<Player>("player");
+
+	
 }
 
 Enemy::~Enemy()
@@ -16,6 +19,15 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	Rotation();
+
+	if (g_pad[0]->IsTrigger(enButtonB))
+	{
+		arrow = NewGO<Arrow>(0, "arrow");
+		arrow->m_position = (m_position);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
+
+	}
 
 	m_modelRender.Update();
 }

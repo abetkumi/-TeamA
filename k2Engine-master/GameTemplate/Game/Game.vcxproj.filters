@@ -19,10 +19,9 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="Status.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Arrow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -40,6 +39,6 @@
     <ClInclude Include="Status.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Arrow.h" />
   </ItemGroup>
 </Project>

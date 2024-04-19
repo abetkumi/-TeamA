@@ -1,20 +1,19 @@
 #include "stdafx.h"
 #include "Boat.h"
 #include "Game.h"
-
+#include "Player.h"
+#include <BackGround.h>
 
 Boat::Boat()
 {
 	m_modelRender.Init("Assets/modelData/Boat.tkm");
-	m_spriteRender.Init("Assets/sprite/ship.dds", 100.0f, 100.0f);
 
-	m_shipposition.x = -850.0f;
-	m_shipposition.y = 470.0f;
-	m_spriteRender.SetPosition(m_shipposition);
-
+	//m_modelRender.SetPosition(500.0f, -100.0f, 0.0f);
 	//m_modelRender.SetScale(m_scale);
 	m_modelRender.Update();
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+
+	player = FindGO<Player>("player");
 	
 }
 
@@ -31,32 +30,21 @@ void Boat::Update()
 	m_physicsStaticObject.Release();
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//”»’è
-
-	m_spriteRender.SetPosition(m_shipposition);
-	m_spriteRender.Update();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//ï¿½ï¿½ï¿½ï¿½
 }
 
 void Boat::Render(RenderContext& rc)
 {
-	m_spriteRender.Draw(rc);
 	m_modelRender.Draw(rc);
 }
 
 void Boat::Move()
 {
-	m_position.z -= 1.0f;
+	/*m_position.z -= 1.0f;*/
 
-	m_modelRender.SetPosition(m_position);
+	m_position = player->m_position;
+	m_position.y -= 34.7f;
 	
-	ShipMove();
-	m_gauge.z = m_position.z;
-}
+	m_modelRender.SetPosition(m_position);
 
-void Boat::ShipMove()
-{
-	if (m_position.z < m_gauge.z)
-	{
-		m_shipposition.x += 0.05f;
-	}
 }

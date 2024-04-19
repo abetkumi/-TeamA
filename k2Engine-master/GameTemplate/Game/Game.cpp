@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "GameCamera.h"
+#include "GameOver.h"
 #include "BackGround.h"
 #include "Item.h"
 #include "Status.h"
@@ -93,6 +94,12 @@ void Game::Update()
 	position.y = 500.0f;
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
+
+	if (player->HP <= 0)
+	{
+		gameOver = NewGO<GameOver>(0, "gameOver");
+		DeleteGO(this);
+	}
 }
 
 void Game::Render(RenderContext& rc)

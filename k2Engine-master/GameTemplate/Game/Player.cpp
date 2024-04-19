@@ -61,7 +61,7 @@ if (g_pad[0]->IsPress(enButtonA))
 	}
 	if (g_pad[0]->IsPress(enButtonY))
 	{
-		HP += 100;
+		HP -= 100;
 	}
 
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x

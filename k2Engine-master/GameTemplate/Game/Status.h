@@ -8,7 +8,7 @@ public:
 	Status();
 	~Status();
 	//ƒvƒŒƒCƒ„[
-	int p_HP = 100;
+	const int p_HP = 100;
 	int p_ST = 100;
 	int p_ATK = 10;
 

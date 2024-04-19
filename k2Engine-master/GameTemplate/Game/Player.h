@@ -20,5 +20,5 @@ public:
 
 	Quaternion m_rotation;
 
-	int HP;
+	int HP = 1;
 };

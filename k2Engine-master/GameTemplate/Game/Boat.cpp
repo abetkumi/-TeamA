@@ -66,6 +66,6 @@ void Boat::ShipMove()
 {
 		if (m_position.z < m_shipGauge.z)
 		{
-			m_shipposition.x += 0.05f;
+			m_shipposition.x += 0.35f;
 		}
 }

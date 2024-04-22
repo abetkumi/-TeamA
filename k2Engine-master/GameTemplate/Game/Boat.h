@@ -20,5 +20,7 @@ public:
 	Vector3 m_shipGauge;
 	Vector3 m_shipposition;
 	Player* player;
+
+	int HP = 1;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
+#include "sound/SoundSource.h" 
 
 class Game;
-#include "sound/SoundSource.h" 
 class Title : public IGameObject
 {
 public:

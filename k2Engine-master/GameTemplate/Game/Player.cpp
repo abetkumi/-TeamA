@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Arrow.h"
 
 Player::Player()
 {
@@ -18,6 +19,15 @@ void Player::Update()
 	Rotation();
 
 	m_modelRender.Update();
+
+	if (g_pad[0]->IsTrigger(enButtonB))
+	{
+		arrow = NewGO<Arrow>(0, "arrow");
+		arrow->m_position = (m_position);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
+
+	}
 }
 
 void Player::Move()

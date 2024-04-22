@@ -1,5 +1,6 @@
 #pragma once
 
+class Arrow;
 class Player : public IGameObject
 {
 public:
@@ -20,5 +21,7 @@ public:
 
 	Quaternion m_rotation;
 
-	int HP = 1;
+	Arrow* arrow;
+
+	int HP,ST = 1;
 };

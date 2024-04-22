@@ -1,5 +1,6 @@
 #pragma once
 
+class Boat;
 class Player;
 class Status : public IGameObject
 {
@@ -33,5 +34,6 @@ public:
 	int boss_AS = 8.0;
 
 	Player* player;
+	Boat* boat;
 };
 

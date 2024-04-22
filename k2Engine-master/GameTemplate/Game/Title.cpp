@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Game.h"
-
 #include "sound/SoundSource.h"
+
 Title::Title()
 {
 	spriteRender.Init("Assets/modelData/Title.dds", 1920.0f, 1080.0f);

@@ -21,6 +21,6 @@ public:
 	Quaternion m_rotation;
 	Player* player;
 
-
+	
 };
 

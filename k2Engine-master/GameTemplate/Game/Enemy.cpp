@@ -20,14 +20,14 @@ void Enemy::Update()
 {
 	Rotation();
 
-	if (g_pad[0]->IsTrigger(enButtonB))
+	/*if (g_pad[0]->IsTrigger(enButtonB))
 	{
 		arrow = NewGO<Arrow>(0, "arrow");
 		arrow->m_position = (m_position);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
 
-	}
+	}*/
 
 	m_modelRender.Update();
 }

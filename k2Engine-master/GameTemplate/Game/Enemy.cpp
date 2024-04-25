@@ -8,7 +8,8 @@ Enemy::Enemy()
 	m_modelRender.Init("Assets/modelData/enemy.tkm");
 	player = FindGO<Player>("player");
 
-	
+	//キャラクターコントローラーの初期化処理しないとエラー吐かれるので注意
+	m_charaCon.Init(0.0f, 0.0f, Vector3::Zero);
 }
 
 Enemy::~Enemy()

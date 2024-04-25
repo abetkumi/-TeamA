@@ -20,7 +20,6 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
-	Game* game;
 	Player* player;
 	GameCamera* gameCamera;
 	GameOver* gameOver;

@@ -69,7 +69,7 @@ Game::Game()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	player = FindGO<Player>("player");
+	
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 }
 
@@ -103,7 +103,7 @@ void Game::Update()
 	if (player->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
-		//DeleteGO(this);
+		DeleteGO(this);
 	}
 }
 

@@ -22,7 +22,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
-		NewGO<Game>(0,"game");
+		game = NewGO<Game>(0,"game");
 		DeleteGO(this);
 		DeleteGO(bgm);
 	}

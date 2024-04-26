@@ -14,9 +14,9 @@
 Game::Game()
 {
 
-	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage2_9.tkl", [&](LevelObjectData& objData)
 		{
-			if (objData.EqualObjectName(L"unityChan") == true)
+			/*if (objData.EqualObjectName(L"unityChan") == true)
 			{
 				player = NewGO<Player>(0, "player");
 
@@ -25,8 +25,19 @@ Game::Game()
 				player->m_rotation=objData.rotation;
 
 				return true;
+			}*/
+
+			if (objData.EqualObjectName(L"Archer") == true)
+			{
+				player = NewGO<Player>(0, "player");
+
+				player->m_position = objData.position;
+
+				player->m_rotation = objData.rotation;
+
+				return true;
 			}
-			
+
 			else if (objData.EqualObjectName(L"river") == true)
 			{
 				backGround = NewGO<BackGround>(0, "backGround");

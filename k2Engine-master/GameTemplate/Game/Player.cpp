@@ -4,7 +4,7 @@
 
 Player::Player()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_modelRender.Init("Assets/modelData/Archer.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 
 	HP = 100;

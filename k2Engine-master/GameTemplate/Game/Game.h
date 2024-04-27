@@ -8,7 +8,7 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
-class Enemy;
+class Enemy2;
 class Ship_Gauge;
 class Boss;
 
@@ -28,7 +28,7 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
-	Enemy* enemy;
+	Enemy2* enemy;
 	Boss* boss;
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;

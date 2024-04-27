@@ -14,7 +14,7 @@
 Game::Game()
 {
 
-	m_levelRender.Init("Assets/Level/stage2.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage2_9.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -48,7 +48,7 @@ Game::Game()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"enemy") == true)
+			else if (objData.EqualObjectName(L"goblin") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 

@@ -5,7 +5,7 @@
 
 Enemy::Enemy()
 {
-	m_modelRender.Init("Assets/modelData/enemy.tkm");
+	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
 
 	//キャラクターコントローラーの初期化処理しないとエラー吐かれるので注意

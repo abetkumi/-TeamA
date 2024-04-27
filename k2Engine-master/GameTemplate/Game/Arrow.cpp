@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Arrow.h"
 #include "collision/CollisionObject.h"
-#include "Enemy.h"
+#include "Enemy2.h"
 #include "Player.h"
 
 namespace
@@ -26,7 +26,9 @@ bool Arrow::Start()
 	m_rotation.AddRotationDegY(360.0f);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);
+	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//‹…
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//” 
+
 	m_collisionObject->SetName("player_atttack");
 	m_collisionObject->SetIsEnableAutoDelete(false);
 

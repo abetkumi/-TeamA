@@ -1,90 +1,124 @@
 #include "stdafx.h"
-#include "Enemy.h"
+#include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
+#include "collision/CollisionObject.h"
 
-Enemy::Enemy()
+#include <time.h>
+
+#define serch 1300.0f * 1300.0f
+#define attackSerch 700.0f * 700.0f
+//#define attacktime 5.0f
+
+namespace
+{
+	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//位置修正本体当たり判定
+	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//位置修正弾丸発生位置
+}
+
+Enemy2::Enemy2()
 {
 	m_modelRender.Init("Assets/modelData/enemy.tkm");
 	player = FindGO<Player>("player");
 
 	arrowtimer = arrowtime;
+	
+	m_modelRender.SetPosition(m_position);
 
-	//キャラクターコントローラーの初期化処理しないとエラー吐かれるので注意
-	m_charaCon.Init(0.0f, 0.0f, Vector3::Zero);
+
+	//m_charaCon.Init(20.0f, 100.0f, m_position);
+
+	m_collisionObject = NewGO<CollisionObject>(0);
+
+	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->SetName("enemy_col");
+	m_collisionObject->SetPosition(m_position + corre1);
+
+	m_collisionObject->SetIsEnableAutoDelete(false);
+
+	m_forward = Vector3::AxisZ;
+	m_rotation.Apply(m_forward);
 }
 
-Enemy::~Enemy()
+Enemy2::~Enemy2()
 {
 
 }
 
-void Enemy::Update()
+void Enemy2::Update()
 {
+	Serch();
+	AttackSerch();
+
 	Rotation();
+	Attack();
 
-	Arrow1();
-	/*if (g_pad[0]->IsTrigger(enButtonB))
-	{
-		arrow = NewGO<Arrow>(0, "arrow");
-		arrow->m_position = (m_position);
-		arrow->m_1stPosition = arrow->m_position;
-		arrow->m_rotation = m_rotation;
 
-	}*/
+	
 
 	m_modelRender.Update();
 }
 
-void Enemy::Render(RenderContext& rc)
+void Enemy2::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 }
 
-void Enemy::Rotation()
+void Enemy2::Rotation()
 {
-	/*if (v.LengthSq() <= 300 * 300)
-	{
-		return true;
-	}*/
-	Vector3 v = player -> m_position - m_position;
-	v.Normalize();
-	float distToPlayer = v.LengthSq();
-	if (distToPlayer < 30)
-	{
-		m_moveSpeed = v * 100.0f;
-		//m_position += m_moveSpeed;
-	}
-
-	/*Vector3 diff = player->m_position - m_position;
-	if (diff.LengthSq() <= 30.0f)
+	Vector3 diff = player->m_position - m_position;
+	if (Serch() == true)
 	{
 		m_moveSpeed = diff * 100.0f;
-	}*/
-
+	}
 
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
+	
+	m_collisionObject->SetPosition(m_position + corre1);
 }
 
-void Enemy::Arrow1()
+void Enemy2::Attack()
 {
+	if (!AttackSerch())
+		return;
+
 	if (arrowtimer > 0)
 	{
-		arrowtimer -= g_gameTime->GetFrameDeltaTime();
+		arrowtimer -= g_gameTime->GetFrameDeltaTime();		
 		return;
 	}
 
-	arrow = NewGO<Arrow>(0, "arrow");
-	arrow->m_position = (m_position);
-	arrow->m_1stPosition = arrow->m_position;
-	arrow->m_rotation = m_rotation;
+		arrow = NewGO<Arrow>(0, "arrow");
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
 
 
-	arrowtimer = arrowtime;
+		arrowtimer = arrowtime;
+}
+
+const bool Enemy2::Serch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() <= serch)
+	{
+		return true;
+	}
+}
+
+const bool Enemy2::AttackSerch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() <= attackSerch)
+	{
+		return true;
+	}
+}
+
+void Enemy2::Collision()
+{
+
 }

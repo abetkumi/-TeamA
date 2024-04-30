@@ -39,7 +39,7 @@ Game::~Game()
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage3.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_true.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -52,7 +52,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"river") == true)
+			else if (objData.EqualObjectName(L"level_true") == true)
 			{
 				backGround = NewGO<BackGround>(0, "backGround");
 
@@ -111,6 +111,8 @@ bool Game::Start()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+
+	return true;
 }
 void Game::Update()
 {

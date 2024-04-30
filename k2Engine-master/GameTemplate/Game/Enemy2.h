@@ -2,11 +2,11 @@
 
 class Player;
 class Arrow;
-class Enemy2 : public IGameObject
+class Enemy : public IGameObject
 {
 public:
-	Enemy2();
-	~Enemy2();
+	Enemy();
+	~Enemy();
 	void Update();
 	void Render(RenderContext& rc);
 	void Rotation();

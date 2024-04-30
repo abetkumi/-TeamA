@@ -26,5 +26,6 @@ public:
 	Game* game;
 
 	int HP,ST = 1;
-	int point = 0;
+	int m_point = 0;
+	int m_moveState = 0;
 };

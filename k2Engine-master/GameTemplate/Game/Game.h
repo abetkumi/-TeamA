@@ -38,5 +38,10 @@ public:
 	std::vector<Vector3> path01_pointList;
 	std::vector<Vector3> path02_pointList;
 	Vector3 m_pointPosition;
+	Vector3 m_nextPosition;
+	Vector3 m_pointPosition1;
+	Vector3 m_nextPosition1;
+	Vector3 m_pointPosition2;
+	Vector3 m_nextPosition2;
 };
 

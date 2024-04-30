@@ -20,7 +20,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Boat.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Status.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -41,7 +40,6 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="Boat.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Enemy2.h" />

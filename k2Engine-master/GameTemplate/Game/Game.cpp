@@ -7,26 +7,51 @@
 #include "Item.h"
 #include "Status.h"
 #include "Boat.h"
-#include "Enemy.h"
+#include "Enemy2.h"
 #include "Boss.h"
 
 
 Game::Game()
 {
 
-	m_levelRender.Init("Assets/Level/stage2_9.tkl", [&](LevelObjectData& objData)
+}
+
+Game::~Game()
+{
+	DeleteGO(player);
+	DeleteGO(gameCamera);
+	DeleteGO(backGround);
+	DeleteGO(boat);
+	QueryGOs<Enemy2>("enemy", [&](Enemy2* enemy)
+		{
+			DeleteGO(enemy);
+			return true;
+		});
+	DeleteGO(status);
+	DeleteGO(boss);
+	//QueryGOs<Point>("point", [&](Point* point) 
+	//	{
+	//		DeleteGO(point);
+	//		return true;
+	//	});
+}
+
+bool Game::Start()
+{
+
+	m_levelRender.Init("Assets/Level/stage3.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
 				player = NewGO<Player>(0, "player");
 
-				player->m_position=objData.position;
-				
-				player->m_rotation=objData.rotation;
+				player->m_position = objData.position;
+
+				player->m_rotation = objData.rotation;
 
 				return true;
 			}
-			
+
 			else if (objData.EqualObjectName(L"river") == true)
 			{
 				backGround = NewGO<BackGround>(0, "backGround");
@@ -50,7 +75,7 @@ Game::Game()
 
 			else if (objData.EqualObjectName(L"goblin") == true)
 			{
-				enemy = NewGO<Enemy>(0, "enemy");
+				enemy = NewGO<Enemy2>(0, "enemy");
 
 				enemy->m_position = objData.position;
 
@@ -64,35 +89,29 @@ Game::Game()
 				boss->m_scale = objData.scale;
 				return true;
 			}
+			else if (objData.ForwardMatchName(L"00_Path_Point_") == true) {
+				// 1 line
+				path00_pointList.push_back(objData.position);
+				return true;
+			}
+			else if (objData.ForwardMatchName(L"01_Path_Point_") == true) {
+				// 2 line
+				path01_pointList.push_back(objData.position);
+				return true;
+			}
+			else if (objData.ForwardMatchName(L"02_Path_Point_") == true) {
+				// 3 line
+				path02_pointList.push_back(objData.position);
+				return true;
+			}
 			return true;
 		});
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	
+
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 }
-
-Game::~Game()
-{
-	DeleteGO(player);
-	DeleteGO(gameCamera);
-	DeleteGO(backGround);
-	DeleteGO(boat);
-	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-		{
-			DeleteGO(enemy);
-			return true;
-		});
-	DeleteGO(status);
-	DeleteGO(boss);
-	//QueryGOs<Point>("point", [&](Point* point) 
-	//	{
-	//		DeleteGO(point);
-	//		return true;
-	//	});
-}
-
 void Game::Update()
 {
 	position.x = -650.0f;

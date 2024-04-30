@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Arrow.h"
 #include "collision/CollisionObject.h"
-#include "Enemy2.h"
+#include "Enemy.h"
 #include "Player.h"
 
 namespace

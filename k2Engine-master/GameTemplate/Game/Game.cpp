@@ -14,7 +14,7 @@
 Game::Game()
 {
 
-	m_levelRender.Init("Assets/Level/stage2_9.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_true.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -27,7 +27,7 @@ Game::Game()
 				return true;
 			}
 			
-			else if (objData.EqualObjectName(L"river") == true)
+			else if (objData.EqualObjectName(L"level_true") == true)
 			{
 				backGround = NewGO<BackGround>(0, "backGround");
 
@@ -48,7 +48,7 @@ Game::Game()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"goblin") == true)
+			else if (objData.EqualObjectName(L"enemy") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 

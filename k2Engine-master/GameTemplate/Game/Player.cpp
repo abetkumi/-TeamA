@@ -91,7 +91,22 @@ void Player::Move()
 	{
 		m_moveState = 2;
 	}
+	if (m_moveState == 0)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//左右に移動する距離
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
+		m_moveSpeed.x = m_moveLine.x;
+		diff = game->m_pointPosition - m_position;
+
+	}
 	if (m_moveState == 1)
 	{
 		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
@@ -104,10 +119,27 @@ void Player::Move()
 		//左右に移動する距離
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
-		m_moveSpeed.x = m_moveLine.x*10.0f;
+		m_moveSpeed.x = m_moveLine.x;
 
+		diff = game->m_pointPosition1 - m_position;
 	}
-	Vector3 diff = game->m_pointPosition - m_position;
+	if (m_moveState == 2)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//左右に移動する距離
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x = m_moveLine.x;
+
+		diff = game->m_pointPosition2 - m_position;
+	}
+
 	
 	//一瞬だけ行って戻るため完成必須
 
@@ -138,7 +170,6 @@ void Player::Move()
 	}
 
 	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//大まかな移動速度
-	//m_position = m_moveSpeed;
 	m_modelRender.SetPosition(m_position);
 }
 

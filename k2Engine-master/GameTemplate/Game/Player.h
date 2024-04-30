@@ -25,7 +25,8 @@ public:
 	Arrow* arrow;
 	Game* game;
 
-	int HP,ST = 1;
+	int HP,ST,ATK = 1;
+	Vector3 diff;
 	int m_point = 0;
 	int m_moveState = 0;
 };

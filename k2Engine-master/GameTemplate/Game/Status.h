@@ -2,6 +2,7 @@
 
 class Boat;
 class Player;
+class Enemy;
 class Status : public IGameObject
 {
 public:
@@ -35,5 +36,6 @@ public:
 
 	Player* player;
 	Boat* boat;
+	Enemy* enemy;
 };
 

@@ -104,7 +104,7 @@ const bool Enemy::Serch()
 	{
 		return true;
 	}
-	arrowtimer = 3.0f;
+	arrowtimer = arrowtime;
 }
 
 const bool Enemy::AttackSerch()
@@ -118,5 +118,12 @@ const bool Enemy::AttackSerch()
 
 void Enemy::Collision()
 {
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("p_arrow");
 
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_collisionObject))
+		{
+			HP -= player->ATK;
+		}
+	}
 }

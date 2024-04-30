@@ -5,7 +5,7 @@
 #include<dxgidebug.h>
 
 #include "Title.h"
-
+#include "Game.h"
 
 
 void ReportLiveObjects()

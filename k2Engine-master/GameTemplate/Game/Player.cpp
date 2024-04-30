@@ -27,7 +27,7 @@ void Player::Update()
 
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		arrow = NewGO<Arrow>(0, "arrow");
+		arrow = NewGO<Arrow>(0, "p_arrow");
 		arrow->m_position = (m_position);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;

@@ -1,6 +1,6 @@
 #pragma once
 
-class Enemy2;
+class Enemy;
 class Player;
 class Arrow : public IGameObject
 {
@@ -47,6 +47,6 @@ public:
 	Vector3	m_scale = Vector3::One;
 
 	Player* player;
-	Enemy2* enemy;
+	Enemy* enemy;
 };
 

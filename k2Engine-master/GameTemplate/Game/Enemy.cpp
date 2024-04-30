@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Enemy2.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "Arrow.h"
 
@@ -17,7 +17,7 @@ namespace
 	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//à íuèCê≥íeä€î≠ê∂à íu
 }
 
-Enemy2::Enemy2()
+Enemy::Enemy()
 {
 	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
@@ -41,12 +41,12 @@ Enemy2::Enemy2()
 	m_rotation.Apply(m_forward);
 }
 
-Enemy2::~Enemy2()
+Enemy::~Enemy()
 {
 
 }
 
-void Enemy2::Update()
+void Enemy::Update()
 {
 	Serch();
 	AttackSerch();
@@ -54,18 +54,15 @@ void Enemy2::Update()
 	Rotation();
 	Attack();
 
-
-	
-
 	m_modelRender.Update();
 }
 
-void Enemy2::Render(RenderContext& rc)
+void Enemy::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
 }
 
-void Enemy2::Rotation()
+void Enemy::Rotation()
 {
 	Vector3 diff = player->m_position - m_position;
 	if (Serch() == true)
@@ -80,7 +77,7 @@ void Enemy2::Rotation()
 	m_collisionObject->SetPosition(m_position + corre1);
 }
 
-void Enemy2::Attack()
+void Enemy::Attack()
 {
 	if (!AttackSerch())
 		return;
@@ -100,16 +97,17 @@ void Enemy2::Attack()
 		arrowtimer = arrowtime;
 }
 
-const bool Enemy2::Serch()
+const bool Enemy::Serch()
 {
 	Vector3 diff = player->m_position - m_position;
 	if (diff.LengthSq() <= serch)
 	{
 		return true;
 	}
+	arrowtimer = arrowtime;
 }
 
-const bool Enemy2::AttackSerch()
+const bool Enemy::AttackSerch()
 {
 	Vector3 diff = player->m_position - m_position;
 	if (diff.LengthSq() <= attackSerch)
@@ -118,7 +116,14 @@ const bool Enemy2::AttackSerch()
 	}
 }
 
-void Enemy2::Collision()
+void Enemy::Collision()
 {
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("p_arrow");
 
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_collisionObject))
+		{
+			HP -= player->ATK;
+		}
+	}
 }

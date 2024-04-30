@@ -74,20 +74,33 @@ void Player::Move()
 	//川の3ライン間を移動するための計算
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
-	if (stickL.x <= -0.5f)
-	{
-		m_moveState++;
-	}
-	if (stickL.x >= 0.5f)
+
+	//if (stickL.x <= -0.5f&&!m_isHit)
+	//{
+	//	m_isHit = true;
+	//	m_moveState++;
+	//}
+	//if (stickL.x >= 0.5f)
+	//{
+	//	m_isHit = true;
+	//	m_moveState--;
+	//}
+	//m_isHit = false;
+
+	if (g_pad[0]->IsTrigger(enButtonLB1))
 	{
 		m_moveState--;
+	}
+	if (g_pad[0]->IsTrigger(enButtonRB1))
+	{
+		m_moveState++;
 	}
 
 	if (m_moveState < 0)
 	{
 		m_moveState = 0;
 	}
-	if (m_moveState >= 2)
+	if (m_moveState > 2)
 	{
 		m_moveState = 2;
 	}
@@ -140,18 +153,18 @@ void Player::Move()
 		diff = game->m_pointPosition2 - m_position;
 	}
 
-	
+
 	//一瞬だけ行って戻るため完成必須
 
 
 	float disToPlayer = diff.Length();
-	if (disToPlayer <= 10.0f)
+	if (disToPlayer <= 60.0f)
 	{
 		m_point++;
 	}
 	diff.Normalize();
 	
-	m_moveSpeed = diff * 10.0f;
+	m_moveSpeed = diff * 100.0f;
 	//if (m_charaCon.IsOnGround())
 	//{
 	//	m_moveSpeed.y = 0.0f;

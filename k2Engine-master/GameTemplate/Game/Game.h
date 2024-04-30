@@ -8,13 +8,14 @@ class BackGround;
 class Item;
 class Status;
 class Boat;
-class Enemy;
+class Enemy2;
 class Ship_Gauge;
 class Boss;
 
 class Game : public IGameObject
 {
 public:
+	bool Start();
 	Game();
 	~Game();
 	void Update();
@@ -27,11 +28,20 @@ public:
 	Item* item;
 	Status* status;
 	Boat* boat;
-	Enemy* enemy;
+	Enemy2* enemy;
 	Boss* boss;
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
 	Vector3 position;
+	std::vector<Vector3> path00_pointList;
+	std::vector<Vector3> path01_pointList;
+	std::vector<Vector3> path02_pointList;
+	Vector3 m_pointPosition;
+	Vector3 m_nextPosition;
+	Vector3 m_pointPosition1;
+	Vector3 m_nextPosition1;
+	Vector3 m_pointPosition2;
+	Vector3 m_nextPosition2;
 };
 

@@ -2,11 +2,13 @@
 
 class Arrow;
 class Game;
+class GameCamera;
 class Player : public IGameObject
 {
 public:
 	Player();
 	~Player();
+	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();
@@ -24,6 +26,7 @@ public:
 
 	Arrow* arrow;
 	Game* game;
+	GameCamera* gameCamera;
 
 	int HP,ST,ATK = 1;
 	Vector3 diff;

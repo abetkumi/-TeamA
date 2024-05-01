@@ -14,7 +14,7 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
-	m_toCameraPos.Set(0.0f, 125.0f, -250.0f);
+	m_toCameraPos.Set(0.0f, 125.0f, 250.0f);
 	m_player = FindGO<Player>("player");
 
 	g_camera3D->SetNear(1.0f);
@@ -25,7 +25,7 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	Vector3 target = m_player->m_position;
+	target = m_player->m_position;
 	target.y += 80.0f;
 
 	Vector3 toCameraPosOld = m_toCameraPos;

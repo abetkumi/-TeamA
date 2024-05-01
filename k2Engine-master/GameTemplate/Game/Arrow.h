@@ -5,6 +5,13 @@ class Player;
 class Arrow : public IGameObject
 {
 public:
+	enum EnArrow {
+		enArrow_None,
+		enArrow_Player,
+		enArrow_Enemy
+	};
+
+public:
 	Arrow() {};
 	~Arrow() {};
 	bool Start();
@@ -30,6 +37,11 @@ public:
 		m_rotation = rotation;
 	}
 
+	void SetEnArrow(const EnArrow enArrow)
+	{
+		m_enArrow = enArrow;
+	}
+
 
 	float bullettime = 1.5f;
 	float m_deleteTimer = 0.0f;
@@ -48,5 +60,7 @@ public:
 
 	Player* player;
 	Enemy* enemy;
+
+	EnArrow m_enArrow = enArrow_None;
 };
 

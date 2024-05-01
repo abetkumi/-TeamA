@@ -7,7 +7,7 @@
 #include "Item.h"
 #include "Status.h"
 #include "Boat.h"
-#include "Enemy2.h"
+#include "Enemy.h"
 #include "Boss.h"
 
 
@@ -22,7 +22,7 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-	QueryGOs<Enemy2>("enemy", [&](Enemy2* enemy)
+	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
 			DeleteGO(enemy);
 			return true;
@@ -73,9 +73,9 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"goblin") == true)
+			else if (objData.EqualObjectName(L"enemy") == true)
 			{
-				enemy = NewGO<Enemy2>(0, "enemy");
+				enemy = NewGO<Enemy>(0, "enemy");
 
 				enemy->m_position = objData.position;
 
@@ -111,6 +111,7 @@ bool Game::Start()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	return true;
 }
 void Game::Update()
 {

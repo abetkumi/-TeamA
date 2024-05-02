@@ -124,7 +124,7 @@ void Enemy::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_collisionObject))
 		{
-			HP -= player->ATK;
+			HP -= 100;
 
 			if (HP <= 0) {
 				DeleteGO(this);

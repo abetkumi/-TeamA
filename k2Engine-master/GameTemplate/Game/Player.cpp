@@ -24,7 +24,9 @@ bool Player::Start()
 	HP = 100;
 	game = FindGO<Game>("game");
 	gameCamera = FindGO<GameCamera>("gameCamera");
+	return true;
 }
+
 void Player::Update()
 {
 	Move();

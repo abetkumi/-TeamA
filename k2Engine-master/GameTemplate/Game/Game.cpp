@@ -111,6 +111,7 @@ bool Game::Start()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	return true;
 }
 void Game::Update()
 {

@@ -6,6 +6,7 @@ class Boat : public IGameObject
 public:
 	Boat();
 	~Boat();
+	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();

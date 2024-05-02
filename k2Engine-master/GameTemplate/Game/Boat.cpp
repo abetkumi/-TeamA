@@ -6,6 +6,16 @@
 
 Boat::Boat()
 {
+	
+}
+
+Boat::~Boat()
+{
+	
+}
+
+bool Boat::Start()
+{
 	m_modelRender.Init("Assets/modelData/Boat.tkm");
 	//m_modelRender.SetPosition(500.0f, -100.0f, 0.0f);
 	//m_modelRender.SetScale(m_scale);
@@ -19,12 +29,9 @@ Boat::Boat()
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
 	player = FindGO<Player>("player");
-	
-}
 
-Boat::~Boat()
-{
-	
+
+	return true;
 }
 
 void Boat::Update()

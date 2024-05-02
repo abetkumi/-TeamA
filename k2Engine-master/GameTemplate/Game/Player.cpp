@@ -201,7 +201,7 @@ void Player::Move()
 
 void Player::Rotation()
 {
-	m_rotation.SetRotationYFromDirectionXZ(gameCamera->target);
+	m_rotation.SetRotationYFromDirectionXZ(gameCamera->m_toCameraPos);
 	m_modelRender.SetRotation(m_rotation);
 }
 

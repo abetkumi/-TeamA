@@ -29,7 +29,15 @@ bool Arrow::Start()
 	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//‹…
 	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//” 
 
-	m_collisionObject->SetName("player_atttack");
+	if (m_enArrow == enArrow_Player)
+	{
+		m_collisionObject->SetName("p_arrow");
+	}
+	else if (m_enArrow == enArrow_Enemy)
+	{
+		m_collisionObject->SetName("e_arrow");
+	}
+	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 
 	return true;

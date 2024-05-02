@@ -43,7 +43,7 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-
+	DeleteGO(m_collisionObject);
 }
 
 void Enemy::Update()
@@ -53,7 +53,7 @@ void Enemy::Update()
 
 	Rotation();
 	Attack();
-
+	
 	m_modelRender.Update();
 }
 
@@ -88,11 +88,12 @@ void Enemy::Attack()
 		return;
 	}
 
-		arrow = NewGO<Arrow>(0, "arrow");
+		arrow = NewGO<Arrow>(0);
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
 
+		arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
 		arrowtimer = arrowtime;
 }
@@ -123,7 +124,11 @@ void Enemy::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_collisionObject))
 		{
-			HP -= player->ATK;
+			HP -= 100;
+
+			if (HP <= 0) {
+				DeleteGO(this);
+			}
 		}
 	}
 }

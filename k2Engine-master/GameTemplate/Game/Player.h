@@ -14,6 +14,8 @@ public:
 	void Move();
 	void Rotation();
 
+	void Collision();
+
 	Vector3 m_position;
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;

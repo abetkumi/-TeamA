@@ -29,10 +29,16 @@ public:
 	Arrow* arrow;
 	Game* game;
 	GameCamera* gameCamera;
-
+	enum MoveState {
+		MoveState_Normal,
+		MoveState_Left,	// ¶‚ÉˆÚ“®’†
+		MoveState_Right, // ‰E‚ÉˆÚ“®’†
+	};
+	
+	MoveState m_moveState = MoveState_Normal;
 	int HP,ST,ATK = 1;
 	Vector3 diff;
 	int m_point = 0;
-	int m_moveState = 1;
-	bool m_isHit = false;
+	int m_moveFlag = 1;
+	bool isHit = false;
 };

@@ -4,6 +4,13 @@
 #include "Game.h"
 #include "GameCamera.h"
 
+
+namespace
+{
+	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
+	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//??u?C???e???????u
+}
+
 Player::Player()
 {
 	
@@ -31,16 +38,18 @@ void Player::Update()
 {
 	Move();
 	Rotation();
+	Collision();
 
 	m_modelRender.Update();
 
-	if (g_pad[0]->IsTrigger(enButtonB))
+	if (g_pad[0]->IsTrigger(enButtonRB1))
 	{
-		arrow = NewGO<Arrow>(0, "p_arrow");
-		arrow->m_position = (m_position);
+		arrow = NewGO<Arrow>(0);
+		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
 
+		arrow->SetEnArrow(Arrow::enArrow_Enemy);
 	}
 }
 
@@ -82,44 +91,61 @@ void Player::Move()
 	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
 	game->m_pointPosition2 = game->path02_pointList[m_point];
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
-	////川の3ライン間を移動するための計算
-	/*Vector3 stickL;
-	stickL.x = g_pad[0]->GetLStickXF();*/
 
-	////右スティックで船の移動
-	//if (stickL.x <= -0.5f&&!m_isHit)
-	//{
-	//	m_isHit = true;
-	//	m_moveState++;
-	//}
-	//if (stickL.x >= 0.5f)
-	//{
-	//	m_isHit = true;
-	//	m_moveState--;
-	//}
-	//m_isHit = false;
+	//川の3ライン間を移動するための計算
+	Vector3 stickL;
+	stickL.x = g_pad[0]->GetLStickXF();
+
+	switch (m_moveState) {
+	case MoveState_Normal:
+		// 左右に動く判定
+		//右スティックで船の移動
+		if (stickL.x == -1.0f)
+		{
+			m_moveState = MoveState_Left;
+		}
+		else if (stickL.x == 1.0f)
+		{
+			m_moveState = MoveState_Right;
+		}
+		break;
+	case MoveState_Left:
+
+		m_moveFlag++;
+		
+		break;
+	case MoveState_Right:
+
+		m_moveFlag--;
+		
+		break;
+	}
+	if (stickL.x == 0.0f)
+	{
+		m_moveState = MoveState_Normal;
+	}
 
 	//LB,RBで船の移動（仮）
-	if (g_pad[0]->IsTrigger(enButtonLB1))
-	{
-		m_moveState--;
-	}
-	if (g_pad[0]->IsTrigger(enButtonRB1))
-	{
-		m_moveState++;
-	}
+	//if (g_pad[0]->IsTrigger(enButtonLB1))
+	//{
+	//	m_moveFlag--;
+	//}
+	//if (g_pad[0]->IsTrigger(enButtonRB1))
+	//{
+	//	m_moveState++;
+	//}
 
 	//川のラインの上限下限の設定
-	if (m_moveState < 0)
+	if (m_moveFlag < 0)
 	{
-		m_moveState = 0;
+		m_moveFlag = 0;
 	}
-	if (m_moveState > 2)
+	if (m_moveFlag > 2)
 	{
-		m_moveState = 2;
+		m_moveFlag = 2;
 	}
 
-	if (m_moveState == 0)
+	if (m_moveFlag == 0)
 	{
 		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
 		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
@@ -131,11 +157,12 @@ void Player::Move()
 		//左右に移動する距離
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
-		m_moveSpeed.x += m_moveLine.x;
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
 		diff = game->m_pointPosition - m_position;
 
 	}
-	if (m_moveState == 1)
+
+	if (m_moveFlag == 1)
 	{
 		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
 		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
@@ -147,11 +174,12 @@ void Player::Move()
 		//左右に移動する距離
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
-		m_moveSpeed.x += m_moveLine.x;
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
 
 		diff = game->m_pointPosition1 - m_position;
 	}
-	if (m_moveState == 2)
+
+	if (m_moveFlag == 2)
 	{
 		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
 		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
@@ -163,9 +191,10 @@ void Player::Move()
 		//左右に移動する距離
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
-		m_moveSpeed.x += m_moveLine.x;
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
 
 		diff = game->m_pointPosition2 - m_position;
+
 	}
 
 	//次の移動ポイントへ向かう式
@@ -173,11 +202,26 @@ void Player::Move()
 	if (disToPlayer <= 60.0f)
 	{
 		m_point++;
+		//現状の船のムーブポイント上限（超えるとエラーが出る）
+		if (m_point == 7)
+		{
+			m_point = 0;
+		}
 	}
+
+
 	diff.Normalize();
 
-	//移動スピード
-	m_moveSpeed = diff * 100.0f;
+	static bool hoge = false;
+	
+	if (hoge) {
+		//移動スピード
+		m_moveSpeed = diff * 0.0f;
+	}
+	else {
+		//移動スピード
+		m_moveSpeed = diff * 100.0f;
+	}
 	//ここまで3ラインの移動式
 
 	//if (m_charaCon.IsOnGround())
@@ -205,6 +249,22 @@ void Player::Rotation()
 {
 	m_rotation.SetRotationYFromDirectionXZ(gameCamera->m_toCameraPos);
 	m_modelRender.SetRotation(m_rotation);
+}
+
+void Player::Collision()
+{
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("e_arrow");
+
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_charaCon))
+		{
+			HP -= 100;
+
+			/*if (HP <= 0) {
+				DeleteGO(this);
+			}*/
+		}
+	}
 }
 
 void Player::Render(RenderContext& rc)

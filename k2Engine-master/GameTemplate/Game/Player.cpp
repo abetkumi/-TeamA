@@ -4,10 +4,11 @@
 #include "Game.h"
 #include "GameCamera.h"
 
+
 namespace
 {
-	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
-	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
+	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
+	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//??u?C???e???????u
 }
 
 Player::Player()
@@ -41,151 +42,206 @@ void Player::Update()
 
 	m_modelRender.Update();
 
-	if (g_pad[0]->IsTrigger(enButtonB))
+	if (g_pad[0]->IsTrigger(enButtonRB1))
 	{
 		arrow = NewGO<Arrow>(0);
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
-		arrow->SetEnArrow(Arrow::enArrow_Player);
+
+		arrow->SetEnArrow(Arrow::enArrow_Enemy);
 	}
 }
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	//m_moveSpeed.x = 0.0f;
+	//m_moveSpeed.z = 0.0f;
 
-	//ï¿½Êï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
-	Vector3 stickL;
-	stickL.x = g_pad[0]->GetLStickXF();
-	stickL.y = g_pad[0]->GetLStickYF();
-
-	Vector3 forward = g_camera3D->GetForward();
-	Vector3 right = g_camera3D->GetRight();
-
-	forward.y = 0.0f;
-	right.y = 0.0f;
-
-	right *= stickL.x * 120.0f;
-	forward *= stickL.y * 120.0f;
-
-	m_moveSpeed += right + forward;
-
-	//ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ÆƒWï¿½ï¿½ï¿½ï¿½ï¿½v
-if (g_pad[0]->IsPress(enButtonA))
-	{
-		m_moveSpeed.y = 300.0f;
-	}
-	if (g_pad[0]->IsPress(enButtonX))
-	{
-		m_moveSpeed = (right + forward) * 7.5;
-	}
-	//game->m_pointPosition = game->path00_pointList[m_point];
-	//game->m_nextPosition = game->path00_pointList[m_point + 1];
-	//game->m_pointPosition1 = game->path01_pointList[m_point];
-	//game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	//game->m_pointPosition2 = game->path02_pointList[m_point];
-	//game->m_nextPosition2 = game->path02_pointList[m_point + 1];
-	////ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Ô‚ï¿½Ú“ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÌŒvï¿½Z
+	////’Êí‚ÌˆÚ“®ƒ‚[ƒVƒ‡ƒ“
 	//Vector3 stickL;
 	//stickL.x = g_pad[0]->GetLStickXF();
-	//if (stickL.x <= -0.5f)
+	//stickL.y = g_pad[0]->GetLStickYF();
+
+	//Vector3 forward = g_camera3D->GetForward();
+	//Vector3 right = g_camera3D->GetRight();
+
+	//forward.y = 0.0f;
+	//right.y = 0.0f;
+
+	//right *= stickL.x * 120.0f;
+	//forward *= stickL.y * 120.0f;
+
+	//m_moveSpeed += right + forward;
+
+	//ƒ_ƒbƒVƒ…‚ÆƒWƒƒƒ“ƒv
+//if (g_pad[0]->IsPress(enButtonA))
+//	{
+//		m_moveSpeed.y = 300.0f;
+//	}
+//	if (g_pad[0]->IsPress(enButtonX))
+//	{
+//		m_moveSpeed = (right + forward) * 7.5;
+//	}
+
+	//‚±‚±‚©‚ç3ƒ‰ƒCƒ“‚ÌˆÚ“®Ž®
+	game->m_pointPosition = game->path00_pointList[m_point];
+	game->m_nextPosition = game->path00_pointList[m_point + 1];
+	game->m_pointPosition1 = game->path01_pointList[m_point];
+	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	game->m_pointPosition2 = game->path02_pointList[m_point];
+	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
+
+	//ì‚Ì3ƒ‰ƒCƒ“ŠÔ‚ðˆÚ“®‚·‚é‚½‚ß‚ÌŒvŽZ
+	Vector3 stickL;
+	stickL.x = g_pad[0]->GetLStickXF();
+
+	switch (m_moveState) {
+	case MoveState_Normal:
+		// ¶‰E‚É“®‚­”»’è
+		//‰EƒXƒeƒBƒbƒN‚Å‘D‚ÌˆÚ“®
+		if (stickL.x == -1.0f)
+		{
+			m_moveState = MoveState_Left;
+		}
+		else if (stickL.x == 1.0f)
+		{
+			m_moveState = MoveState_Right;
+		}
+		break;
+	case MoveState_Left:
+
+		m_moveFlag++;
+		
+		break;
+	case MoveState_Right:
+
+		m_moveFlag--;
+		
+		break;
+	}
+	if (stickL.x == 0.0f)
+	{
+		m_moveState = MoveState_Normal;
+	}
+
+	//LB,RB‚Å‘D‚ÌˆÚ“®i‰¼j
+	//if (g_pad[0]->IsTrigger(enButtonLB1))
+	//{
+	//	m_moveFlag--;
+	//}
+	//if (g_pad[0]->IsTrigger(enButtonRB1))
 	//{
 	//	m_moveState++;
 	//}
-	//if (stickL.x >= 0.5f)
-	//{
-	//	m_moveState--;
-	//}
 
-	//if (m_moveState < 0)
-	//{
-	//	m_moveState = 0;
-	//}
-	//if (m_moveState >= 2)
-	//{
-	//	m_moveState = 2;
-	//}
-	//if (m_moveState == 0)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x = m_moveLine.x;
-	//	diff = game->m_pointPosition - m_position;
-
-	//}
-	//if (m_moveState == 1)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x = m_moveLine.x;
-
-	//	diff = game->m_pointPosition1 - m_position;
-	//}
-	//if (m_moveState == 2)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x = m_moveLine.x;
-
-	//	diff = game->m_pointPosition2 - m_position;
-	//}
-
-	//
-	////ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ä–ß‚é‚½ï¿½ßŠï¿½ï¿½ï¿½ï¿½Kï¿½{
-
-
-	//float disToPlayer = diff.Length();
-	//if (disToPlayer <= 10.0f)
-	//{
-	//	m_point++;
-	//}
-	//diff.Normalize();
-	//
-	//m_moveSpeed = diff * 10.0f;
-	if (m_charaCon.IsOnGround())
+	//ì‚Ìƒ‰ƒCƒ“‚ÌãŒÀ‰ºŒÀ‚ÌÝ’è
+	if (m_moveFlag < 0)
 	{
-		m_moveSpeed.y = 0.0f;
+		m_moveFlag = 0;
 	}
-	else
+	if (m_moveFlag > 2)
 	{
-		m_moveSpeed.y -= 10.0f;
+		m_moveFlag = 2;
 	}
+
+	if (m_moveFlag == 0)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+		diff = game->m_pointPosition - m_position;
+
+	}
+
+	if (m_moveFlag == 1)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
+		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+		diff = game->m_pointPosition1 - m_position;
+	}
+
+	if (m_moveFlag == 2)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+		diff = game->m_pointPosition2 - m_position;
+
+	}
+
+	//ŽŸ‚ÌˆÚ“®ƒ|ƒCƒ“ƒg‚ÖŒü‚©‚¤Ž®
+	float disToPlayer = diff.Length();
+	if (disToPlayer <= 60.0f)
+	{
+		m_point++;
+		//Œ»ó‚Ì‘D‚Ìƒ€[ƒuƒ|ƒCƒ“ƒgãŒÀi’´‚¦‚é‚ÆƒGƒ‰[‚ªo‚éj
+		if (m_point == 7)
+		{
+			m_point = 0;
+		}
+	}
+
+
+	diff.Normalize();
+
+	static bool hoge = false;
+	
+	if (hoge) {
+		//ˆÚ“®ƒXƒs[ƒh
+		m_moveSpeed = diff * 0.0f;
+	}
+	else {
+		//ˆÚ“®ƒXƒs[ƒh
+		m_moveSpeed = diff * 100.0f;
+	}
+	//‚±‚±‚Ü‚Å3ƒ‰ƒCƒ“‚ÌˆÚ“®Ž®
+
+	//if (m_charaCon.IsOnGround())
+	//{
+	//	m_moveSpeed.y = 0.0f;
+	//}
+	//else
+	//{
+	//	m_moveSpeed.y -= 10.0f;
+	//}
 	
 	
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½Rï¿½}ï¿½ï¿½ï¿½h
+	//‹­§ƒQ[ƒ€ƒI[ƒo[ƒRƒ}ƒ“ƒh
 	if (g_pad[0]->IsPress(enButtonY))
 	{
 		HP -= 100;
 	}
 
-	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//ï¿½ï¿½Ü‚ï¿½ï¿½ÈˆÚ“ï¿½ï¿½ï¿½ï¿½x
+	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x
 	m_modelRender.SetPosition(m_position);
 }
 

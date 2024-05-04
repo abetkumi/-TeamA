@@ -42,7 +42,7 @@ void Boat::Update()
 	m_physicsStaticObject.Release();
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//����
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//����
 
 	m_spriteRender.SetPosition(m_shipposition);
 	m_spriteRender.Update();

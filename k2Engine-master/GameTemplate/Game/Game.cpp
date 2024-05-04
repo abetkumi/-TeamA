@@ -8,6 +8,7 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
+#include "Enemy2.h"
 #include "Boss.h"
 
 
@@ -23,10 +24,15 @@ Game::~Game()
 	DeleteGO(backGround);
 	DeleteGO(boat);
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-		{
+	{
 			DeleteGO(enemy);
 			return true;
-		});
+	});
+	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
+	{
+			DeleteGO(enemy2);
+			return true;
+	});
 	DeleteGO(status);
 	DeleteGO(boss);
 	//QueryGOs<Point>("point", [&](Point* point) 
@@ -39,7 +45,7 @@ Game::~Game()
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage3.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_true.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -52,7 +58,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"river") == true)
+			else if (objData.EqualObjectName(L"level_true") == true)
 			{
 				backGround = NewGO<BackGround>(0, "backGround");
 
@@ -73,7 +79,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"enemy") == true)
+			else if (objData.EqualObjectName(L"goblin") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 
@@ -82,6 +88,17 @@ bool Game::Start()
 				return true;
 
 			}
+
+			else if (objData.EqualObjectName(L"skelton") == true)
+			{
+				enemy2 = NewGO<Enemy2>(0, "enemy2");
+
+				enemy2->m_position = objData.position;
+
+				return true;
+
+			}
+
 			else if (objData.EqualObjectName(L"BOSS_fake") == true)
 			{
 				boss = NewGO<Boss>(0, "Boss_fake");

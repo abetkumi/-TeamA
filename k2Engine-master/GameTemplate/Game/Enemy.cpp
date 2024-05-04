@@ -32,7 +32,7 @@ Enemy::Enemy()
 	m_collisionObject = NewGO<CollisionObject>(0);
 
 	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
-	m_collisionObject->SetName("enemy_col");
+	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
 	m_collisionObject->SetIsEnableAutoDelete(false);
@@ -53,6 +53,8 @@ void Enemy::Update()
 
 	Rotation();
 	Attack();
+
+	Collision();
 	
 	m_modelRender.Update();
 }

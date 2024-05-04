@@ -8,6 +8,7 @@
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
+#include "Enemy2.h"
 #include "Boss.h"
 
 
@@ -23,6 +24,11 @@ Game::~Game()
 	DeleteGO(backGround);
 	DeleteGO(boat);
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
+		{
+			DeleteGO(enemy);
+			return true;
+		});
+	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
 		{
 			DeleteGO(enemy);
 			return true;
@@ -82,6 +88,17 @@ bool Game::Start()
 				return true;
 
 			}
+
+			else if (objData.EqualObjectName(L"skelton") == true)
+			{
+				enemy2 = NewGO<Enemy2>(0, "enemy2");
+
+				enemy2->m_position = objData.position;
+
+				return true;
+
+			}
+
 			else if (objData.EqualObjectName(L"BOSS_fake") == true)
 			{
 				boss = NewGO<Boss>(0, "Boss_fake");

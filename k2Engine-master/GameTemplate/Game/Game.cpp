@@ -79,7 +79,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"enemy") == true)
+			else if (objData.EqualObjectName(L"goblin") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 

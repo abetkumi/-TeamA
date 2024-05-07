@@ -32,6 +32,7 @@ bool Player::Start()
 	game = FindGO<Game>("game");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 	return true;
+
 }
 
 void Player::Update()
@@ -95,35 +96,45 @@ void Player::Move()
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
 
+
+
 	switch (m_moveState) {
 	case MoveState_Normal:
 		// 左右に動く判定
 		//右スティックで船の移動
-		if (stickL.x == -1.0f)
+		if (stickL.x <= -0.8f&&m_lag==0)
 		{
 			m_moveState = MoveState_Left;
 		}
-		else if (stickL.x == 1.0f)
+		else if (stickL.x >= 0.8f && m_lag == 0)
 		{
 			m_moveState = MoveState_Right;
 		}
+
 		break;
 	case MoveState_Left:
 
 		m_moveFlag++;
-		
+		m_lag++;
+		m_moveState = MoveState_Normal;
 		break;
 	case MoveState_Right:
 
 		m_moveFlag--;
-		
+		m_lag++;
+		m_moveState = MoveState_Normal;
 		break;
 	}
-	if (stickL.x == 0.0f)
+	
+	if (m_lag >= 1)
 	{
-		m_moveState = MoveState_Normal;
-	}
+		m_lag++;
+		if (m_lag == 60)
+		{
 
+			m_lag = 0;
+		}
+	}
 	//LB,RBで船の移動（仮）
 	//if (g_pad[0]->IsTrigger(enButtonLB1))
 	//{
@@ -202,7 +213,7 @@ void Player::Move()
 	{
 		m_point++;
 		//現状の船のムーブポイント上限（超えるとエラーが出る）
-		if (m_point == 7)
+		if (m_point == 14)
 		{
 			m_point = 0;
 		}

@@ -40,5 +40,5 @@ public:
 	Vector3 diff;
 	int m_point = 0;
 	int m_moveFlag = 1;
-	bool isHit = false;
+	int m_lag = 0;
 };

@@ -45,7 +45,7 @@ Game::~Game()
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage_true.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{

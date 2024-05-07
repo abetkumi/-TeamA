@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Arrow.h"
-#include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
 

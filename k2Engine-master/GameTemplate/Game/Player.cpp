@@ -49,7 +49,8 @@ void Player::Update()
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
-		arrow->SetEnArrow(Arrow::enArrow_Player);
+
+		arrow->SetEnArrow(Arrow::enArrow_Enemy);
 	}
 }
 

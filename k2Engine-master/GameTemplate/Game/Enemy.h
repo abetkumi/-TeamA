@@ -2,6 +2,7 @@
 
 class Player;
 class Arrow;
+class GameCamera;
 class Enemy : public IGameObject
 {
 public:
@@ -30,6 +31,7 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 
 	float arrowtimer = 0.0f;

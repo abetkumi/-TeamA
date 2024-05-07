@@ -60,6 +60,7 @@ namespace nsK2EngineLow {
 		screenPos.x = (_screenPos.x / _screenPos.w) * half_w;
 		screenPos.y = (_screenPos.y / _screenPos.w) * half_h;
 	}
+
 	void Camera::RotateOriginTarget(const Quaternion& qRot)
 	{
 		Vector3 cameraPos = m_position;

@@ -224,6 +224,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Assist.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -247,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Assist.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Boss.h" />

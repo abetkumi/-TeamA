@@ -2,6 +2,8 @@
 
 class Enemy;
 class Player;
+class GameCamera;
+class Assist;
 class Arrow : public IGameObject
 {
 public:
@@ -22,6 +24,8 @@ public:
 	void Inpacttime();
 	void Inpacthit();
 	void deletebullet();
+
+	void Decision();
 
 
 	void SetVelocity(const Vector3& velocity)
@@ -57,9 +61,12 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
 	Vector3	m_scale = Vector3::One;
+	Vector3 m_CameraPos;
 
 	Player* player;
 	Enemy* enemy;
+	GameCamera* gameCamera;
+	Assist* assist;
 
 	EnArrow m_enArrow = enArrow_None;
 };

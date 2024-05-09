@@ -55,75 +55,75 @@ void Player::Update()
 
 void Player::Move()
 {
-	//m_moveSpeed.x = 0.0f;
-	//m_moveSpeed.z = 0.0f;
+	m_moveSpeed.x = 0.0f;
+	m_moveSpeed.z = 0.0f;
 
 	////通常の移動モーション
-	//Vector3 stickL;
-	//stickL.x = g_pad[0]->GetLStickXF();
-	//stickL.y = g_pad[0]->GetLStickYF();
-
-	//Vector3 forward = g_camera3D->GetForward();
-	//Vector3 right = g_camera3D->GetRight();
-
-	//forward.y = 0.0f;
-	//right.y = 0.0f;
-
-	//right *= stickL.x * 120.0f;
-	//forward *= stickL.y * 120.0f;
-
-	//m_moveSpeed += right + forward;
-
-	//ダッシュとジャンプ
-//if (g_pad[0]->IsPress(enButtonA))
-//	{
-//		m_moveSpeed.y = 300.0f;
-//	}
-//	if (g_pad[0]->IsPress(enButtonX))
-//	{
-//		m_moveSpeed = (right + forward) * 7.5;
-//	}
-
-	//ここから3ラインの移動式
-	game->m_pointPosition = game->path00_pointList[m_point];
-	game->m_nextPosition = game->path00_pointList[m_point + 1];
-	game->m_pointPosition1 = game->path01_pointList[m_point];
-	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	game->m_pointPosition2 = game->path02_pointList[m_point];
-	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
-
-	//川の3ライン間を移動するための計算
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
+	stickL.y = g_pad[0]->GetLStickYF();
 
-	switch (m_moveState) {
-	case MoveState_Normal:
-		// 左右に動く判定
-		//右スティックで船の移動
-		if (stickL.x == -1.0f)
-		{
-			m_moveState = MoveState_Left;
-		}
-		else if (stickL.x == 1.0f)
-		{
-			m_moveState = MoveState_Right;
-		}
-		break;
-	case MoveState_Left:
+	Vector3 forward = g_camera3D->GetForward();
+	Vector3 right = g_camera3D->GetRight();
 
-		m_moveFlag++;
-		
-		break;
-	case MoveState_Right:
+	forward.y = 0.0f;
+	right.y = 0.0f;
 
-		m_moveFlag--;
-		
-		break;
-	}
-	if (stickL.x == 0.0f)
+	right *= stickL.x * 120.0f;
+	forward *= stickL.y * 120.0f;
+
+	m_moveSpeed += right + forward;
+
+	//ダッシュとジャンプ
+if (g_pad[0]->IsPress(enButtonA))
 	{
-		m_moveState = MoveState_Normal;
+		m_moveSpeed.y = 300.0f;
 	}
+	if (g_pad[0]->IsPress(enButtonX))
+	{
+		m_moveSpeed = (right + forward) * 7.5;
+	}
+
+	////ここから3ラインの移動式
+	//game->m_pointPosition = game->path00_pointList[m_point];
+	//game->m_nextPosition = game->path00_pointList[m_point + 1];
+	//game->m_pointPosition1 = game->path01_pointList[m_point];
+	//game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	//game->m_pointPosition2 = game->path02_pointList[m_point];
+	//game->m_nextPosition2 = game->path02_pointList[m_point + 1];
+
+	////川の3ライン間を移動するための計算
+	//Vector3 stickL;
+	//stickL.x = g_pad[0]->GetLStickXF();
+
+	//switch (m_moveState) {
+	//case MoveState_Normal:
+	//	// 左右に動く判定
+	//	//右スティックで船の移動
+	//	if (stickL.x == -1.0f)
+	//	{
+	//		m_moveState = MoveState_Left;
+	//	}
+	//	else if (stickL.x == 1.0f)
+	//	{
+	//		m_moveState = MoveState_Right;
+	//	}
+	//	break;
+	//case MoveState_Left:
+
+	//	m_moveFlag++;
+	//	
+	//	break;
+	//case MoveState_Right:
+
+	//	m_moveFlag--;
+	//	
+	//	break;
+	//}
+	//if (stickL.x == 0.0f)
+	//{
+	//	m_moveState = MoveState_Normal;
+	//}
 
 	//LB,RBで船の移動（仮）
 	//if (g_pad[0]->IsTrigger(enButtonLB1))

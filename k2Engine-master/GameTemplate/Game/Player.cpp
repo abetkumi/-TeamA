@@ -214,10 +214,10 @@ void Player::Move()
 	{
 		m_point++;
 		//現状の船のムーブポイント上限（超えるとエラーが出る）
-		if (m_point == 14)
-		{
-			m_point = 0;
-		}
+		//if (m_point == 13)
+		//{
+		//	m_point = 0;
+		//}
 	}
 
 
@@ -231,7 +231,7 @@ void Player::Move()
 	}
 	else {
 		//移動スピード
-		m_moveSpeed = diff * 100.0f;
+		m_moveSpeed = diff * 300.0f;
 	}
 	//ここまで3ラインの移動式
 

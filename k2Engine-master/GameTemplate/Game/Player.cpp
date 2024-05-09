@@ -115,13 +115,13 @@ void Player::Move()
 		break;
 	case MoveState_Left:
 
-		m_moveFlag++;
+		m_moveFlag--;
 		m_lag++;
 		m_moveState = MoveState_Normal;
 		break;
 	case MoveState_Right:
 
-		m_moveFlag--;
+		m_moveFlag++;
 		m_lag++;
 		m_moveState = MoveState_Normal;
 		break;

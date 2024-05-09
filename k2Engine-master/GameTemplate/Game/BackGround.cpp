@@ -3,7 +3,7 @@
 
 BackGround::BackGround()
 {
-	m_modelRender.Init("Assets/modelData/river_fake.tkm");
+	m_modelRender.Init("Assets/modelData/level_true.tkm");
 	//m_modelRender.Init("Assets/modelData/level_3.tkm");
 
 	m_modelRender.Update();

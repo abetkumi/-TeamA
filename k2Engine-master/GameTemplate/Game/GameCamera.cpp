@@ -61,16 +61,8 @@ void GameCamera::Update()
 
 	g_camera3D->SetTarget(target);
 	g_camera3D->SetPosition(pos);
-
-	Serch();
-																																																																																																																																																																																																																																										
+																																																																																																																																																																																																																																								
 	Decision();
-	Target();
-
-	if (Target() == true)
-	{
-		m_player->HP -= 100;
-	}
 
 	g_camera3D->Update();
 }
@@ -84,22 +76,4 @@ void GameCamera::Decision()
 		ePos.Normalize();
 
 		m_Dec = v.Dot(ePos);
-}
-
-bool GameCamera::Target()
-{
-	if (Serch() == true)
-	if (m_Dec >= 0.999)
-	{
-		return true;
-	}
-}
-
-const bool GameCamera::Serch()
-{
-	Vector3 diff = enemy->m_position - m_player->m_position;
-	if (diff.LengthSq() <= serch)
-	{
-		return true;
-	}
 }

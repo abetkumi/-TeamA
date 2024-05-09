@@ -11,9 +11,6 @@ public:
 	void Update();
 
 	void Decision();
-	bool Target();
-
-	const bool Serch();
 
 	Player* m_player;
 	Enemy* enemy;

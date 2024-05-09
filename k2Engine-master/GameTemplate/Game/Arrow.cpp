@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameCamera.h"
+#include "Assist.h"
 
 #define attackSerch 1000.0f * 1000.0f
 

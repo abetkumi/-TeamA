@@ -3,6 +3,7 @@
 class Enemy;
 class Player;
 class GameCamera;
+class Assist;
 class Arrow : public IGameObject
 {
 public:
@@ -65,6 +66,7 @@ public:
 	Player* player;
 	Enemy* enemy;
 	GameCamera* gameCamera;
+	Assist* assist;
 
 	EnArrow m_enArrow = enArrow_None;
 };

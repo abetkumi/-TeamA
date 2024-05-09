@@ -9,7 +9,11 @@ public:
 	Assist();
 	~Assist();
 	void Update();
-	const bool Traget();
-	const bool Srech();
+	void Homing();
+	const bool Decision();
+
+	Player* player;
+	Enemy* enemy;
+	GameCamera* gameCamera;
 };
 

@@ -3,6 +3,10 @@
 #include "collision/CollisionObject.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "GameCamera.h"
+#include "Assist.h"
+
+#define attackSerch 1000.0f * 1000.0f
 
 namespace
 {
@@ -14,6 +18,7 @@ bool Arrow::Start()
 	m_modelRender.Init("Assets/modelData/amo.tkm");
 
 	//enemy = FindGO<Enemy>("enemy");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	m_modelRender.SetPosition(m_1stPosition);
 	m_modelRender.SetScale(scale);
@@ -50,6 +55,8 @@ void Arrow::Update()
 	Inpacttime();
 	Inpacthit();
 	deletebullet();
+
+	Decision();
 
 	m_modelRender.Update();
 }
@@ -110,4 +117,10 @@ void Arrow::deletebullet()
 			DeleteGO(this);
 		}
 	}
+}
+
+void Arrow::Decision()
+{
+	
+
 }

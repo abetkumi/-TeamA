@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "Enemy2.h"
 #include "Boss.h"
+#include "Assist.h"
 
 
 Game::Game()
@@ -35,6 +36,7 @@ Game::~Game()
 		});
 	DeleteGO(status);
 	DeleteGO(boss);
+	DeleteGO(assist);
 	//QueryGOs<Point>("point", [&](Point* point) 
 	//	{
 	//		DeleteGO(point);
@@ -126,6 +128,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
+	assist = FindGO<Assist>("assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 

@@ -24,15 +24,15 @@ Game::~Game()
 	DeleteGO(backGround);
 	DeleteGO(boat);
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-	{
+		{
 			DeleteGO(enemy);
 			return true;
-	});
+		});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
-	{
-			DeleteGO(enemy2);
+		{
+			DeleteGO(enemy);
 			return true;
-	});
+		});
 	DeleteGO(status);
 	DeleteGO(boss);
 	//QueryGOs<Point>("point", [&](Point* point) 
@@ -45,7 +45,7 @@ Game::~Game()
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage_true.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 		{
 			if (objData.EqualObjectName(L"unityChan") == true)
 			{
@@ -128,6 +128,7 @@ bool Game::Start()
 	status = FindGO<Status>("status");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+
 	return true;
 }
 void Game::Update()
@@ -137,11 +138,11 @@ void Game::Update()
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
-	if (player->HP <= 0 || boat->HP <= 0)
+	/*if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
 		DeleteGO(this);
-	}
+	}*/
 }
 
 void Game::Render(RenderContext& rc)

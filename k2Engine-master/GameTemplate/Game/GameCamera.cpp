@@ -29,7 +29,7 @@ void GameCamera::Update()
 {
 	target = m_player->m_position;
 	target.y += 120.0f;
-	target.z += 200.0f;
+	
 	Vector3 toCameraPosOld = m_toCameraPos;
 
 	float x = g_pad[0]->GetRStickXF();
@@ -56,7 +56,7 @@ void GameCamera::Update()
 	}
 
 	pos = target + m_toCameraPos;
-
+	target = target - m_toCameraPos;
 	g_camera3D->SetTarget(pos);
 	g_camera3D->SetPosition(target);
 

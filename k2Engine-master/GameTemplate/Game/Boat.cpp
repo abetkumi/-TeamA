@@ -29,7 +29,7 @@ bool Boat::Start()
 	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
 	player = FindGO<Player>("player");
-
+	game = FindGO<Game>("game");
 
 	return true;
 }
@@ -37,6 +37,7 @@ bool Boat::Start()
 void Boat::Update()
 {
 	Move();
+	Rotation();
 
 	m_modelRender.Update();
 	m_physicsStaticObject.Release();
@@ -69,10 +70,16 @@ void Boat::Move()
 
 }
 
+void Boat::Rotation()
+{
+	m_rotation.SetRotationYFromDirectionXZ(game->path01_pointList[player->m_point + 2]);
+	m_modelRender.SetRotation(m_rotation);
+}
+
 void Boat::ShipMove()
 {
 	if (m_position.z < m_shipGauge.z)
 	{
-		m_shipposition.x += 0.35f;
+		m_shipposition.x += 0.1f;
 	}
 }

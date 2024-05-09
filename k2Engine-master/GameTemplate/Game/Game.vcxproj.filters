@@ -24,6 +24,7 @@
     <ClCompile Include="Status.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Assist.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -43,5 +44,6 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Assist.h" />
   </ItemGroup>
 </Project>

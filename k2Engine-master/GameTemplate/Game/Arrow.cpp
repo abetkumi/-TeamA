@@ -56,7 +56,6 @@ void Arrow::Update()
 	deletebullet();
 
 	Decision();
-	/*Target();*/
 
 	m_modelRender.Update();
 }
@@ -124,11 +123,3 @@ void Arrow::Decision()
 	
 
 }
-
-//bool Arrow::Target()
-//{
-//
-//		return;
-////m_forward.Normalize();
-//
-//}

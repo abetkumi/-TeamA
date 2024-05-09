@@ -25,7 +25,6 @@ public:
 	void deletebullet();
 
 	void Decision();
-	//bool Target();
 
 
 	void SetVelocity(const Vector3& velocity)

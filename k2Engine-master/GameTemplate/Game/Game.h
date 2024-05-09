@@ -11,6 +11,7 @@ class Boat;
 class Enemy;
 class Ship_Gauge;
 class Boss;
+class Assist;
 
 class Game : public IGameObject
 {
@@ -30,6 +31,8 @@ public:
 	Boat* boat;
 	Enemy* enemy;
 	Boss* boss;
+	Assist* assist;
+
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;

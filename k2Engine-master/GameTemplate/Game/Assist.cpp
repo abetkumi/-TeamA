@@ -33,7 +33,7 @@ void Assist::Homing()
 		Vector3 Qua = enemy->m_position - player->m_position;
 		Qua.Normalize();
 
-		player->m_moveSpeed = Qua;
+		/*player->m_moveSpeed = Qua;*/
 	}
 }
 

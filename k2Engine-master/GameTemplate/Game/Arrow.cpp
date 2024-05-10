@@ -19,6 +19,7 @@ bool Arrow::Start()
 
 	//enemy = FindGO<Enemy>("enemy");
 	gameCamera = FindGO<GameCamera>("gameCamera");
+	assist = FindGO<Assist>("assist");
 
 	m_modelRender.SetPosition(m_1stPosition);
 	m_modelRender.SetScale(scale);
@@ -56,7 +57,10 @@ void Arrow::Update()
 	Inpacthit();
 	deletebullet();
 
-	Decision();
+	if (assist->Decision() == true)
+	{
+		Decision();
+	}
 
 	m_modelRender.Update();
 }

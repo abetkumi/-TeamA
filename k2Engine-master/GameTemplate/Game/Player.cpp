@@ -56,15 +56,46 @@ void Player::Update()
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	//m_moveSpeed.x = 0.0f;
+	//m_moveSpeed.z = 0.0f;
+	////通常の移動モーション
+	//Vector3 stickL;
+	//stickL.x = g_pad[0]->GetLStickXF();
+	//stickL.y = g_pad[0]->GetLStickYF();
 
-	////�ʏ�̈ړ����[�V����
+	//Vector3 forward = g_camera3D->GetForward();
+	//Vector3 right = g_camera3D->GetRight();
+
+	//forward.y = 0.0f;
+	//right.y = 0.0f;
+
+	//right *= stickL.x * 120.0f;
+	//forward *= stickL.y * 120.0f;
+
+	//m_moveSpeed += right + forward;
+
+	//ダッシュとジャンプ
+//if (g_pad[0]->IsPress(enButtonA))
+//	{
+//		m_moveSpeed.y = 300.0f;
+//	}
+//	if (g_pad[0]->IsPress(enButtonX))
+//	{
+//		m_moveSpeed = (right + forward) * 7.5;
+//	}
+// 
+
+	//ここから3ラインの移動式
+	game->m_pointPosition = game->path00_pointList[m_point];
+	game->m_nextPosition = game->path00_pointList[m_point + 1];
+	game->m_pointPosition1 = game->path01_pointList[m_point];
+	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	game->m_pointPosition2 = game->path02_pointList[m_point];
+	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
+
+	//川の3ライン間を移動するための計算
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
-	stickL.y = g_pad[0]->GetLStickYF();
-
-
 
 	switch (m_moveState) {
 	case MoveState_Normal:
@@ -103,15 +134,7 @@ void Player::Move()
 			m_lag = 0;
 		}
 	}
-	//LB,RB�őD�̈ړ��i���j
-	//if (g_pad[0]->IsTrigger(enButtonLB1))
-	//{
-	//	m_moveFlag--;
-	//}
-	//if (g_pad[0]->IsTrigger(enButtonRB1))
-	//{
-	//	m_moveState++;
-	//}
+
 
 	//��̃��C���̏�������̐ݒ�
 	if (m_moveFlag < 0)

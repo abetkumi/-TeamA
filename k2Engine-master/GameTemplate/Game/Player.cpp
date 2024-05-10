@@ -56,53 +56,20 @@ void Player::Update()
 
 void Player::Move()
 {
-	//m_moveSpeed.x = 0.0f;
-	//m_moveSpeed.z = 0.0f;
+	m_moveSpeed.x = 0.0f;
+	m_moveSpeed.z = 0.0f;
 
-	////’Êí‚ÌˆÚ“®ƒ‚[ƒVƒ‡ƒ“
-	//Vector3 stickL;
-	//stickL.x = g_pad[0]->GetLStickXF();
-	//stickL.y = g_pad[0]->GetLStickYF();
-
-	//Vector3 forward = g_camera3D->GetForward();
-	//Vector3 right = g_camera3D->GetRight();
-
-	//forward.y = 0.0f;
-	//right.y = 0.0f;
-
-	//right *= stickL.x * 120.0f;
-	//forward *= stickL.y * 120.0f;
-
-	//m_moveSpeed += right + forward;
-
-	//ƒ_ƒbƒVƒ…‚ÆƒWƒƒƒ“ƒv
-//if (g_pad[0]->IsPress(enButtonA))
-//	{
-//		m_moveSpeed.y = 300.0f;
-//	}
-//	if (g_pad[0]->IsPress(enButtonX))
-//	{
-//		m_moveSpeed = (right + forward) * 7.5;
-//	}
-
-	//‚±‚±‚©‚ç3ƒ‰ƒCƒ“‚ÌˆÚ“®®
-	game->m_pointPosition = game->path00_pointList[m_point];
-	game->m_nextPosition = game->path00_pointList[m_point + 1];
-	game->m_pointPosition1 = game->path01_pointList[m_point];
-	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	game->m_pointPosition2 = game->path02_pointList[m_point];
-	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
-
-	//ì‚Ì3ƒ‰ƒCƒ“ŠÔ‚ğˆÚ“®‚·‚é‚½‚ß‚ÌŒvZ
+	////ï¿½Êï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
+	stickL.y = g_pad[0]->GetLStickYF();
 
 
 
 	switch (m_moveState) {
 	case MoveState_Normal:
-		// ¶‰E‚É“®‚­”»’è
-		//‰EƒXƒeƒBƒbƒN‚Å‘D‚ÌˆÚ“®
+		// ï¿½ï¿½ï¿½Eï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ï¿½Eï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Å‘Dï¿½ÌˆÚ“ï¿½
 		if (stickL.x <= -0.8f&&m_lag==0)
 		{
 			m_moveState = MoveState_Left;
@@ -136,7 +103,7 @@ void Player::Move()
 			m_lag = 0;
 		}
 	}
-	//LB,RB‚Å‘D‚ÌˆÚ“®i‰¼j
+	//LB,RBï¿½Å‘Dï¿½ÌˆÚ“ï¿½ï¿½iï¿½ï¿½ï¿½j
 	//if (g_pad[0]->IsTrigger(enButtonLB1))
 	//{
 	//	m_moveFlag--;
@@ -146,7 +113,7 @@ void Player::Move()
 	//	m_moveState++;
 	//}
 
-	//ì‚Ìƒ‰ƒCƒ“‚ÌãŒÀ‰ºŒÀ‚Ìİ’è
+	//ï¿½ï¿½Ìƒï¿½ï¿½Cï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	if (m_moveFlag < 0)
 	{
 		m_moveFlag = 0;
@@ -165,7 +132,7 @@ void Player::Move()
 			m_moveLineV0.y * m_moveLineV1.y +
 			m_moveLineV0.z * m_moveLineV1.z;
 		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
 		m_moveSpeed.x += m_moveLine.x * 10.0f;
@@ -182,7 +149,7 @@ void Player::Move()
 			m_moveLineV0.y * m_moveLineV1.y +
 			m_moveLineV0.z * m_moveLineV1.z;
 		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
 		m_moveSpeed.x += m_moveLine.x * 10.0f;
@@ -199,7 +166,7 @@ void Player::Move()
 			m_moveLineV0.y * m_moveLineV1.y +
 			m_moveLineV0.z * m_moveLineV1.z;
 		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//¶‰E‚ÉˆÚ“®‚·‚é‹——£
+		//ï¿½ï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½ï¿½ï¿½é‹—ï¿½ï¿½
 		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
 
 		m_moveSpeed.x += m_moveLine.x * 10.0f;
@@ -208,12 +175,12 @@ void Player::Move()
 
 	}
 
-	//Ÿ‚ÌˆÚ“®ƒ|ƒCƒ“ƒg‚ÖŒü‚©‚¤®
+	//ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	float disToPlayer = diff.Length();
 	if (disToPlayer <= 60.0f)
 	{
 		m_point++;
-		//Œ»ó‚Ì‘D‚Ìƒ€[ƒuƒ|ƒCƒ“ƒgãŒÀi’´‚¦‚é‚ÆƒGƒ‰[‚ªo‚éj
+		//ï¿½ï¿½ï¿½ï¿½Ì‘Dï¿½Ìƒï¿½ï¿½[ï¿½uï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆƒGï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½ï¿½j
 		//if (m_point == 13)
 		//{
 		//	m_point = 0;
@@ -226,14 +193,14 @@ void Player::Move()
 	static bool hoge = false;
 	
 	if (hoge) {
-		//ˆÚ“®ƒXƒs[ƒh
+		//ï¿½Ú“ï¿½ï¿½Xï¿½sï¿½[ï¿½h
 		m_moveSpeed = diff * 0.0f;
 	}
 	else {
-		//ˆÚ“®ƒXƒs[ƒh
+		//ï¿½Ú“ï¿½ï¿½Xï¿½sï¿½[ï¿½h
 		m_moveSpeed = diff * 300.0f;
 	}
-	//‚±‚±‚Ü‚Å3ƒ‰ƒCƒ“‚ÌˆÚ“®®
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½3ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½ï¿½
 
 	//if (m_charaCon.IsOnGround())
 	//{
@@ -246,13 +213,13 @@ void Player::Move()
 	
 	
 
-	//‹­§ƒQ[ƒ€ƒI[ƒo[ƒRƒ}ƒ“ƒh
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½Rï¿½}ï¿½ï¿½ï¿½h
 	if (g_pad[0]->IsPress(enButtonY))
 	{
 		HP -= 100;
 	}
 
-	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//‘å‚Ü‚©‚ÈˆÚ“®‘¬“x
+	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//ï¿½ï¿½Ü‚ï¿½ï¿½ÈˆÚ“ï¿½ï¿½ï¿½ï¿½x
 	m_modelRender.SetPosition(m_position);
 }
 

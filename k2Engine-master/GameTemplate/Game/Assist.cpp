@@ -71,3 +71,14 @@ const bool Assist::Decision()
 //{
 //	m_player->HP -= 100;
 //}
+
+//void GameCamera::Decision()
+//{
+//	Vector3 v = m_player->m_position - m_toCameraPos;
+//	v.Normalize();
+//
+//	Vector3 ePos = enemy->m_position - m_toCameraPos;
+//	ePos.Normalize();
+//
+//	m_Dec = v.Dot(ePos);
+//}

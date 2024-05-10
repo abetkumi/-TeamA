@@ -15,5 +15,7 @@ public:
 	Vector3 m_toCameraPos;
 	Vector3 m_toPosDir;
 
+	Enemy* enemy;
+
 	double m_Dec;
 };

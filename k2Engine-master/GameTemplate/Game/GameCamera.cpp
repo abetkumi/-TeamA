@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include "Player.h"
+#include "Enemy.h"
 
 GameCamera::GameCamera()
 {

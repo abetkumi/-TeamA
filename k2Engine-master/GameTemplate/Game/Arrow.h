@@ -61,6 +61,7 @@ public:
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
 	Vector3	m_scale = Vector3::One;
+	Vector3 m_CameraPos;
 
 	Player* player;
 	Enemy* enemy;

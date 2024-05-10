@@ -13,7 +13,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//位置修正本体当たり判定
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//位置修正本体当たり判定
 	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//位置修正弾丸発生位置
 }
 

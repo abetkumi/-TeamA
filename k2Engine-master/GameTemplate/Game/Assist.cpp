@@ -43,8 +43,6 @@ const bool Assist::Decision()
 	{
 		return true;
 	}
-	else
-		return false;
 }
 
 

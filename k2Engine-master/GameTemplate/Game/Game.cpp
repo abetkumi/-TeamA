@@ -128,7 +128,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	assist = FindGO<Assist>("assist");
+	assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 

@@ -19,5 +19,6 @@ public:
 	Vector3 target;
 	Vector3 pos;
 	SpriteRender m_spriteRender;
+
 	double m_Dec;
 };

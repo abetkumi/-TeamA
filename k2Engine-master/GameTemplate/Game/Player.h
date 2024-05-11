@@ -20,6 +20,8 @@ public:
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 
+	Vector3 m_cNPos;
+
 	ModelRender m_modelRender;
 
 	CharacterController m_charaCon;

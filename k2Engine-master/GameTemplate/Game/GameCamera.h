@@ -18,5 +18,6 @@ public:
 	Vector3 m_toPosDir;
 	Vector3 target;
 	Vector3 pos;
+
 	SpriteRender m_spriteRender;
 };

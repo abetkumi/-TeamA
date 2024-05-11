@@ -31,7 +31,7 @@ Game::~Game()
 		});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
 		{
-			DeleteGO(enemy);
+			DeleteGO(enemy2);
 			return true;
 		});
 	DeleteGO(status);
@@ -141,11 +141,11 @@ void Game::Update()
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
-	/*if (player->HP <= 0 || boat->HP <= 0)
+	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
 		DeleteGO(this);
-	}*/
+	}
 }
 
 void Game::Render(RenderContext& rc)

@@ -225,10 +225,10 @@ if (g_pad[0]->IsPress(enButtonA))
 	//}
 	//�����܂�3���C���̈ړ���
 
-	if (m_charaCon.IsOnGround())
+	/*if (m_charaCon.IsOnGround())
 	{
 		m_moveSpeed.y = 0.0f;
-	}
+	}*/
 	else
 	{
 		m_moveSpeed.y -= 10.0f;
@@ -250,6 +250,10 @@ void Player::Rotation()
 {
 	m_rotation.SetRotationYFromDirectionXZ(gameCamera->m_toCameraPos);
 	m_modelRender.SetRotation(m_rotation);
+
+	m_cNPos = gameCamera->m_toCameraPos;
+	m_cNPos.Normalize();
+	m_rotation.AddRotationX(-(m_cNPos.y + 0.06f));
 }
 
 void Player::Collision()

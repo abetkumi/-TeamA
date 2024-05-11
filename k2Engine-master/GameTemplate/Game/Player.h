@@ -13,7 +13,7 @@ public:
 	void Render(RenderContext& rc);
 	void Move();
 	void Rotation();
-
+	void HPGauge();
 	void Collision();
 
 	Vector3 m_position;
@@ -21,7 +21,7 @@ public:
 	Vector3 m_moveSpeed;
 
 	ModelRender m_modelRender;
-
+	SpriteRender m_spriteRender;
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation;
@@ -36,9 +36,11 @@ public:
 	};
 	
 	MoveState m_moveState = MoveState_Normal;
-	int HP,ST,ATK = 1;
+	float HP,ST,ATK = 1;
 	Vector3 diff;
+	Vector3 m_HPBarposition;
 	int m_point = 0;
 	int m_moveFlag = 1;
 	int m_lag = 0;
+	Vector3 m_HPGauge;
 };

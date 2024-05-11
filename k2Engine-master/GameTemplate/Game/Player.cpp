@@ -26,6 +26,11 @@ Player::~Player()
 bool Player::Start()
 {
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds",512.0f,512.0f);
+	m_HPBarposition.x = 720.0f;
+	m_HPBarposition.y = -420.0f;
+	m_spriteRender.SetPosition(m_HPBarposition);
+	m_spriteRender.Update();
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 
 	HP = 100;
@@ -40,6 +45,7 @@ void Player::Update()
 	Move();
 	Rotation();
 	Collision();
+	HPGauge();
 
 	m_modelRender.Update();
 
@@ -271,4 +277,18 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
+}
+
+void Player::HPGauge()
+{
+	m_HPGauge.x = 1.0f;
+	m_HPGauge.y = 1.0f;
+	m_HPGauge.z = 1.0f;
+	/*Vector2 i;
+	i.x = -200.0f;
+	m_spriteRender.SetPivot(i);*/
+	m_spriteRender.SetScale(m_HPGauge);
+	//m_HPGauge.y *= HP / 100;
+	m_spriteRender.Update();
 }

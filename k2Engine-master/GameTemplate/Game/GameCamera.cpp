@@ -15,9 +15,9 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
-	enemy = FindGO<Enemy>("enemy");
 	m_toCameraPos.Set(0.0f, -20.0f, -250.0f);
 	m_player = FindGO<Player>("player");
+	enemy = FindGO<Enemy>("enemy");
 
 	g_camera3D->SetNear(1.0f);
 	g_camera3D->SetFar(10000.0f);
@@ -62,21 +62,10 @@ void GameCamera::Update()
 	target = target - m_toCameraPos;
 	g_camera3D->SetTarget(pos);
 	g_camera3D->SetPosition(target);
-																																																																																																																																																																																																																																								
-	Decision();
 
+	enemy->m_toCameraPos = m_toCameraPos;
+	
 	g_camera3D->Update();
-}
-
-void GameCamera::Decision()
-{
-		Vector3 v = m_player->m_position - m_toCameraPos;
-		v.Normalize();
-
-		Vector3 ePos = enemy->m_position - m_toCameraPos;
-		ePos.Normalize();
-
-		m_Dec = v.Dot(ePos);
 }
 
 void GameCamera::Render(RenderContext& rc)

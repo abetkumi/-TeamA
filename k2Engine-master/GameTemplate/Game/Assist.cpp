@@ -30,16 +30,13 @@ void Assist::Homing()
 {
 	if (Decision() == true)
 	{
-		Vector3 Qua = enemy->m_position - player->m_position;
-		Qua.Normalize();
-
-		/*player->m_moveSpeed = Qua;*/
+		player->HP -= 100;
 	}
 }
 
 const bool Assist::Decision()
 {
-	if (gameCamera->m_Dec >= 0.98)
+	if (enemy->m_Dec >= 0.98)
 	{
 		return true;
 	}

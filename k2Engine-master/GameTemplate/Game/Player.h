@@ -29,6 +29,7 @@ public:
 	Arrow* arrow;
 	Game* game;
 	GameCamera* gameCamera;
+
 	enum MoveState {
 		MoveState_Normal,
 		MoveState_Left,	// ¶‚ÉˆÚ“®’†

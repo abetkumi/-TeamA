@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
 
@@ -9,6 +10,7 @@
 
 #define serch 1300.0f * 1300.0f
 #define attackSerch 700.0f * 700.0f
+#define playerSerch 1500.0f * 1500.0f
 //#define attacktime 5.0f
 
 namespace
@@ -21,6 +23,7 @@ Enemy::Enemy()
 {
 	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
 	
@@ -53,7 +56,9 @@ void Enemy::Update()
 
 	Rotation();
 	Attack();
+	Desision();
 
+	Seek();
 	Collision();
 	
 	m_modelRender.Update();
@@ -119,6 +124,15 @@ const bool Enemy::AttackSerch()
 	}
 }
 
+const bool Enemy::Desision()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() <= playerSerch)
+	{
+		return true;
+	}
+}
+
 void Enemy::Collision()
 {
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("p_arrow");
@@ -133,4 +147,15 @@ void Enemy::Collision()
 			}
 		}
 	}
+}
+
+void Enemy::Seek()
+{
+	Vector3 v = player->m_position - m_toCameraPos;
+	v.Normalize();
+
+	Vector3 ePos = m_position - m_toCameraPos;
+	ePos.Normalize();
+
+	m_Dec = v.Dot(ePos);
 }

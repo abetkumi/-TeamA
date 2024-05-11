@@ -128,7 +128,7 @@ void Player::Move()
 	if (m_lag >= 1)
 	{
 		m_lag++;
-		if (m_lag == 60)
+		if (m_lag == 10)
 		{
 
 			m_lag = 0;

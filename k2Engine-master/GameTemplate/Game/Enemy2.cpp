@@ -2,6 +2,7 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Item.h"
 
 #include "collision/CollisionObject.h"
 
@@ -39,11 +40,12 @@ Enemy2::Enemy2()
 
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
+
 }
 
 Enemy2::~Enemy2()
 {
-
+	
 }
 
 void Enemy2::Update()
@@ -55,6 +57,11 @@ void Enemy2::Update()
 	Attack();
 
 	m_modelRender.Update();
+
+	if (g_pad[0]->IsPress(enButtonB))
+	{
+		NewGO<Item>(0, "item");
+	}
 }
 
 void Enemy2::Render(RenderContext& rc)

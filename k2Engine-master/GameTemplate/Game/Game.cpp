@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "GameCamera.h"
 #include "GameOver.h"
-#include "GameClear.h"
 #include "BackGround.h"
 #include "Item.h"
 #include "Status.h"
@@ -32,7 +31,7 @@ Game::~Game()
 		});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
 		{
-			DeleteGO(enemy);
+			DeleteGO(enemy2);
 			return true;
 		});
 	DeleteGO(status);
@@ -145,11 +144,6 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
-		DeleteGO(this);
-	}
-	if (player->m_point == 198)
-	{
-		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);
 	}
 }

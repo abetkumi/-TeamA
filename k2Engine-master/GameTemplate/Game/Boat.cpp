@@ -76,8 +76,6 @@ void Boat::Move()
 
 void Boat::Rotation()
 {
-	Vector3 diff = game->path01_pointList[player->m_point + 3] - m_position;
-	//m_rotation.SetRotationYFromDirectionXZ(diff);
 	auto moveDir = player->m_moveSpeed;
 	moveDir.Normalize();
 	m_direction = m_direction * 0.98f + moveDir * 0.02f;

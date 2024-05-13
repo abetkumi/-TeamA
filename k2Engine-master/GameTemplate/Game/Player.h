@@ -20,6 +20,8 @@ public:
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 
+	Vector3 m_cNPos;
+
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
 	CharacterController m_charaCon;
@@ -29,6 +31,7 @@ public:
 	Arrow* arrow;
 	Game* game;
 	GameCamera* gameCamera;
+
 	enum MoveState {
 		MoveState_Normal,
 		MoveState_Left,	// ¶‚ÉˆÚ“®’†

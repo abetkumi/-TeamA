@@ -25,7 +25,7 @@ Player::~Player()
 
 bool Player::Start()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_modelRender.Init("Assets/modelData/Player.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
 	m_HPBarposition.x = 720.0f;

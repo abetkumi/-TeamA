@@ -2,7 +2,6 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
-#include "Item.h"
 
 #include "collision/CollisionObject.h"
 
@@ -19,6 +18,16 @@ namespace
 }
 
 Enemy2::Enemy2()
+{
+	
+}
+
+Enemy2::~Enemy2()
+{
+
+}
+
+bool Enemy2::Start()
 {
 	m_modelRender.Init("Assets/modelData/skelton.tkm");
 	player = FindGO<Player>("player");
@@ -41,11 +50,7 @@ Enemy2::Enemy2()
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 
-}
-
-Enemy2::~Enemy2()
-{
-	
+	return true;
 }
 
 void Enemy2::Update()
@@ -57,11 +62,6 @@ void Enemy2::Update()
 	Attack();
 
 	m_modelRender.Update();
-
-	if (g_pad[0]->IsPress(enButtonB))
-	{
-		NewGO<Item>(0, "item");
-	}
 }
 
 void Enemy2::Render(RenderContext& rc)

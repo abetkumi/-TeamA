@@ -10,8 +10,10 @@
 #include "Boat.h"
 #include "Enemy.h"
 #include "Enemy2.h"
+#include "Enemy3.h"
 #include "Boss.h"
 #include "Assist.h"
+#include "Rock.h"
 
 
 Game::Game()
@@ -50,7 +52,7 @@ bool Game::Start()
 
 	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 		{
-			if (objData.EqualObjectName(L"unityChan") == true)
+			if (objData.EqualObjectName(L"a_player") == true)
 			{
 				player = NewGO<Player>(0, "player");
 
@@ -82,7 +84,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"goblin") == true)
+			else if (objData.ForwardMatchName(L"goblin") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 
@@ -92,11 +94,21 @@ bool Game::Start()
 
 			}
 
-			else if (objData.EqualObjectName(L"skelton") == true)
+			else if (objData.ForwardMatchName(L"skelton") == true)
 			{
 				enemy2 = NewGO<Enemy2>(0, "enemy2");
 
 				enemy2->m_position = objData.position;
+
+				return true;
+
+			}
+
+			else if (objData.ForwardMatchName(L"bat") == true)
+			{
+				enemy3 = NewGO<Enemy3>(0, "enemy3");
+
+				enemy3->m_position = objData.position;
 
 				return true;
 
@@ -124,6 +136,14 @@ bool Game::Start()
 				path02_pointList.push_back(objData.position);
 				return true;
 			}
+			else if(objData.ForwardMatchName(L"rock") == true) {
+				//Šâ
+				rock = NewGO<Rock>(0, "rock");
+				rock->r_position = objData.position;
+				rock->r_rotation = objData.rotation;
+				return true;
+			}
+
 			return true;
 		});
 

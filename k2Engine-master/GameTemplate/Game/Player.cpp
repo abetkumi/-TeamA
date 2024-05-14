@@ -27,6 +27,11 @@ bool Player::Start()
 {
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
+	m_HPBarposition.x = 720.0f;
+	m_HPBarposition.y = -420.0f;
+	m_spriteRender.SetPosition(m_HPBarposition);
+	m_spriteRender.Update();
 
 	HP = 100;
 	game = FindGO<Game>("game");
@@ -40,6 +45,7 @@ void Player::Update()
 	Move();
 	Rotation();
 	Collision();
+	HPGauge();
 
 	m_modelRender.Update();
 
@@ -59,180 +65,180 @@ void Player::Move()
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
 	//通常の移動モーション
-	Vector3 stickL;
-	stickL.x = g_pad[0]->GetLStickXF();
-	stickL.y = g_pad[0]->GetLStickYF();
-
-	Vector3 forward = g_camera3D->GetForward();
-	Vector3 right = g_camera3D->GetRight();
-
-	forward.y = 0.0f;
-	right.y = 0.0f;
-
-	right *= stickL.x * 120.0f;
-	forward *= stickL.y * 120.0f;
-
-	m_moveSpeed += right + forward;
-
-	//ダッシュとジャンプ
-if (g_pad[0]->IsPress(enButtonA))
-	{
-		m_moveSpeed.y = 300.0f;
-	}
-	if (g_pad[0]->IsPress(enButtonX))
-	{
-		m_moveSpeed = (right + forward) * 7.5;
-	}
+//	Vector3 stickL;
+//	stickL.x = g_pad[0]->GetLStickXF();
+//	stickL.y = g_pad[0]->GetLStickYF();
+//
+//	Vector3 forward = g_camera3D->GetForward();
+//	Vector3 right = g_camera3D->GetRight();
+//
+//	forward.y = 0.0f;
+//	right.y = 0.0f;
+//
+//	right *= stickL.x * 120.0f;
+//	forward *= stickL.y * 120.0f;
+//
+//	m_moveSpeed += right + forward;
+//
+//	ダッシュとジャンプ
+//if (g_pad[0]->IsPress(enButtonA))
+//	{
+//		m_moveSpeed.y = 300.0f;
+//	}
+//	if (g_pad[0]->IsPress(enButtonX))
+//	{
+//		m_moveSpeed = (right + forward) * 7.5;
+//	}
 // 
 
-	////ここから3ラインの移動式
-	//game->m_pointPosition = game->path00_pointList[m_point];
-	//game->m_nextPosition = game->path00_pointList[m_point + 1];
-	//game->m_pointPosition1 = game->path01_pointList[m_point];
-	//game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	//game->m_pointPosition2 = game->path02_pointList[m_point];
-	//game->m_nextPosition2 = game->path02_pointList[m_point + 1];
+	//ここから3ラインの移動式
+	game->m_pointPosition = game->path00_pointList[m_point];
+	game->m_nextPosition = game->path00_pointList[m_point + 1];
+	game->m_pointPosition1 = game->path01_pointList[m_point];
+	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	game->m_pointPosition2 = game->path02_pointList[m_point];
+	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
-	////川の3ライン間を移動するための計算
-	//Vector3 stickL;
-	//stickL.x = g_pad[0]->GetLStickXF();
+	//川の3ライン間を移動するための計算
+	Vector3 stickL;
+	stickL.x = g_pad[0]->GetLStickXF();
 
-	//switch (m_moveState) {
-	//case MoveState_Normal:
-	//	// ���E�ɓ�������
-	//	//�E�X�e�B�b�N�őD�̈ړ�
-	//	if (stickL.x <= -0.8f&&m_lag==0)
-	//	{
-	//		m_moveState = MoveState_Left;
-	//	}
-	//	else if (stickL.x >= 0.8f && m_lag == 0)
-	//	{
-	//		m_moveState = MoveState_Right;
-	//	}
+	switch (m_moveState) {
+	case MoveState_Normal:
+		// ���E�ɓ�������
+		//�E�X�e�B�b�N�őD�̈ړ�
+		if (stickL.x <= -0.8f&&m_lag==0)
+		{
+			m_moveState = MoveState_Left;
+		}
+		else if (stickL.x >= 0.8f && m_lag == 0)
+		{
+			m_moveState = MoveState_Right;
+		}
 
-	//	break;
-	//case MoveState_Left:
+		break;
+	case MoveState_Left:
 
-	//	m_moveFlag--;
-	//	m_lag++;
-	//	m_moveState = MoveState_Normal;
-	//	break;
-	//case MoveState_Right:
+		m_moveFlag--;
+		m_lag++;
+		m_moveState = MoveState_Normal;
+		break;
+	case MoveState_Right:
 
-	//	m_moveFlag++;
-	//	m_lag++;
-	//	m_moveState = MoveState_Normal;
-	//	break;
-	//}
-	//
-	//if (m_lag >= 1)
-	//{
-	//	m_lag++;
-	//	if (m_lag == 60)
-	//	{
+		m_moveFlag++;
+		m_lag++;
+		m_moveState = MoveState_Normal;
+		break;
+	}
+	
+	if (m_lag >= 1)
+	{
+		m_lag++;
+		if (m_lag == 10)
+		{
 
-	//		m_lag = 0;
-	//	}
-	//}
-
-
-	////��̃��C���̏�������̐ݒ�
-	//if (m_moveFlag < 0)
-	//{
-	//	m_moveFlag = 0;
-	//}
-	//if (m_moveFlag > 2)
-	//{
-	//	m_moveFlag = 2;
-	//}
-
-	//if (m_moveFlag == 0)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//���E�Ɉړ����鋗��
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
-	//	diff = game->m_pointPosition - m_position;
-
-	//}
-
-	//if (m_moveFlag == 1)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//���E�Ɉړ����鋗��
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-	//	diff = game->m_pointPosition1 - m_position;
-	//}
-
-	//if (m_moveFlag == 2)
-	//{
-	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
-	//	Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
-	//	m_moveLineV1.Normalize();
-	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
-	//		m_moveLineV0.y * m_moveLineV1.y +
-	//		m_moveLineV0.z * m_moveLineV1.z;
-	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-	//	//���E�Ɉړ����鋗��
-	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-	//	diff = game->m_pointPosition2 - m_position;
-
-	//}
-
-	////���̈ړ��|�C���g�֌�������
-	//float disToPlayer = diff.Length();
-	//if (disToPlayer <= 60.0f)
-	//{
-	//	m_point++;
-	//	//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j
-	//	//if (m_point == 13)
-	//	//{
-	//	//	m_point = 0;
-	//	//}
-	//}
+			m_lag = 0;
+		}
+	}
 
 
-	//diff.Normalize();
+	//��̃��C���̏�������̐ݒ�
+	if (m_moveFlag < 0)
+	{
+		m_moveFlag = 0;
+	}
+	if (m_moveFlag > 2)
+	{
+		m_moveFlag = 2;
+	}
 
-	//static bool hoge = false;
-	//
-	//if (hoge) {
-	//	//�ړ��X�s�[�h
-	//	m_moveSpeed = diff * 0.0f;
-	//}
-	//else {
-	//	//�ړ��X�s�[�h
-	//	m_moveSpeed = diff * 300.0f;
-	//}
+	if (m_moveFlag == 0)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//���E�Ɉړ����鋗��
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+		diff = game->m_pointPosition - m_position;
+
+	}
+
+	if (m_moveFlag == 1)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
+		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//���E�Ɉړ����鋗��
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+		diff = game->m_pointPosition1 - m_position;
+	}
+
+	if (m_moveFlag == 2)
+	{
+		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+		m_moveLineV1.Normalize();
+		float V2 = m_moveLineV0.x * m_moveLineV1.x +
+			m_moveLineV0.y * m_moveLineV1.y +
+			m_moveLineV0.z * m_moveLineV1.z;
+		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+		//���E�Ɉړ����鋗��
+		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+		m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+		diff = game->m_pointPosition2 - m_position;
+
+	}
+
+	//���̈ړ��|�C���g�֌�������
+	float disToPlayer = diff.Length();
+	if (disToPlayer <= 60.0f)
+	{
+		m_point++;
+		//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j
+		//if (m_point == 13)
+		//{
+		//	m_point = 0;
+		//}
+	}
+
+
+	diff.Normalize();
+
+	static bool hoge = false;
+	
+	if (hoge) {
+		//�ړ��X�s�[�h
+		m_moveSpeed = diff * 0.0f;
+	}
+	else {
+		//�ړ��X�s�[�h
+		m_moveSpeed = diff * 300.0f;
+	}
 	//�����܂�3���C���̈ړ���
 
 	/*if (m_charaCon.IsOnGround())
 	{
 		m_moveSpeed.y = 0.0f;
 	}*/
-	else
-	{
-		m_moveSpeed.y -= 10.0f;
-	}
+	//else
+	//{
+	//	m_moveSpeed.y -= 10.0f;
+	//}
 	
 	
 
@@ -275,4 +281,18 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
+}
+
+void Player::HPGauge()
+{
+	m_HPGauge.x = 1.0f;
+	m_HPGauge.y = 1.0f;
+	m_HPGauge.z = 1.0f;
+	/*Vector2 i;
+	i.x = -200.0f;
+	m_spriteRender.SetPivot(i);*/
+	m_spriteRender.SetScale(m_HPGauge);
+	//m_HPGauge.y *= HP / 100;
+	m_spriteRender.Update();
 }

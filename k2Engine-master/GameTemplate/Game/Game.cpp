@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "GameCamera.h"
 #include "GameOver.h"
+#include "GameClear.h"
 #include "BackGround.h"
 #include "Item.h"
 #include "Status.h"
@@ -144,6 +145,11 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
+		DeleteGO(this);
+	}
+	if (player->m_point == 197)
+	{
+		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);
 	}
 }

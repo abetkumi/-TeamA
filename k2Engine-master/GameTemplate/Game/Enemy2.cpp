@@ -19,6 +19,16 @@ namespace
 
 Enemy2::Enemy2()
 {
+	
+}
+
+Enemy2::~Enemy2()
+{
+
+}
+
+bool Enemy2::Start()
+{
 	m_modelRender.Init("Assets/modelData/skelton.tkm");
 	player = FindGO<Player>("player");
 
@@ -39,11 +49,8 @@ Enemy2::Enemy2()
 
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
-}
 
-Enemy2::~Enemy2()
-{
-
+	return true;
 }
 
 void Enemy2::Update()

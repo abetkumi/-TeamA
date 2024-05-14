@@ -19,11 +19,20 @@ namespace
 
 Enemy::Enemy()
 {
+	
+}
+
+Enemy::~Enemy()
+{
+	DeleteGO(m_collisionObject);
+}
+bool Enemy::Start()
+{
 	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
 
 	arrowtimer = arrowtime;
-	
+
 	m_modelRender.SetPosition(m_position);
 
 
@@ -39,11 +48,8 @@ Enemy::Enemy()
 
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
-}
 
-Enemy::~Enemy()
-{
-	DeleteGO(m_collisionObject);
+	return true;
 }
 
 void Enemy::Update()

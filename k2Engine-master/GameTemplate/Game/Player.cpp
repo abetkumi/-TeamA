@@ -25,9 +25,17 @@ Player::~Player()
 
 bool Player::Start()
 {
-	m_modelRender.Init("Assets/modelData/Player.tkm");
+	m_modelRender.Init("Assets/modelData/Player.tkm", m_animationClips/*,
+		enArrowClip_Num*/);
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
+	//m_animationClips[enArrowClip_Idle].Load("Assets/animData/idle");
+	//m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
+	//m_animationClips[enArrowClip_Draw].Load("Assets/animData/unityChan_Draw.tka");
+	//m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
+	//m_animationClips[enArrowClip_Aim].Load("Assets/animData/unityChan_OverDraw.tka");
+	//m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
+
 	m_HPBarposition.x = 720.0f;
 	m_HPBarposition.y = -420.0f;
 	m_spriteRender.SetPosition(m_HPBarposition);
@@ -295,4 +303,32 @@ void Player::HPGauge()
 	m_spriteRender.SetScale(m_HPGauge);
 	//m_HPGauge.y *= HP / 100;
 	m_spriteRender.Update();
+}
+
+void Player::ArrowAnimation()
+{
+	switch (m_arrowState)
+	{
+	case 0:
+		m_modelRender.PlayAnimation(enArrowClip_Idle);
+		if (g_pad[0]->IsPress(enButtonRB1))
+		{
+			m_modelRender.PlayAnimation(enArrowClip_Draw);
+			m_arrowState++;
+		}
+		
+		break;
+	case 1:
+
+		m_arrowState++;
+		break;
+	case 2:
+
+		m_arrowState++;
+		break;
+	case 3:
+
+		m_arrowState = 0;
+		break;
+	}
 }

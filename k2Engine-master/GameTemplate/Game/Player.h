@@ -15,6 +15,7 @@ public:
 	void Rotation();
 	void HPGauge();
 	void Collision();
+	void ArrowAnimation();
 
 	Vector3 m_position;
 	Vector3 m_scale = Vector3::One;
@@ -37,8 +38,25 @@ public:
 		MoveState_Left,	// ç∂Ç…à⁄ìÆíÜ
 		MoveState_Right, // âEÇ…à⁄ìÆíÜ
 	};
-	
 	MoveState m_moveState = MoveState_Normal;
+
+	enum ArrowState
+	{
+		ArrowState_Idle,
+		ArrowState_Draw,
+		ArrowState_Aim,
+		ArrowState_Num,
+	};
+	int m_arrowState = 0;
+	enum EnArrowClip
+	{
+		enArrowClip_Idle,
+		enArrowClip_Draw,
+		enArrowClip_Aim,
+		enArrowClip_Num,
+	};
+	AnimationClip m_animationClips[enArrowClip_Num];
+
 	float HP,ST,ATK = 1;
 	Vector3 diff;
 	Vector3 m_HPBarposition;

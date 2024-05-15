@@ -59,7 +59,7 @@ void Arrow::Update()
 
 	if (assist->Decision() == true)
 	{
-		Decision();
+		Dec();
 	}
 
 	m_modelRender.Update();
@@ -123,7 +123,7 @@ void Arrow::deletebullet()
 	}
 }
 
-void Arrow::Decision()
+void Arrow::Dec()
 {
 	
 

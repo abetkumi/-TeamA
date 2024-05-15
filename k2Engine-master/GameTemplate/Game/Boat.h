@@ -24,6 +24,7 @@ public:
 	Vector3 m_scale;
 	Vector3 m_shipGauge;
 	Vector3 m_shipposition;
+	Vector3 m_direction;	 // ‘DŽñ‚ÌŒü‚«
 	Player* player;
 	Game* game;
 

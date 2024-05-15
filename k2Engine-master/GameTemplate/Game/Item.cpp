@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "Item.h"
 #include "Player.h"
+#include "Game.h"
 #include <random>
+#include "sound/SoundSource.h" 
 
 Item::Item()
 {
+	m_modelRender.Init("Assets/modelData/BlueBottle.tkm");
 	player = FindGO<Player>("player");
 
-	r = rand() & 6;
-	Count -= 10;
-
+	//r = rand() & 6;
+	//Count -= 10;
+	r = 4;
 	//switch (r)
 	//{
 	//case 0:
@@ -31,10 +34,15 @@ Item::Item()
 	//	m_modelRender.Init();//SPup
 	//	break;
 	//}
+	game = FindGO<Game>("game");
+	m_position = game->m_nextPosition1;
+	m_position.y += 50.0f;
+	m_modelRender.SetPosition(m_position);
 }
 
 Item::~Item()
 {
+
 	if (i = 0) {
 		switch (r)
 		{
@@ -52,6 +60,7 @@ Item::~Item()
 			break;
 		case 4:
 			//HP+30
+			player->HP += 30;
 			break;
 		case 5:
 			//SPup
@@ -87,7 +96,7 @@ void Item::Rotation()
 
 void Item::Despawn()
 {
-	if (player->m_position.x/*‰¼*/ < m_position.x - 120.0f) {
+	if (player->m_position.x/*‰¼*/ < m_position.z - 120.0f) {
 		DeleteGO(this);
 		i = 1;
 	}

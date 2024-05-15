@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "GameCamera.h"
 #include "GameOver.h"
+#include "GameClear.h"
 #include "BackGround.h"
 #include "Item.h"
 #include "Status.h"
@@ -33,7 +34,7 @@ Game::~Game()
 		});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
 		{
-			DeleteGO(enemy);
+			DeleteGO(enemy2);
 			return true;
 		});
 	DeleteGO(status);
@@ -148,7 +149,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	assist = FindGO<Assist>("assist");
+	assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 
@@ -161,11 +162,16 @@ void Game::Update()
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
-	/*if (player->HP <= 0 || boat->HP <= 0)
+	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
 		DeleteGO(this);
-	}*/
+	}
+	if (player->m_point == 197)
+	{
+		gameClear = NewGO<GameClear>(0, "gameClear");
+		DeleteGO(this);
+	}
 }
 
 void Game::Render(RenderContext& rc)

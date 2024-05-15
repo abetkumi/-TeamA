@@ -25,7 +25,7 @@ public:
 	void Inpacthit();
 	void deletebullet();
 
-	void Decision();
+	void Dec();
 
 
 	void SetVelocity(const Vector3& velocity)

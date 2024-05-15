@@ -15,5 +15,7 @@ public:
 	Player* player;
 	Enemy* enemy;
 	GameCamera* gameCamera;
+
+	Vector3 m_ePos;
 };
 

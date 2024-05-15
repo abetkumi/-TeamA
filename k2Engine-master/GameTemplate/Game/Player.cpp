@@ -27,6 +27,11 @@ bool Player::Start()
 {
 	m_modelRender.Init("Assets/modelData/Player.tkm");
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
+	m_HPBarposition.x = 720.0f;
+	m_HPBarposition.y = -420.0f;
+	m_spriteRender.SetPosition(m_HPBarposition);
+	m_spriteRender.Update();
 
 	HP = 100;
 	game = FindGO<Game>("game");
@@ -40,6 +45,7 @@ void Player::Update()
 	Move();
 	Rotation();
 	Collision();
+	HPGauge();
 
 	m_modelRender.Update();
 
@@ -50,31 +56,31 @@ void Player::Update()
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
 
-		arrow->SetEnArrow(Arrow::enArrow_Enemy);
+		arrow->SetEnArrow(Arrow::enArrow_Player);
 	}
 }
 
 void Player::Move()
 {
-	//m_moveSpeed.x = 0.0f;
-	//m_moveSpeed.z = 0.0f;
-	////通常の移動モーション
-	//Vector3 stickL;
-	//stickL.x = g_pad[0]->GetLStickXF();
-	//stickL.y = g_pad[0]->GetLStickYF();
-
-	//Vector3 forward = g_camera3D->GetForward();
-	//Vector3 right = g_camera3D->GetRight();
-
-	//forward.y = 0.0f;
-	//right.y = 0.0f;
-
-	//right *= stickL.x * 120.0f;
-	//forward *= stickL.y * 120.0f;
-
-	//m_moveSpeed += right + forward;
-
-	//ダッシュとジャンプ
+	m_moveSpeed.x = 0.0f;
+	m_moveSpeed.z = 0.0f;
+	//通常の移動モーション
+//	Vector3 stickL;
+//	stickL.x = g_pad[0]->GetLStickXF();
+//	stickL.y = g_pad[0]->GetLStickYF();
+//
+//	Vector3 forward = g_camera3D->GetForward();
+//	Vector3 right = g_camera3D->GetRight();
+//
+//	forward.y = 0.0f;
+//	right.y = 0.0f;
+//
+//	right *= stickL.x * 120.0f;
+//	forward *= stickL.y * 120.0f;
+//
+//	m_moveSpeed += right + forward;
+//
+//	ダッシュとジャンプ
 //if (g_pad[0]->IsPress(enButtonA))
 //	{
 //		m_moveSpeed.y = 300.0f;
@@ -128,7 +134,7 @@ void Player::Move()
 	if (m_lag >= 1)
 	{
 		m_lag++;
-		if (m_lag == 60)
+		if (m_lag == 10)
 		{
 
 			m_lag = 0;
@@ -225,10 +231,10 @@ void Player::Move()
 	}
 	//�����܂�3���C���̈ړ���
 
-	//if (m_charaCon.IsOnGround())
-	//{
-	//	m_moveSpeed.y = 0.0f;
-	//}
+	/*if (m_charaCon.IsOnGround())
+	{
+		m_moveSpeed.y = 0.0f;
+	}*/
 	//else
 	//{
 	//	m_moveSpeed.y -= 10.0f;
@@ -250,6 +256,10 @@ void Player::Rotation()
 {
 	m_rotation.SetRotationYFromDirectionXZ(gameCamera->m_toCameraPos);
 	m_modelRender.SetRotation(m_rotation);
+
+	m_cNPos = gameCamera->m_toCameraPos;
+	m_cNPos.Normalize();
+	m_rotation.AddRotationX(-(m_cNPos.y + 0.06f));
 }
 
 void Player::Collision()
@@ -271,4 +281,18 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
+}
+
+void Player::HPGauge()
+{
+	m_HPGauge.x = 1.0f;
+	m_HPGauge.y = 1.0f;
+	m_HPGauge.z = 1.0f;
+	/*Vector2 i;
+	i.x = -200.0f;
+	m_spriteRender.SetPivot(i);*/
+	m_spriteRender.SetScale(m_HPGauge);
+	//m_HPGauge.y *= HP / 100;
+	m_spriteRender.Update();
 }

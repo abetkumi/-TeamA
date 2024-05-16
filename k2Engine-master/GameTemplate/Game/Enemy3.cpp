@@ -30,6 +30,7 @@ Enemy3::~Enemy3()
 bool Enemy3::Start()
 {
 	m_modelRender.Init("Assets/modelData/bat.tkm");
+	//m_modelRender.SetScale(100.0f, 100.0f, 100.0f);
 	player = FindGO<Player>("player");
 
 	arrowtimer = arrowtime;

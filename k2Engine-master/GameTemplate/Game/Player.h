@@ -15,6 +15,7 @@ public:
 	void Rotation();
 	void HPGauge();
 	void Collision();
+	void ArrowShot();
 	void ArrowAnimation();
 
 	Vector3 m_position;

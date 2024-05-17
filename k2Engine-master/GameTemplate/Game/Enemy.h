@@ -2,6 +2,7 @@
 
 class Player;
 class Arrow;
+class Assist;
 class GameCamera;
 class Enemy : public IGameObject
 {
@@ -34,6 +35,7 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	Assist* assist;
 	GameCamera* gameCamera;
 
 	CollisionObject* m_collisionObject;

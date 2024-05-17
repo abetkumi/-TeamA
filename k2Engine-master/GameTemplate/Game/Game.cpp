@@ -20,6 +20,7 @@ Game::Game()
 
 Game::~Game()
 {
+	DeleteGO(assist);
 	DeleteGO(player);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
@@ -36,7 +37,7 @@ Game::~Game()
 		});
 	DeleteGO(status);
 	DeleteGO(boss);
-	DeleteGO(assist);
+	
 	//QueryGOs<Point>("point", [&](Point* point) 
 	//	{
 	//		DeleteGO(point);

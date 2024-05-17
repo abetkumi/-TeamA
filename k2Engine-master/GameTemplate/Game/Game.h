@@ -13,7 +13,6 @@ class Enemy2;
 class Ship_Gauge;
 class Boss;
 class Assist;
-
 class Game : public IGameObject
 {
 public:

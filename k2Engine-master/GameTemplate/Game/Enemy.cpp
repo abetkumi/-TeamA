@@ -9,9 +9,9 @@
 
 #include <time.h>
 
-#define serch 2500.0f * 2500.0f
-#define attackSerch 2000.0f * 2000.0f
-#define playerSerch 3000.0f * 3000.0f
+#define serch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
+#define playerSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace

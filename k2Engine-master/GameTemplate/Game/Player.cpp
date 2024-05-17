@@ -13,14 +13,12 @@ namespace
 
 Player::Player()
 {
-	
 
 }
 
 Player::~Player()
 {
 	DeleteGO(arrow);
-	
 }
 
 

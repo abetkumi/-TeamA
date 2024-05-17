@@ -18,7 +18,7 @@ public:
 	void ArrowAnimation();
 
 	Vector3 m_position;
-	Vector3 m_scale = Vector3::One;
+	//Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 
 	Vector3 m_cNPos;

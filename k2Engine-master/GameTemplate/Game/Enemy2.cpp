@@ -24,7 +24,7 @@ Enemy2::Enemy2()
 
 Enemy2::~Enemy2()
 {
-
+	DeleteGO(m_collisionObject);
 }
 
 bool Enemy2::Start()

@@ -81,7 +81,7 @@ void Arrow::Move()
 
 	if (m_enArrow == enArrow_Player)
 	{
-		m_position += player->m_moveSpeed * 0.05f;
+		m_position += player->m_moveSpeed * 0.025f;
 	}
 
 	m_modelRender.SetPosition(m_position);

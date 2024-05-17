@@ -15,7 +15,6 @@ public:
 	void Rotation();
 	void HPGauge();
 	void Collision();
-	void ArrowShot();
 	void ArrowAnimation();
 
 	Vector3 m_position;
@@ -64,5 +63,6 @@ public:
 	int m_point = 0;
 	int m_moveFlag = 1;
 	int m_lag = 0;
+	int m_arrowLag = 0;
 	Vector3 m_HPGauge;
 };

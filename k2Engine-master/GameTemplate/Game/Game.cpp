@@ -13,6 +13,7 @@
 #include "Enemy3.h"
 #include "Boss.h"
 #include "Assist.h"
+#include "Arrow.h"
 #include "Rock.h"
 
 
@@ -23,10 +24,12 @@ Game::Game()
 
 Game::~Game()
 {
+	DeleteGO(assist);
 	DeleteGO(player);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
+	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
 			DeleteGO(enemy);
@@ -37,14 +40,13 @@ Game::~Game()
 			DeleteGO(enemy2);
 			return true;
 		});
+	QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+		{
+			DeleteGO(enemy3);
+			return true;
+		});
 	DeleteGO(status);
 	DeleteGO(boss);
-	DeleteGO(assist);
-	//QueryGOs<Point>("point", [&](Point* point) 
-	//	{
-	//		DeleteGO(point);
-	//		return true;
-	//	});
 }
 
 bool Game::Start()
@@ -167,7 +169,7 @@ void Game::Update()
 		gameOver = NewGO<GameOver>(0, "gameOver");
 		DeleteGO(this);
 	}
-	if (player->m_point == 197)
+	if (player->m_point == 100)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);

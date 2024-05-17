@@ -19,13 +19,14 @@ Player::Player()
 
 Player::~Player()
 {
-
+	DeleteGO(arrow);
+	
 }
 
 
 bool Player::Start()
 {
-	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_reload.tka");
+	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_idle.tka");
 	m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
 	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload.tka");
 	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
@@ -315,9 +316,18 @@ void Player::ArrowAnimation()
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
-			m_arrowState++;
+			m_arrowLag++;
+			if (m_arrowLag >=25)
+			{
+				m_arrowState++;
+				m_arrowLag = 0;
+			}
 		}
-
+		else if (m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
+		{
+			m_arrowLag = 0;
+			m_arrowState = 0;
+		}
 		break;
 	case 2:
 		m_modelRender.PlayAnimation(enArrowClip_Aim);

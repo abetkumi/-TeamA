@@ -14,8 +14,8 @@ public:
 	};
 
 public:
-	Arrow() {};
-	~Arrow() {};
+	Arrow();
+	~Arrow();
 	bool Start();
 	void Update();
 	void Rotation();

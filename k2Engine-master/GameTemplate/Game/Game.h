@@ -15,6 +15,7 @@ class Enemy3;
 class Ship_Gauge;
 class Boss;
 class Assist;
+class Arrow;
 class Rock;
 
 class Game : public IGameObject
@@ -39,6 +40,7 @@ public:
 	Enemy3* enemy3;
 	Boss* boss;
 	Assist* assist;
+	Arrow* arrow;
 	Rock* rock;
 
 	Ship_Gauge* ship_Gauge;

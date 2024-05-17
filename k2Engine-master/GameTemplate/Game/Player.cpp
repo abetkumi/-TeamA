@@ -13,21 +13,29 @@ namespace
 
 Player::Player()
 {
-	
 
 }
 
 Player::~Player()
 {
-
+	DeleteGO(arrow);
 }
 
 
 bool Player::Start()
 {
-	m_modelRender.Init("Assets/modelData/Player.tkm");
+	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_idle.tka");
+	m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
+	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload.tka");
+	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
+	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw.tka");
+	m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
+
+	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
+		enArrowClip_Num);
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
+
 	m_HPBarposition.x = 720.0f;
 	m_HPBarposition.y = -420.0f;
 	m_spriteRender.SetPosition(m_HPBarposition);
@@ -46,18 +54,9 @@ void Player::Update()
 	Rotation();
 	Collision();
 	HPGauge();
-
+	ArrowAnimation();
 	m_modelRender.Update();
 
-	if (g_pad[0]->IsTrigger(enButtonRB1))
-	{
-		arrow = NewGO<Arrow>(0);
-		arrow->m_position = (m_position + corre2);
-		arrow->m_1stPosition = arrow->m_position;
-		arrow->m_rotation = m_rotation;
-
-		arrow->SetEnArrow(Arrow::enArrow_Player);
-	}
 }
 
 void Player::Move()
@@ -295,4 +294,57 @@ void Player::HPGauge()
 	m_spriteRender.SetScale(m_HPGauge);
 	//m_HPGauge.y *= HP / 100;
 	m_spriteRender.Update();
+}
+
+void Player::ArrowAnimation()
+{
+	switch (m_arrowState)
+	{
+	case 0:
+		//待機モーション
+		m_modelRender.PlayAnimation(enArrowClip_Idle);
+		if (g_pad[0]->IsPress(enButtonRB1))
+		{
+			m_arrowState++;
+		}
+		
+		break;
+	case 1:
+		//弓を構える
+		if (g_pad[0]->IsPress(enButtonRB1))
+		{
+			m_modelRender.PlayAnimation(enArrowClip_Draw);
+			m_arrowLag++;
+			if (m_arrowLag >=25)
+			{
+				m_arrowState++;
+				m_arrowLag = 0;
+			}
+		}
+		else if (m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
+		{
+			m_arrowLag = 0;
+			m_arrowState = 0;
+		}
+		break;
+	case 2:
+		m_modelRender.PlayAnimation(enArrowClip_Aim);
+		//弓発射
+		if (!g_pad[0]->IsPress(enButtonRB1))
+		{
+			arrow = NewGO<Arrow>(0);
+			arrow->m_position = (m_position + corre2);
+			arrow->m_1stPosition = arrow->m_position;
+			arrow->m_rotation = m_rotation;
+
+			arrow->SetEnArrow(Arrow::enArrow_Player);
+			m_arrowState++;
+		}
+		
+		break;
+	case 3:
+
+		m_arrowState = 0;
+		break;
+	}
 }

@@ -24,7 +24,7 @@ Enemy3::Enemy3()
 
 Enemy3::~Enemy3()
 {
-
+	DeleteGO(m_collisionObject);
 }
 
 bool Enemy3::Start()
@@ -58,7 +58,7 @@ void Enemy3::Update()
 {
 	Serch();
 	AttackSerch();
-
+	Collision();
 	Rotation();
 	Attack();
 
@@ -126,6 +126,7 @@ const bool Enemy3::AttackSerch()
 
 void Enemy3::Collision()
 {
+	
 	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("p_arrow");
 
 	for (auto collision : collisions) {

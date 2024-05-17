@@ -13,6 +13,16 @@ namespace
 	const Vector3 scale = { 1.0f,1.0f,1.0f };
 }
 
+Arrow::Arrow()
+{
+
+}
+
+Arrow::~Arrow()
+{
+	DeleteGO(m_collisionObject);
+}
+
 bool Arrow::Start()
 {
 	m_modelRender.Init("Assets/modelData/amo.tkm");

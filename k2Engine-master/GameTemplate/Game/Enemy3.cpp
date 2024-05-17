@@ -13,7 +13,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
 	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
 }
 
@@ -82,7 +82,13 @@ void Enemy3::Rotation()
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
 
+	m_cNPos = m_position - player->m_position;
+	m_cNPos.Normalize();
+	m_rotation.AddRotationX(m_cNPos.y);
+
 	m_collisionObject->SetPosition(m_position + corre1);
+
+	
 }
 
 void Enemy3::Attack()

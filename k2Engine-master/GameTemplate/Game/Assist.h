@@ -10,6 +10,7 @@ public:
 	~Assist();
 	void Update();
 	void Homing();
+	void Distance();
 	const bool Decision();
 
 	Player* player;
@@ -17,5 +18,10 @@ public:
 	GameCamera* gameCamera;
 
 	Vector3 m_ePos;
+	Vector3 m_peDisPos;
+	
+	double m_peDistane;
+	double m_peTemporary;
+
 };
 

@@ -34,14 +34,21 @@ void Assist::Homing()
 	}
 }
 
+void Assist::Distance()
+{
+	if (m_peDistane >= m_peTemporary)
+	{
+		m_ePos = m_peDisPos;
+	}
+}
+
 const bool Assist::Decision()
 {
-	if (enemy->m_Dec >= 0.99)
+	if (enemy->m_Dec >= 0.98)
 	{
 		return true;
 	}
 }
-
 
 //bool GameCamera::Target()
 //{

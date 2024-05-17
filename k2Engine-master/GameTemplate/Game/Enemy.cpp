@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Assist.h"
 #include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
@@ -32,6 +33,7 @@ bool Enemy::Start()
 {
 	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
+	assist = FindGO<Assist>("assist");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
@@ -157,11 +159,19 @@ void Enemy::Collision()
 
 void Enemy::Seek()
 {
-	Vector3 v = player->m_position - m_toCameraPos;
-	v.Normalize();
+	if (Desision() == true)
+	{
+		/*Vector3 pePos = m_position - player->m_position;
+		double m_Dis = pePos.Length();
+		assist->m_peTemporary = m_Dis;
+		assist->m_peDisPos = pePos;*/
+		
+		Vector3 v = player->m_position + m_toCameraPos;
+		v.Normalize();
 
-	Vector3 ePos = m_position - m_toCameraPos;
-	ePos.Normalize();
+		Vector3 ePos = m_position + m_toCameraPos;
+		ePos.Normalize();
 
-	m_Dec = v.Dot(ePos);
+		m_Dec = v.Dot(ePos);
+	}
 }

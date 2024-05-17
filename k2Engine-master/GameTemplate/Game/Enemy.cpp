@@ -9,7 +9,7 @@
 
 #include <time.h>
 
-#define serch 40.0f * 40.0f
+#define serch 4000.0f * 4000.0f
 #define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
@@ -108,7 +108,7 @@ void Enemy::Attack()
 		arrow->m_1stPosition = arrow->m_position;
 		arrow->m_rotation = m_rotation;
 
-		arrow->SetEnArrow(Arrow::enArrow_Enemy);
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
 }

@@ -39,7 +39,7 @@ bool Arrow::Start()
 	m_velocity = Vector3::AxisZ;
 	m_rotation.Apply(m_velocity);
 	m_position += m_velocity * 50.0f;
-	m_velocity *= 300.0f;
+	m_velocity *= 3000.0f;
 	m_rotation.AddRotationDegY(360.0f);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
@@ -54,6 +54,19 @@ bool Arrow::Start()
 	{
 		m_collisionObject->SetName("e_arrow");
 	}
+	else if (m_enArrow == enArrow_Goblin)
+	{
+		m_collisionObject->SetName("g_arrow");
+	}
+	else if (m_enArrow == enArrow_Skeleton)
+	{
+		m_collisionObject->SetName("s_arrow");
+	}
+	else if (m_enArrow == enArrow_Boss)
+	{
+		m_collisionObject->SetName("b_arrow");
+	}
+
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 

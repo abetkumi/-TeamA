@@ -2,15 +2,16 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Assist.h"
 #include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
 
 #include <time.h>
 
-#define serch 1300.0f * 1300.0f
-#define attackSerch 700.0f * 700.0f
-#define playerSerch 1500.0f * 1500.0f
+#define serch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
+#define playerSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -32,6 +33,7 @@ bool Enemy::Start()
 {
 	m_modelRender.Init("Assets/modelData/goblin.tkm");
 	player = FindGO<Player>("player");
+	assist = FindGO<Assist>("assist");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
@@ -157,11 +159,19 @@ void Enemy::Collision()
 
 void Enemy::Seek()
 {
-	Vector3 v = player->m_position - m_toCameraPos;
-	v.Normalize();
+	if (Desision() == true)
+	{
+		/*Vector3 pePos = m_position - player->m_position;
+		double m_Dis = pePos.Length();
+		assist->m_peTemporary = m_Dis;
+		assist->m_peDisPos = pePos;*/
+		
+		Vector3 v = player->m_position + m_toCameraPos;
+		v.Normalize();
 
-	Vector3 ePos = m_position - m_toCameraPos;
-	ePos.Normalize();
+		Vector3 ePos = m_position + m_toCameraPos;
+		ePos.Normalize();
 
-	m_Dec = v.Dot(ePos);
+		m_Dec = v.Dot(ePos);
+	}
 }

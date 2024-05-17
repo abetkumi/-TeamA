@@ -20,6 +20,7 @@ bool Arrow::Start()
 	//enemy = FindGO<Enemy>("enemy");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 	assist = FindGO<Assist>("assist");
+	player = FindGO<Player>("player");
 
 	m_modelRender.SetPosition(m_1stPosition);
 	m_modelRender.SetScale(scale);
@@ -28,7 +29,7 @@ bool Arrow::Start()
 	m_velocity = Vector3::AxisZ;
 	m_rotation.Apply(m_velocity);
 	m_position += m_velocity * 50.0f;
-	m_velocity *= 1200.0f;
+	m_velocity *= 3000.0f;
 	m_rotation.AddRotationDegY(360.0f);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
@@ -77,6 +78,12 @@ void Arrow::Rotation()
 void Arrow::Move()
 {
 	m_position += m_velocity * g_gameTime->GetFrameDeltaTime();
+
+	if (m_enArrow == enArrow_Player)
+	{
+		m_position += player->m_moveSpeed * 0.05f;
+	}
+
 	m_modelRender.SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position);
 	bullettime -= g_gameTime->GetFrameDeltaTime();

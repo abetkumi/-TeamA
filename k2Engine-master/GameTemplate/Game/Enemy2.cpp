@@ -61,6 +61,8 @@ void Enemy2::Update()
 	Rotation();
 	Attack();
 
+	Collision();
+
 	m_modelRender.Update();
 }
 
@@ -131,6 +133,10 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
+
+			if (HP <= 0) {
+				DeleteGO(this);
+			}
 		}
 	}
 }

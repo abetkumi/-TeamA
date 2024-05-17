@@ -133,6 +133,10 @@ void Enemy3::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
+
+			if (HP <= 0) {
+				DeleteGO(this);
+			}
 		}
 	}
 }

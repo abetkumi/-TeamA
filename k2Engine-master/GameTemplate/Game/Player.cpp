@@ -8,7 +8,7 @@
 namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
-	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//??u?C???e???????u
+	const Vector3 corre2 = { 30.0f,130.0f,10.0f };//??u?C???e???????u
 }
 
 Player::Player()
@@ -79,7 +79,7 @@ void Player::Move()
 //
 //	m_moveSpeed += right + forward;
 //
-//	ダッシュとジャンプ
+//	//ダッシュとジャンプ
 //if (g_pad[0]->IsPress(enButtonA))
 //	{
 //		m_moveSpeed.y = 300.0f;
@@ -88,7 +88,7 @@ void Player::Move()
 //	{
 //		m_moveSpeed = (right + forward) * 7.5;
 //	}
-// 
+ 
 
 	//ここから3ラインの移動式
 	game->m_pointPosition = game->path00_pointList[m_point];
@@ -230,14 +230,14 @@ void Player::Move()
 	}
 	//�����܂�3���C���̈ړ���
 
-	/*if (m_charaCon.IsOnGround())
+	if (m_charaCon.IsOnGround())
 	{
 		m_moveSpeed.y = 0.0f;
-	}*/
-	//else
-	//{
-	//	m_moveSpeed.y -= 10.0f;
-	//}
+	}
+	else
+	{
+		m_moveSpeed.y -= 10.0f;
+	}
 	
 	
 
@@ -258,7 +258,7 @@ void Player::Rotation()
 
 	m_cNPos = gameCamera->m_toCameraPos;
 	m_cNPos.Normalize();
-	m_rotation.AddRotationX(-(m_cNPos.y + 0.06f));
+	m_rotation.AddRotationX(-(m_cNPos.y + 0.04f));
 }
 
 void Player::Collision()

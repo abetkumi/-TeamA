@@ -3,14 +3,18 @@
 #include "Player.h"
 #include "GameCamera.h"
 #include "GameOver.h"
+#include "GameClear.h"
 #include "BackGround.h"
 #include "Item.h"
 #include "Status.h"
 #include "Boat.h"
 #include "Enemy.h"
 #include "Enemy2.h"
+#include "Enemy3.h"
 #include "Boss.h"
 #include "Assist.h"
+#include "Arrow.h"
+#include "Rock.h"
 
 
 Game::Game()
@@ -25,6 +29,7 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
+	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
 			DeleteGO(enemy);
@@ -35,14 +40,13 @@ Game::~Game()
 			DeleteGO(enemy2);
 			return true;
 		});
+	QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+		{
+			DeleteGO(enemy3);
+			return true;
+		});
 	DeleteGO(status);
 	DeleteGO(boss);
-	
-	//QueryGOs<Point>("point", [&](Point* point) 
-	//	{
-	//		DeleteGO(point);
-	//		return true;
-	//	});
 }
 
 bool Game::Start()
@@ -50,7 +54,7 @@ bool Game::Start()
 
 	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 		{
-			if (objData.EqualObjectName(L"unityChan") == true)
+			if (objData.EqualObjectName(L"a_player") == true)
 			{
 				player = NewGO<Player>(0, "player");
 
@@ -82,7 +86,7 @@ bool Game::Start()
 				return true;
 			}
 
-			else if (objData.EqualObjectName(L"goblin") == true)
+			else if (objData.ForwardMatchName(L"goblin") == true)
 			{
 				enemy = NewGO<Enemy>(0, "enemy");
 
@@ -92,11 +96,21 @@ bool Game::Start()
 
 			}
 
-			else if (objData.EqualObjectName(L"skelton") == true)
+			else if (objData.ForwardMatchName(L"skelton") == true)
 			{
 				enemy2 = NewGO<Enemy2>(0, "enemy2");
 
 				enemy2->m_position = objData.position;
+
+				return true;
+
+			}
+
+			else if (objData.ForwardMatchName(L"bat") == true)
+			{
+				enemy3 = NewGO<Enemy3>(0, "enemy3");
+
+				enemy3->m_position = objData.position;
 
 				return true;
 
@@ -124,6 +138,14 @@ bool Game::Start()
 				path02_pointList.push_back(objData.position);
 				return true;
 			}
+			else if(objData.ForwardMatchName(L"rock") == true) {
+				//Šâ
+				rock = NewGO<Rock>(0, "rock");
+				rock->r_position = objData.position;
+				rock->r_rotation = objData.rotation;
+				return true;
+			}
+
 			return true;
 		});
 
@@ -145,6 +167,11 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		gameOver = NewGO<GameOver>(0, "gameOver");
+		DeleteGO(this);
+	}
+	if (player->m_point == 100)
+	{
+		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);
 	}
 }

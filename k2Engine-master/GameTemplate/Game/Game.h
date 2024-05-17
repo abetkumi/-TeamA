@@ -3,6 +3,7 @@
 
 class Player;
 class GameCamera;
+class GameClear;
 class GameOver;
 class BackGround;
 class Item;
@@ -10,9 +11,13 @@ class Status;
 class Boat;
 class Enemy;
 class Enemy2;
+class Enemy3;
 class Ship_Gauge;
 class Boss;
 class Assist;
+class Arrow;
+class Rock;
+
 class Game : public IGameObject
 {
 public:
@@ -25,14 +30,18 @@ public:
 	Player* player;
 	GameCamera* gameCamera;
 	GameOver* gameOver;
+	GameClear* gameClear;
 	BackGround* backGround;
 	Item* item;
 	Status* status;
 	Boat* boat;
 	Enemy* enemy;
 	Enemy2* enemy2;
+	Enemy3* enemy3;
 	Boss* boss;
 	Assist* assist;
+	Arrow* arrow;
+	Rock* rock;
 
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;

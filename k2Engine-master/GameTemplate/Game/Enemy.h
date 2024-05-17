@@ -15,7 +15,7 @@ public:
 	void Attack();
 	void Collision();
 	void Seek();
-
+	bool Start();
 	const bool Serch();
 	const bool AttackSerch();
 	const bool Desision();

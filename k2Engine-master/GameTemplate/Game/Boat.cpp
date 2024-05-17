@@ -30,12 +30,16 @@ bool Boat::Start()
 
 	player = FindGO<Player>("player");
 	game = FindGO<Game>("game");
-
+	
 	return true;
 }
 
 void Boat::Update()
 {
+	if (m_direction.Length() < 0.1f) {
+		m_direction = player->m_moveSpeed;
+		m_direction.Normalize();
+	}
 	Move();
 	Rotation();
 
@@ -72,7 +76,11 @@ void Boat::Move()
 
 void Boat::Rotation()
 {
-	m_rotation.SetRotationYFromDirectionXZ(game->path01_pointList[player->m_point + 2]);
+	auto moveDir = player->m_moveSpeed;
+	moveDir.Normalize();
+	m_direction = m_direction * 0.98f + moveDir * 0.02f;
+	m_direction.Normalize();
+	m_rotation.SetRotationYFromDirectionXZ(m_direction);
 	m_modelRender.SetRotation(m_rotation);
 }
 

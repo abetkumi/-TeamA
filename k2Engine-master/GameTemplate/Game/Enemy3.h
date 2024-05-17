@@ -22,6 +22,7 @@ public:
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
+	Vector3 m_cNPos;
 
 	Quaternion m_rotation;
 

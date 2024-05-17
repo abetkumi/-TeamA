@@ -8,7 +8,7 @@
 #include <time.h>
 
 #define serch 1300.0f * 1300.0f
-#define attackSerch 1300.0f * 1300.0f
+#define attackSerch 700.0f * 700.0f
 //#define attacktime 5.0f
 
 namespace
@@ -107,7 +107,6 @@ void Enemy3::Attack()
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
 	arrowtimer = arrowtime;
 }

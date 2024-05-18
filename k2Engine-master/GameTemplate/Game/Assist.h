@@ -11,7 +11,7 @@ public:
 	void Update();
 	void Homing();
 	void Distance();
-	const bool Decision() const;
+	const bool Decision();
 
 	Player* player;
 	Enemy* enemy;

@@ -29,15 +29,7 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animationClips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
-	m_animationClips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animationClips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
-	m_animationClips[enEnemy2Clip_Attack].SetLoopFlag(true);
-	m_animationClips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
-	m_animationClips[enEnemy2Clip_Down].SetLoopFlag(false);
-
-	m_modelRender.Init("Assets/modelData/skelton.tkm"
-		, m_animationClips, enEnemy2Clip_Num);
+	m_modelRender.Init("Assets/modelData/skelton.tkm");
 	player = FindGO<Player>("player");
 
 	arrowtimer = arrowtime;
@@ -70,7 +62,6 @@ void Enemy2::Update()
 	Attack();
 
 	Collision();
-	PlayAnimation();
 
 	m_modelRender.Update();
 }
@@ -99,13 +90,13 @@ void Enemy2::Attack()
 {
 	if (!AttackSerch())
 		return;
-	
+
 	if (arrowtimer > 0)
 	{
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();
 		return;
 	}
-	m_enemy2State = 1;
+
 	arrow = NewGO<Arrow>(0, "arrow");
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
@@ -143,30 +134,11 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
-		}
-		if (HP <= 0) {
-			m_enemy2State = 2;
-			m_enemy2DownLag++;
-			if (m_enemy2DownLag >= 20)
-			{
+
+			if (HP <= 0) {
 				DeleteGO(this);
 			}
 		}
 	}
 }
 
-void Enemy2::PlayAnimation()
-{
-	switch (m_enemy2State)
-	{
-	case 0:
-		m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
-		break;
-	case 1:
-		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
-		break;
-	case 2:
-		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		break;
-	}
-}

@@ -169,7 +169,7 @@ void Game::Update()
 		gameOver = NewGO<GameOver>(0, "gameOver");
 		DeleteGO(this);
 	}
-	if (player->m_point == 50)
+	if (player->m_point == 100)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);

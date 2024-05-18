@@ -16,8 +16,8 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy::Enemy()

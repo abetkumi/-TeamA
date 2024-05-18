@@ -183,6 +183,7 @@ void Enemy::Seek()
 		m_Dec = v.Dot(ePos);
 	}
 }
+
 const bool Enemy::Desision()
 {
 	Vector3 diff = player->m_position - m_position;
@@ -191,6 +192,7 @@ const bool Enemy::Desision()
 		return true;
 	}
 }
+
 void Enemy::PlayAnimation()
 {
 	switch (m_enemyState)

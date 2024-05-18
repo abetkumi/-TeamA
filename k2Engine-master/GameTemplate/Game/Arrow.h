@@ -10,7 +10,10 @@ public:
 	enum EnArrow {
 		enArrow_None,
 		enArrow_Player,
-		enArrow_Enemy
+		enArrow_Enemy,
+		enArrow_Goblin,
+		enArrow_Skeleton,
+		enArrow_Boss
 	};
 
 public:

@@ -111,6 +111,8 @@ void Enemy2::Attack()
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
+	arrow->SetEnArrow(Arrow::enArrow_Enemy);
+
 	arrowtimer = arrowtime;
 }
 

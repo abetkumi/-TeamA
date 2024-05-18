@@ -13,6 +13,7 @@ public:
 	void Render(RenderContext& rc);
 	void Rotation();
 	void Attack();
+	void PlayAnimation();
 	void Collision();
 	void Seek();
 	bool Start();
@@ -26,11 +27,19 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 
 	Vector3 m_toCameraPos;
-
+	ModelRender m_modelRender;
 	Quaternion m_rotation;
 
-	ModelRender m_modelRender;
-
+	enum EnEnemyClip
+	{
+		enEnemyClip_Idle,
+		enEnemyClip_Attack,
+		enEnemyClip_Down,
+		enEnemyClip_Num,
+	};
+	AnimationClip m_animationClips[enEnemyClip_Num];
+	int m_enemyState = 0;
+	int m_enemyDownLag = 0;
 	//CharacterController m_charaCon;
 
 	Player* player;

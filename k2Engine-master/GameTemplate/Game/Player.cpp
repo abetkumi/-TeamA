@@ -226,7 +226,7 @@ void Player::Move()
 	}
 	else {
 		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 300.0f;
+		m_moveSpeed = diff * 100.0f;
 	}
 	//�����܂�3���C���̈ړ���
 

@@ -56,15 +56,18 @@ bool Arrow::Start()
 	}
 	else if (m_enArrow == enArrow_Goblin)
 	{
-		m_collisionObject->SetName("g_arrow");
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 5;
 	}
 	else if (m_enArrow == enArrow_Skeleton)
 	{
-		m_collisionObject->SetName("s_arrow");
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 8;
 	}
 	else if (m_enArrow == enArrow_Boss)
 	{
-		m_collisionObject->SetName("b_arrow");
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 10;
 	}
 
 	

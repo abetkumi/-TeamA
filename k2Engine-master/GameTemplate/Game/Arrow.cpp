@@ -43,8 +43,8 @@ bool Arrow::Start()
 	m_rotation.AddRotationDegY(360.0f);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
-	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//‹…
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//” 
+	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//ï¿½ï¿½
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//ï¿½ï¿½
 
 	if (m_enArrow == enArrow_Player)
 	{

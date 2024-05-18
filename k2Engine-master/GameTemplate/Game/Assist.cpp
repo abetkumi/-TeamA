@@ -42,13 +42,13 @@ void Assist::Distance()
 	}
 }
 
-const bool Assist::Decision()
+const bool Assist::Decision() const
 {
-	/*if (enemy->m_Dec >= 0.98)
+	if (enemy->m_Dec >= 0.98)
 	{
 		return true;
-	}*/
-	return true;
+	}
+
 }
 
 //bool GameCamera::Target()

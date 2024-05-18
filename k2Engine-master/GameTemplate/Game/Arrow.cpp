@@ -54,6 +54,19 @@ bool Arrow::Start()
 	{
 		m_collisionObject->SetName("e_arrow");
 	}
+	else if (m_enArrow == enArrow_Goblin)
+	{
+		m_collisionObject->SetName("g_arrow");
+	}
+	else if (m_enArrow == enArrow_Skeleton)
+	{
+		m_collisionObject->SetName("s_arrow");
+	}
+	else if (m_enArrow == enArrow_Boss)
+	{
+		m_collisionObject->SetName("b_arrow");
+	}
+
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 

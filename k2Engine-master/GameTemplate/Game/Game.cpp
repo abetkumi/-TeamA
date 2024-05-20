@@ -166,8 +166,14 @@ void Game::Update()
 
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
-		gameOver = NewGO<GameOver>(0, "gameOver");
-		DeleteGO(this);
+		player->m_arrowState = 3;
+		if (player->m_arrowLag >= 200)
+		{
+			player->m_arrowState++;
+			player->m_arrowLag = 0;
+			gameOver = NewGO<GameOver>(0, "gameOver");
+			DeleteGO(this);
+		}
 	}
 	if (player->m_point == 50)
 	{

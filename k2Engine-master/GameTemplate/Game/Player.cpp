@@ -30,6 +30,8 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw.tka");
 	m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
+	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death.tka");
+	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
@@ -338,12 +340,16 @@ void Player::ArrowAnimation()
 			arrow->m_rotation = m_rotation;
 
 			arrow->SetEnArrow(Arrow::enArrow_Player);
-			m_arrowState++;
+			m_arrowState = 4;
 		}
 		
 		break;
 	case 3:
-
+		m_modelRender.PlayAnimation(enArrowClip_Dead);
+		m_arrowLag++;
+	
+		break;
+	case 4:
 		m_arrowState = 0;
 		break;
 	}

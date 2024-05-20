@@ -45,6 +45,7 @@ public:
 		ArrowState_Idle,
 		ArrowState_Draw,
 		ArrowState_Aim,
+		ArrowState_Dead,
 		ArrowState_Num,
 	};
 	int m_arrowState = 0;
@@ -53,6 +54,7 @@ public:
 		enArrowClip_Idle,
 		enArrowClip_Draw,
 		enArrowClip_Aim,
+		enArrowClip_Dead,
 		enArrowClip_Num,
 	};
 	AnimationClip m_animationClips[enArrowClip_Num];

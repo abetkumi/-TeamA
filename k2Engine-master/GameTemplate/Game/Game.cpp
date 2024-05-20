@@ -172,7 +172,7 @@ void Game::Update()
 			player->m_arrowState++;
 			player->m_arrowLag = 0;
 			gameOver = NewGO<GameOver>(0, "gameOver");
-			DeleteGO(this);
+			//DeleteGO(this);
 		}
 	}
 	if (player->m_point == 100)

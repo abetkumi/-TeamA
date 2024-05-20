@@ -5,7 +5,11 @@
 
 Title::Title()
 {
-	spriteRender.Init("Assets/modelData/Title.dds", 1920.0f, 1080.0f);
+	m_spriteRender.Init("Assets/modelData/Title2.dds", 1920.0f, 1080.0f);
+	m_fontRender.SetText(L"Pless A Start");
+	m_fontRender.SetPosition({ -450.0f,-200.0f,0.0f });
+	m_fontRender.SetScale(3.0f);
+	m_fontRender.SetColor(g_vec4Yellow);
 	g_soundEngine->ResistWaveFileBank(0, "Assets/BGMÅESE/TitleBGM.wav");
 
 	titleBGM = NewGO<SoundSource>(0);
@@ -31,5 +35,6 @@ void Title::Update()
 
 void Title::Render(RenderContext& rc)
 {
-	spriteRender.Draw(rc);
+	m_spriteRender.Draw(rc);
+	m_fontRender.Draw(rc);
 }

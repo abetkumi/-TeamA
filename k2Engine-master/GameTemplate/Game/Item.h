@@ -18,6 +18,7 @@ public:
 	Quaternion m_rotation;
 	Player* player;
 	Game* game;
+	SoundSource* ItemGetSE;
 
 	int Count, r, i = 0;
 };

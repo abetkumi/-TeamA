@@ -11,7 +11,8 @@ public:
 	void Render(RenderContext& rc);
 
 	Vector3 m_position;
-	SpriteRender spriteRender;
+	SpriteRender m_spriteRender;
+	FontRender m_fontRender;
 	Game* game;
 	SoundSource* titleBGM;
 };

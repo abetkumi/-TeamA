@@ -24,7 +24,7 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(assist);
+	/*DeleteGO(assist);*/
 	DeleteGO(player);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
@@ -151,7 +151,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	assist = NewGO<Assist>(0,"assist");
+	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
 
@@ -175,7 +175,7 @@ void Game::Update()
 			DeleteGO(this);
 		}
 	}
-	if (player->m_point == 50)
+	if (player->m_point == 100)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		DeleteGO(this);

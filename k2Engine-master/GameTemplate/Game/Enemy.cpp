@@ -16,8 +16,8 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy::Enemy()
@@ -29,6 +29,9 @@ Enemy::~Enemy()
 {
 	DeleteGO(arrow);
 	DeleteGO(m_collisionObject);
+
+	//assist->
+	DeleteGO(assist);
 }
 bool Enemy::Start()
 {
@@ -169,10 +172,10 @@ void Enemy::Seek()
 {
 	if (Desision() == true)
 	{
-		/*Vector3 pePos = m_position - player->m_position;
+		Vector3 pePos = m_position - player->m_position;
 		double m_Dis = pePos.Length();
 		assist->m_peTemporary = m_Dis;
-		assist->m_peDisPos = pePos;*/
+		assist->m_peDisPos = pePos;
 		
 		Vector3 v = player->m_position + m_toCameraPos;
 		v.Normalize();

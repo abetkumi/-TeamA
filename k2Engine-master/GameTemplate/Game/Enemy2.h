@@ -14,7 +14,6 @@ public:
 	void Render(RenderContext& rc);
 	void Rotation();
 	void Attack();
-	void PlayAnimation();
 	bool Start();
 
 	const bool Serch();
@@ -30,18 +29,6 @@ public:
 	Quaternion m_rotation;
 
 	ModelRender m_modelRender;
-
-	//アニメーション
-	enum EnEnemy2Clip
-	{
-		enEnemy2Clip_Idle,
-		enEnemy2Clip_Attack,
-		enEnemy2Clip_Down,
-		enEnemy2Clip_Num,
-	};
-	AnimationClip m_animationClips[enEnemy2Clip_Num];
-	int m_enemy2State = 0;
-	int m_enemy2DownLag = 0;
 
 	//CharacterController m_charaCon;
 

@@ -1,5 +1,4 @@
 #pragma once
-
 class Player;
 class Arrow;
 class Assist;
@@ -20,16 +19,13 @@ public:
 	const bool Serch();
 	const bool AttackSerch();
 	const bool Desision();
-
 	Vector3 m_position;
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
-
 	Vector3 m_toCameraPos;
 	ModelRender m_modelRender;
 	Quaternion m_rotation;
-
 	enum EnEnemyClip
 	{
 		enEnemyClip_Idle,
@@ -41,19 +37,13 @@ public:
 	int m_enemyState = 0;
 	int m_enemyDownLag = 0;
 	//CharacterController m_charaCon;
-
 	Player* player;
 	Arrow* arrow;
 	Assist* assist;
 	GameCamera* gameCamera;
-
 	CollisionObject* m_collisionObject;
-
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
-
 	double m_Dec;
-
 	int HP = 1;
 };
-

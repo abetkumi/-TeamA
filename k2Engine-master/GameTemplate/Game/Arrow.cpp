@@ -43,8 +43,8 @@ bool Arrow::Start()
 	m_rotation.AddRotationDegY(360.0f);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
-	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//‹…
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//” 
+	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//ï¿½ï¿½
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//ï¿½ï¿½
 
 	if (m_enArrow == enArrow_Player)
 	{
@@ -54,6 +54,22 @@ bool Arrow::Start()
 	{
 		m_collisionObject->SetName("e_arrow");
 	}
+	else if (m_enArrow == enArrow_Goblin)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 5;
+	}
+	else if (m_enArrow == enArrow_Skeleton)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 8;
+	}
+	else if (m_enArrow == enArrow_Boss)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 10;
+	}
+
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 

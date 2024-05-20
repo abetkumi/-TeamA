@@ -10,7 +10,10 @@ public:
 	enum EnArrow {
 		enArrow_None,
 		enArrow_Player,
-		enArrow_Enemy
+		enArrow_Enemy,
+		enArrow_Goblin,
+		enArrow_Skeleton,
+		enArrow_Boss
 	};
 
 public:
@@ -51,6 +54,7 @@ public:
 	float m_deleteTimer = 0.0f;
 	bool m_isDelete = false;
 	const float deletetimer = 1.0f;
+	int m_Damage;
 
 	ModelRender m_modelRender;
 	CollisionObject* m_collisionObject;

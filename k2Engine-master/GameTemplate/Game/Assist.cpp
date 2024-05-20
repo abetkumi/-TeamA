@@ -7,7 +7,7 @@
 Assist::Assist()
 {
 	player = FindGO<Player>("player");
-	enemy = FindGO<Enemy>("enemy");
+	//enemy = FindGO<Enemy>("enemy");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 }
@@ -19,6 +19,12 @@ Assist::~Assist()
 
 void Assist::Update()
 {
+	const std::vector<Enemy*>& enemys = FindGOs<Enemy>("enemy");
+
+	/*for (int i = 0; i < enemys.; i++)
+	{
+
+	}*/
 	if (enemy->Desision() == true)
 	{
 		Decision();

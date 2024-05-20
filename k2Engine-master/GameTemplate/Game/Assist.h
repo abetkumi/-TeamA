@@ -20,8 +20,8 @@ public:
 	Vector3 m_ePos;
 	Vector3 m_peDisPos;
 	
-	double m_peDistane;
-	double m_peTemporary;
-
+	double m_peDistane;		//”»’è
+	double m_peTemporary;	//ˆêŽž“I
 };
+
 

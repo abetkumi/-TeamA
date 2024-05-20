@@ -29,6 +29,9 @@ Enemy::~Enemy()
 {
 	DeleteGO(arrow);
 	DeleteGO(m_collisionObject);
+
+	//assist->
+	DeleteGO(assist);
 }
 bool Enemy::Start()
 {
@@ -169,10 +172,10 @@ void Enemy::Seek()
 {
 	if (Desision() == true)
 	{
-		/*Vector3 pePos = m_position - player->m_position;
+		Vector3 pePos = m_position - player->m_position;
 		double m_Dis = pePos.Length();
 		assist->m_peTemporary = m_Dis;
-		assist->m_peDisPos = pePos;*/
+		assist->m_peDisPos = pePos;
 		
 		Vector3 v = player->m_position + m_toCameraPos;
 		v.Normalize();

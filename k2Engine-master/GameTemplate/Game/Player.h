@@ -69,6 +69,7 @@ public:
 	int m_moveFlag = 1;
 	int m_lag = 0;
 	int m_arrowLag = 0;
+	int m_damageLag = 0;
 	Vector3 m_HPGauge;
 	SoundSource* ArrowSE;
 };

@@ -364,13 +364,18 @@ void Player::ArrowAnimation()
 			arrow->m_rotation = m_rotation;
 
 			arrow->SetEnArrow(Arrow::enArrow_Player);
-			m_arrowState = 4;
+			m_arrowState = 5;
 		}
 		
 		break;
 	case 3:
 		m_modelRender.PlayAnimation(enArrowClip_Damage);
-		m_arrowState = 0;
+		m_damageLag++;
+		if (m_damageLag >= 10)
+		{
+			m_damageLag = 0;
+			m_arrowState = 0;
+		}
 		break;
 	case 4:
 		m_modelRender.PlayAnimation(enArrowClip_Dead);

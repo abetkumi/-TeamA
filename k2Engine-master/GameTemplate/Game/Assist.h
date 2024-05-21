@@ -6,11 +6,18 @@ class GameCamera;
 class Assist : public IGameObject
 {
 public:
+	enum State {
+		enAssist_None,
+		enAssist_ON,
+		enAssist_OFF
+	};
+
 	Assist();
 	~Assist();
 	void Update();
-	void Homing();
 	void Distance();
+
+	const bool Homing();
 	const bool Decision();
 
 	Player* player;
@@ -20,8 +27,10 @@ public:
 	Vector3 m_ePos;
 	Vector3 m_peDisPos;
 	
-	double m_peDistane;		//”»’è
-	double m_peTemporary;	//ˆêŽž“I
+	float m_peDistane = 10000.0f;		//”»’è
+	float m_peTemporary;	//ˆêŽž“I
+
+	State state = enAssist_None;
 };
 
 

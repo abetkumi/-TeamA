@@ -62,6 +62,7 @@ public:
 	Quaternion m_rotation;
 	Vector3 m_position;
 	Vector3 m_1stPosition;
+	Vector3 m_ePos;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
 	Vector3	m_scale = Vector3::One;

@@ -24,8 +24,14 @@ public:
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_toCameraPos;
+	Vector3 m_pePos;
+
+	float m_peDis;
+
 	ModelRender m_modelRender;
+
 	Quaternion m_rotation;
+
 	enum EnEnemyClip
 	{
 		enEnemyClip_Idle,
@@ -34,14 +40,17 @@ public:
 		enEnemyClip_Num,
 	};
 	AnimationClip m_animationClips[enEnemyClip_Num];
+
 	int m_enemyState = 0;
 	int m_enemyDownLag = 0;
 	//CharacterController m_charaCon;
+
 	Player* player;
 	Arrow* arrow;
 	Assist* assist;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
+
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
 	double m_Dec;

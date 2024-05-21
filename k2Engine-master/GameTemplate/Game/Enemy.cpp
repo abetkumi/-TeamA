@@ -172,10 +172,9 @@ void Enemy::Seek()
 {
 	if (Desision() == true)
 	{
-		Vector3 pePos = m_position - player->m_position;
-		double m_Dis = pePos.Length();
-		assist->m_peTemporary = m_Dis;
-		assist->m_peDisPos = pePos;
+		m_pePos = m_position - player->m_position;
+		m_peDis = m_pePos.Length();
+
 		
 		Vector3 v = player->m_position + m_toCameraPos;
 		v.Normalize();

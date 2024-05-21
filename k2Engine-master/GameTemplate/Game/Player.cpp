@@ -3,7 +3,7 @@
 #include "Arrow.h"
 #include "Game.h"
 #include "GameCamera.h"
-
+#include "sound/SoundSource.h" 
 
 namespace
 {
@@ -19,6 +19,7 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGO(arrow);
+	DeleteGO(ArrowSE);
 }
 
 
@@ -30,8 +31,12 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw.tka");
 	m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
+	m_animationClips[enArrowClip_Damage].Load("Assets/animData/player_damage.tka");
+	m_animationClips[enArrowClip_Damage].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death.tka");
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
+
+	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
@@ -270,6 +275,7 @@ void Player::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_charaCon))
 		{
+			m_arrowState = 3;
 			HP -= 100;
 		}
 	}
@@ -329,6 +335,10 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
+			ArrowSE = NewGO<SoundSource>(5);
+			ArrowSE->Init(5);
+			ArrowSE->Play(false);
+
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
 			if (m_arrowLag >=25)
@@ -359,11 +369,15 @@ void Player::ArrowAnimation()
 		
 		break;
 	case 3:
+		m_modelRender.PlayAnimation(enArrowClip_Damage);
+		m_arrowState = 0;
+		break;
+	case 4:
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
 	
 		break;
-	case 4:
+	case 5:
 		m_arrowState = 0;
 		break;
 	}

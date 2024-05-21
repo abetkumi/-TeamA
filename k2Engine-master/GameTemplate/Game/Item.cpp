@@ -69,6 +69,7 @@ Item::~Item()
 			break;
 		}
 	}
+	DeleteGO(ItemGetSE);
 }
 
 void Item::Update()
@@ -82,7 +83,7 @@ void Item::Update()
 	if (diff.Length() <= 120.0f)
 	{
 		ItemGetSE = NewGO<SoundSource>(4);
-		ItemGetSE->Init(0);
+		ItemGetSE->Init(4);
 		ItemGetSE->Play(false);
 		DeleteGO(this);
 	}

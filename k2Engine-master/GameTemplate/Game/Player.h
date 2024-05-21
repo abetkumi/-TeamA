@@ -1,4 +1,5 @@
 #pragma once
+#include "sound/SoundSource.h" 
 
 class Arrow;
 class Game;
@@ -45,6 +46,7 @@ public:
 		ArrowState_Idle,
 		ArrowState_Draw,
 		ArrowState_Aim,
+		ArrowState_Damage,
 		ArrowState_Dead,
 		ArrowState_Num,
 	};
@@ -54,6 +56,7 @@ public:
 		enArrowClip_Idle,
 		enArrowClip_Draw,
 		enArrowClip_Aim,
+		enArrowClip_Damage,
 		enArrowClip_Dead,
 		enArrowClip_Num,
 	};
@@ -67,4 +70,5 @@ public:
 	int m_lag = 0;
 	int m_arrowLag = 0;
 	Vector3 m_HPGauge;
+	SoundSource* ArrowSE;
 };

@@ -15,4 +15,6 @@ public:
 	FontRender m_fontRender;
 	Game* game;
 	SoundSource* titleBGM;
+
+	float m_shade = 0.0f;
 };

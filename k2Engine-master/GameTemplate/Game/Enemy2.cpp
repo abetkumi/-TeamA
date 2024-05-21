@@ -61,6 +61,8 @@ void Enemy2::Update()
 	Rotation();
 	Attack();
 
+	Collision();
+
 	m_modelRender.Update();
 }
 
@@ -100,6 +102,7 @@ void Enemy2::Attack()
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
+	arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
 	arrowtimer = arrowtime;
 }
@@ -131,6 +134,10 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
+
+			if (HP <= 0) {
+				DeleteGO(this);
+			}
 		}
 	}
 }

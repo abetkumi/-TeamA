@@ -8,7 +8,7 @@
 namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
-	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//??u?C???e???????u
+	const Vector3 corre2 = { 30.0f,130.0f,10.0f };//??u?C???e???????u
 }
 
 Player::Player()
@@ -64,180 +64,180 @@ void Player::Move()
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
 	//通常の移動モーション
-//	Vector3 stickL;
-//	stickL.x = g_pad[0]->GetLStickXF();
-//	stickL.y = g_pad[0]->GetLStickYF();
-//
-//	Vector3 forward = g_camera3D->GetForward();
-//	Vector3 right = g_camera3D->GetRight();
-//
-//	forward.y = 0.0f;
-//	right.y = 0.0f;
-//
-//	right *= stickL.x * 120.0f;
-//	forward *= stickL.y * 120.0f;
-//
-//	m_moveSpeed += right + forward;
-//
-//	ダッシュとジャンプ
-//if (g_pad[0]->IsPress(enButtonA))
-//	{
-//		m_moveSpeed.y = 300.0f;
-//	}
-//	if (g_pad[0]->IsPress(enButtonX))
-//	{
-//		m_moveSpeed = (right + forward) * 7.5;
-//	}
-// 
-
-	//ここから3ラインの移動式
-	game->m_pointPosition = game->path00_pointList[m_point];
-	game->m_nextPosition = game->path00_pointList[m_point + 1];
-	game->m_pointPosition1 = game->path01_pointList[m_point];
-	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	game->m_pointPosition2 = game->path02_pointList[m_point];
-	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
-
-	//川の3ライン間を移動するための計算
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
+	stickL.y = g_pad[0]->GetLStickYF();
 
-	switch (m_moveState) {
-	case MoveState_Normal:
-		// ���E�ɓ�������
-		//�E�X�e�B�b�N�őD�̈ړ�
-		if (stickL.x <= -0.8f&&m_lag==0)
-		{
-			m_moveState = MoveState_Left;
-		}
-		else if (stickL.x >= 0.8f && m_lag == 0)
-		{
-			m_moveState = MoveState_Right;
-		}
+	Vector3 forward = g_camera3D->GetForward();
+	Vector3 right = g_camera3D->GetRight();
 
-		break;
-	case MoveState_Left:
+	forward.y = 0.0f;
+	right.y = 0.0f;
 
-		m_moveFlag--;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	case MoveState_Right:
+	right *= stickL.x * 120.0f;
+	forward *= stickL.y * 120.0f;
 
-		m_moveFlag++;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	}
-	
-	if (m_lag >= 1)
+	m_moveSpeed += right + forward;
+
+	//ダッシュとジャンプ
+if (g_pad[0]->IsPress(enButtonA))
 	{
-		m_lag++;
-		if (m_lag == 10)
-		{
-
-			m_lag = 0;
-		}
+		m_moveSpeed.y = 300.0f;
 	}
-
-
-	//��̃��C���̏�������̐ݒ�
-	if (m_moveFlag < 0)
+	if (g_pad[0]->IsPress(enButtonX))
 	{
-		m_moveFlag = 0;
+		m_moveSpeed = (right + forward) * 7.5;
 	}
-	if (m_moveFlag > 2)
-	{
-		m_moveFlag = 2;
-	}
+ 
 
-	if (m_moveFlag == 0)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
-		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+	//ここから3ラインの移動式
+	//game->m_pointPosition = game->path00_pointList[m_point];
+	//game->m_nextPosition = game->path00_pointList[m_point + 1];
+	//game->m_pointPosition1 = game->path01_pointList[m_point];
+	//game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	//game->m_pointPosition2 = game->path02_pointList[m_point];
+	//game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-		diff = game->m_pointPosition - m_position;
+	////川の3ライン間を移動するための計算
+	//Vector3 stickL;
+	//stickL.x = g_pad[0]->GetLStickXF();
 
-	}
+	//switch (m_moveState) {
+	//case MoveState_Normal:
+	//	// ���E�ɓ�������
+	//	//�E�X�e�B�b�N�őD�̈ړ�
+	//	if (stickL.x <= -0.8f&&m_lag==0)
+	//	{
+	//		m_moveState = MoveState_Left;
+	//	}
+	//	else if (stickL.x >= 0.8f && m_lag == 0)
+	//	{
+	//		m_moveState = MoveState_Right;
+	//	}
 
-	if (m_moveFlag == 1)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
-		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+	//	break;
+	//case MoveState_Left:
 
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
+	//	m_moveFlag--;
+	//	m_lag++;
+	//	m_moveState = MoveState_Normal;
+	//	break;
+	//case MoveState_Right:
 
-		diff = game->m_pointPosition1 - m_position;
-	}
+	//	m_moveFlag++;
+	//	m_lag++;
+	//	m_moveState = MoveState_Normal;
+	//	break;
+	//}
+	//
+	//if (m_lag >= 1)
+	//{
+	//	m_lag++;
+	//	if (m_lag == 10)
+	//	{
 
-	if (m_moveFlag == 2)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
-		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-		diff = game->m_pointPosition2 - m_position;
-
-	}
-
-	//���̈ړ��|�C���g�֌�������
-	float disToPlayer = diff.Length();
-	if (disToPlayer <= 60.0f)
-	{
-		m_point++;
-		//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j
-		//if (m_point == 13)
-		//{
-		//	m_point = 0;
-		//}
-	}
+	//		m_lag = 0;
+	//	}
+	//}
 
 
-	diff.Normalize();
+	////��̃��C���̏�������̐ݒ�
+	//if (m_moveFlag < 0)
+	//{
+	//	m_moveFlag = 0;
+	//}
+	//if (m_moveFlag > 2)
+	//{
+	//	m_moveFlag = 2;
+	//}
 
-	static bool hoge = false;
-	
-	if (hoge) {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 0.0f;
-	}
-	else {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 300.0f;
-	}
+	//if (m_moveFlag == 0)
+	//{
+	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+	//	Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+	//	m_moveLineV1.Normalize();
+	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
+	//		m_moveLineV0.y * m_moveLineV1.y +
+	//		m_moveLineV0.z * m_moveLineV1.z;
+	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+	//	//���E�Ɉړ����鋗��
+	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
+	//	diff = game->m_pointPosition - m_position;
+
+	//}
+
+	//if (m_moveFlag == 1)
+	//{
+	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
+	//	Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
+	//	m_moveLineV1.Normalize();
+	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
+	//		m_moveLineV0.y * m_moveLineV1.y +
+	//		m_moveLineV0.z * m_moveLineV1.z;
+	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+	//	//���E�Ɉړ����鋗��
+	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+	//	diff = game->m_pointPosition1 - m_position;
+	//}
+
+	//if (m_moveFlag == 2)
+	//{
+	//	Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+	//	Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+	//	m_moveLineV1.Normalize();
+	//	float V2 = m_moveLineV0.x * m_moveLineV1.x +
+	//		m_moveLineV0.y * m_moveLineV1.y +
+	//		m_moveLineV0.z * m_moveLineV1.z;
+	//	Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+	//	//���E�Ɉړ����鋗��
+	//	Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+	//	m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+	//	diff = game->m_pointPosition2 - m_position;
+
+	//}
+
+	////���̈ړ��|�C���g�֌�������
+	//float disToPlayer = diff.Length();
+	//if (disToPlayer <= 60.0f)
+	//{
+	//	m_point++;
+	//	//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j
+	//	//if (m_point == 13)
+	//	//{
+	//	//	m_point = 0;
+	//	//}
+	//}
+
+
+	//diff.Normalize();
+
+	//static bool hoge = false;
+	//
+	//if (hoge) {
+	//	//�ړ��X�s�[�h
+	//	m_moveSpeed = diff * 0.0f;
+	//}
+	//else {
+	//	//�ړ��X�s�[�h
+	//	m_moveSpeed = diff * 300.0f;
+	//}
 	//�����܂�3���C���̈ړ���
 
 	/*if (m_charaCon.IsOnGround())
 	{
 		m_moveSpeed.y = 0.0f;
 	}*/
-	//else
-	//{
-	//	m_moveSpeed.y -= 10.0f;
-	//}
+	else
+	{
+		m_moveSpeed.y -= 10.0f;
+	}
 	
 	
 
@@ -258,7 +258,7 @@ void Player::Rotation()
 
 	m_cNPos = gameCamera->m_toCameraPos;
 	m_cNPos.Normalize();
-	m_rotation.AddRotationX(-(m_cNPos.y + 0.06f));
+	m_rotation.AddRotationX(-(m_cNPos.y + 0.04f));
 }
 
 void Player::Collision()
@@ -269,12 +269,26 @@ void Player::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			HP -= 100;
-
-			/*if (HP <= 0) {
-				DeleteGO(this);
-			}*/
 		}
 	}
+
+	/*collisions == g_collisionObjectManager->FindCollisionObjects("g_arrow");
+
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_charaCon))
+		{
+			HP -= 20;
+		}
+	}
+
+	collisions == g_collisionObjectManager->FindCollisionObjects("s_arrow");
+
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_charaCon))
+		{
+			HP -= 8;
+		}
+	}*/
 }
 
 void Player::Render(RenderContext& rc)

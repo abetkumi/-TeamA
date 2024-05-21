@@ -7,7 +7,7 @@
 Assist::Assist()
 {
 	player = FindGO<Player>("player");
-	enemy = FindGO<Enemy>("enemy");
+	//enemy = FindGO<Enemy>("enemy");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 }
@@ -19,35 +19,43 @@ Assist::~Assist()
 
 void Assist::Update()
 {
-	if (enemy->Desision() == true)
+	const std::vector<Enemy*>& enemys = FindGOs<Enemy>("enemy");
+
+	for (int i = 0; i < enemys.max_size(); i++)
 	{
 		Decision();
+		Distance();
+		
 		Homing();
 	}
 }
-
-void Assist::Homing()
+const bool Assist::Homing()
 {
-	if (Decision() == true)
+	/*if (Decision() == true)
 	{
-		/*player->HP -= 100;*/
-	}
+		return true;
+	}*/
+	return true;
 }
 
 void Assist::Distance()
 {
-	if (m_peDistane >= m_peTemporary)
+	//m_peDisPos = enemy->m_pePos;
+	m_peTemporary = enemy->m_peDis;
+
+	if (m_peDistane > m_peTemporary)
 	{
-		m_ePos = m_peDisPos;
+		m_ePos = enemy->m_position;
 	}
 }
 
 const bool Assist::Decision()
 {
-	if (enemy->m_Dec >= 0.98)
+	/*if (enemy->m_Dec >= 0.98)
 	{
 		return true;
-	}
+	}*/
+	return true;
 }
 
 //bool GameCamera::Target()

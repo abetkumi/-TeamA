@@ -10,7 +10,10 @@ public:
 	enum EnArrow {
 		enArrow_None,
 		enArrow_Player,
-		enArrow_Enemy
+		enArrow_Enemy,
+		enArrow_Goblin,
+		enArrow_Skeleton,
+		enArrow_Boss
 	};
 
 public:
@@ -51,6 +54,7 @@ public:
 	float m_deleteTimer = 0.0f;
 	bool m_isDelete = false;
 	const float deletetimer = 1.0f;
+	int m_Damage;
 
 	ModelRender m_modelRender;
 	CollisionObject* m_collisionObject;
@@ -58,6 +62,7 @@ public:
 	Quaternion m_rotation;
 	Vector3 m_position;
 	Vector3 m_1stPosition;
+	Vector3 m_ePos;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
 	Vector3	m_scale = Vector3::One;

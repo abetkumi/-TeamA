@@ -16,8 +16,8 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy::Enemy()
@@ -27,11 +27,24 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
+	DeleteGO(arrow);
 	DeleteGO(m_collisionObject);
+
+	//assist->
+	DeleteGO(assist);
 }
 bool Enemy::Start()
 {
-	m_modelRender.Init("Assets/modelData/goblin.tkm");
+
+	m_animationClips[enEnemyClip_Idle].Load("Assets/animData/goblin_idle.tka");
+	m_animationClips[enEnemyClip_Idle].SetLoopFlag(true);
+	m_animationClips[enEnemyClip_Attack].Load("Assets/animData/goblin_attack.tka");
+	m_animationClips[enEnemyClip_Attack].SetLoopFlag(true);
+	m_animationClips[enEnemyClip_Down].Load("Assets/animData/goblin_death.tka");
+	m_animationClips[enEnemyClip_Down].SetLoopFlag(false);
+
+	m_modelRender.Init("Assets/modelData/goblin.tkm"
+	,m_animationClips,enEnemyClip_Num);
 	player = FindGO<Player>("player");
 	assist = FindGO<Assist>("assist");
 	gameCamera = FindGO<GameCamera>("gameCamera");
@@ -68,7 +81,8 @@ void Enemy::Update()
 
 	Seek();
 	Collision();
-	
+	PlayAnimation();
+
 	m_modelRender.Update();
 }
 
@@ -102,15 +116,15 @@ void Enemy::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();		
 		return;
 	}
+	m_enemyState = 1;
+	arrow = NewGO<Arrow>(0);
+	arrow->m_position = (m_position + corre2);
+	arrow->m_1stPosition = arrow->m_position;
+	arrow->m_rotation = m_rotation;
 
-		arrow = NewGO<Arrow>(0);
-		arrow->m_position = (m_position + corre2);
-		arrow->m_1stPosition = arrow->m_position;
-		arrow->m_rotation = m_rotation;
+	arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
-		arrow->SetEnArrow(Arrow::enArrow_Enemy);
-
-		arrowtimer = arrowtime;
+	arrowtimer = arrowtime;
 }
 
 const bool Enemy::Serch()
@@ -132,14 +146,7 @@ const bool Enemy::AttackSerch()
 	}
 }
 
-const bool Enemy::Desision()
-{
-	Vector3 diff = player->m_position - m_position;
-	if (diff.LengthSq() <= playerSerch)
-	{
-		return true;
-	}
-}
+
 
 void Enemy::Collision()
 {
@@ -149,8 +156,12 @@ void Enemy::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= 100;
-
-			if (HP <= 0) {
+		}
+		if (HP <= 0) {
+			m_enemyState = 2;
+			m_enemyDownLag++;
+			if (m_enemyDownLag >= 20)
+			{
 				DeleteGO(this);
 			}
 		}
@@ -161,10 +172,9 @@ void Enemy::Seek()
 {
 	if (Desision() == true)
 	{
-		/*Vector3 pePos = m_position - player->m_position;
-		double m_Dis = pePos.Length();
-		assist->m_peTemporary = m_Dis;
-		assist->m_peDisPos = pePos;*/
+		m_pePos = m_position - player->m_position;
+		m_peDis = m_pePos.Length();
+
 		
 		Vector3 v = player->m_position + m_toCameraPos;
 		v.Normalize();
@@ -173,5 +183,30 @@ void Enemy::Seek()
 		ePos.Normalize();
 
 		m_Dec = v.Dot(ePos);
+	}
+}
+
+const bool Enemy::Desision()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() <= playerSerch)
+	{
+		return true;
+	}
+}
+
+void Enemy::PlayAnimation()
+{
+	switch (m_enemyState)
+	{
+	case 0:
+		m_modelRender.PlayAnimation(enEnemyClip_Idle);
+		break;
+	case 1:
+		m_modelRender.PlayAnimation(enEnemyClip_Attack);
+		break;
+	case 2:
+		m_modelRender.PlayAnimation(enEnemyClip_Down);
+		break;
 	}
 }

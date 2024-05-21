@@ -25,12 +25,44 @@ Arrow::~Arrow()
 
 bool Arrow::Start()
 {
-	m_modelRender.Init("Assets/modelData/amo.tkm");
-
-	//enemy = FindGO<Enemy>("enemy");
 	gameCamera = FindGO<GameCamera>("gameCamera");
 	assist = FindGO<Assist>("assist");
 	player = FindGO<Player>("player");
+
+	m_collisionObject = NewGO<CollisionObject>(0);
+
+	//switch (m_enArrow)
+	//{
+	//case Arrow::enArrow_Player:
+	//case Arrow::enArrow_Skeleton:
+	//	m_modelRender.Init("Assets/modelData/amo.tkm");
+	//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+	//	break;
+
+	//case Arrow::enArrow_Goblin:
+	//	//m_modelRnder.Init("Assts/modelData/");
+	//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+	//	m_collisionObject->SetName("e_arrow");
+	//	m_Damage = 5;
+	//	break;
+
+	//case Arrow::enArrow_Boss:
+	//	//m_modelRnder.Init("Assts/modelData/");
+	//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+	//	m_collisionObject->SetName("e_arrow");
+	//	m_Damage = 10;
+	//	break;
+
+	//case Arrow::enArrow_Enemy:
+	//	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+	//	break;
+
+	//default:
+	//	break;
+	//}
+
+	m_modelRender.Init("Assets/modelData/amo.tkm");
+	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 
 	m_modelRender.SetPosition(m_1stPosition);
 	m_modelRender.SetScale(scale);
@@ -42,10 +74,6 @@ bool Arrow::Start()
 	m_velocity *= 3000.0f;
 	m_rotation.AddRotationDegY(360.0f);
 
-	m_collisionObject = NewGO<CollisionObject>(0);
-	//m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 20.0f * m_scale.z);				//‹…
-	m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));		//” 
-
 	if (m_enArrow == enArrow_Player)
 	{
 		m_collisionObject->SetName("p_arrow");
@@ -53,7 +81,24 @@ bool Arrow::Start()
 	else if (m_enArrow == enArrow_Enemy)
 	{
 		m_collisionObject->SetName("e_arrow");
+		m_Damage = 50;
 	}
+	/*else if (m_enArrow == enArrow_Goblin)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 5;
+	}*/
+	else if (m_enArrow == enArrow_Skeleton)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 8;
+	}
+	/*else if (m_enArrow == enArrow_Boss)
+	{
+		m_collisionObject->SetName("e_arrow");
+		m_Damage = 10;
+	}*/
+
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 
@@ -91,7 +136,7 @@ void Arrow::Move()
 
 	if (m_enArrow == enArrow_Player)
 	{
-		m_position += player->m_moveSpeed * 0.05f;
+		//m_position += player->m_moveSpeed * 0.025f;
 	}
 
 	m_modelRender.SetPosition(m_position);

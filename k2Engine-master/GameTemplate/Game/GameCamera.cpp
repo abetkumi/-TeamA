@@ -7,6 +7,7 @@ namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
 	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//??u?C???e???????u
+	const Vector3 corre3 = { -10.0f,0.0f,0.0f };
 }
 
 GameCamera::GameCamera()
@@ -29,6 +30,7 @@ bool GameCamera::Start()
 	g_camera3D->SetFar(10000.0f);
 
 	m_spriteRender.Init("Assets/sprite/syoujun.dds", 350.0f, 250.0f);
+	m_spriteRender.SetPosition(corre3);
 	m_spriteRender.Update();
 
 	return true;
@@ -37,7 +39,7 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 	target = m_player->m_position;
-	target.y += 150.0f;
+	target.y += 200.0f;
 
 	Vector3 toCameraPosOld = m_toCameraPos;
 

@@ -11,7 +11,12 @@ public:
 	void Render(RenderContext& rc);
 
 	Vector3 m_position;
-	SpriteRender spriteRender;
+	SpriteRender m_spriteRender;
+	//SpriteRender m_spriteRender_m;
+	FontRender m_fontRender;
 	Game* game;
 	SoundSource* titleBGM;
+	//AlphaBlendMode m_alphaBlendMode = AlphaBlendMode_Trans;
+
+	float m_shade = 0.0f;
 };

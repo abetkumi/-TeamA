@@ -27,7 +27,7 @@ bool GameCamera::Start()
 	m_player = FindGO<Player>("player");
 
 	g_camera3D->SetNear(1.0f);
-	g_camera3D->SetFar(10000.0f);
+	g_camera3D->SetFar(100000.0f);
 
 	m_spriteRender.Init("Assets/sprite/syoujun.dds", 350.0f, 250.0f);
 	m_spriteRender.SetPosition(corre3);

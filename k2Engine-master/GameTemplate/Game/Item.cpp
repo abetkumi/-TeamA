@@ -8,6 +8,8 @@
 Item::Item()
 {
 	m_modelRender.Init("Assets/modelData/BlueBottle.tkm");
+	g_soundEngine->ResistWaveFileBank(4, "Assets/BGMÅESE/TitleBGM.wav");
+
 	player = FindGO<Player>("player");
 
 	//r = rand() & 6;
@@ -67,6 +69,7 @@ Item::~Item()
 			break;
 		}
 	}
+	DeleteGO(ItemGetSE);
 }
 
 void Item::Update()
@@ -79,6 +82,9 @@ void Item::Update()
 	Vector3 diff = player->m_position - m_position;
 	if (diff.Length() <= 120.0f)
 	{
+		ItemGetSE = NewGO<SoundSource>(4);
+		ItemGetSE->Init(4);
+		ItemGetSE->Play(false);
 		DeleteGO(this);
 	}
 }

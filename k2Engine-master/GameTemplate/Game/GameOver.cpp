@@ -2,6 +2,7 @@
 #include "GameOver.h"
 #include "Title.h"
 #include "sound/SoundSource.h" 
+#include "Game.h"
 
 GameOver::GameOver()
 {
@@ -11,6 +12,7 @@ GameOver::GameOver()
 	gameOverBGM = NewGO<SoundSource>(0);
 	gameOverBGM->Init(0);
 	gameOverBGM->Play(true);
+	game = FindGO<Game>("game");
 }
 
 GameOver::~GameOver()
@@ -24,6 +26,7 @@ void GameOver::Update()
 	{
 		NewGO<Title>(0,"title");
 		DeleteGO(this);
+		DeleteGO(game);
 	}
 }
 

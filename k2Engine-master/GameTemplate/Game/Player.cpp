@@ -41,12 +41,14 @@ bool Player::Start()
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	m_spriteRender_r.Init("Assets/sprite/HPRed.dds", 512.0f, 512.0f);
+	m_spriteRender_r.SetPivot({ 0.0f,0.5f });
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
-
-	m_HPBarposition.x = 720.0f;
-	m_HPBarposition.y = -420.0f;
-	m_spriteRender.SetPosition(m_HPBarposition);
+	m_spriteRender.SetPivot({ 0.0f,0.5f });
+	m_spriteRender.SetPosition({600.0f,-420.0f,0.0f});
 	m_spriteRender.Update();
+	m_spriteRender_r.SetPosition({ 600.0f,-420.0f,0.0f });
+	m_spriteRender_r.Update();
 
 	HP = 100;
 	game = FindGO<Game>("game");
@@ -251,10 +253,16 @@ void Player::Move()
 	//�����Q�[���I�[�o�[�R�}���h
 	if (g_pad[0]->IsPress(enButtonY))
 	{
-		HP -= 100;
+		HP -= 10;
 	}
-
-	m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
+	if (m_arrowState != 4)
+	{
+		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
+	}
+	else if (m_arrowState == 4)
+	{
+		m_position = m_position;
+	}
 	m_modelRender.SetPosition(m_position);
 }
 
@@ -302,19 +310,30 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender_r.Draw(rc);
 	m_spriteRender.Draw(rc);
 }
 
 void Player::HPGauge()
 {
-	m_HPGauge.x = 1.0f;
-	m_HPGauge.y = 1.0f;
-	m_HPGauge.z = 1.0f;
-	/*Vector2 i;
-	i.x = -200.0f;
-	m_spriteRender.SetPivot(i);*/
+	if (HP > 0)
+	{
+		m_HPGauge.x = HP / 100;
+		if (m_HPGauge.x != m_HPBar_r.x)
+		{
+			m_HPBar_r.x -= (m_HPBar_r.x - m_HPGauge.x) / 10.0f;
+		}
+	}
+	if (HP <= 0)
+	{
+		m_HPGauge.x = 0.0f;
+		m_HPBar_r.x = 0.0f;
+	}
+
+	m_spriteRender_r.SetScale(m_HPBar_r);
+	m_spriteRender_r.Update();
+
 	m_spriteRender.SetScale(m_HPGauge);
-	//m_HPGauge.y *= HP / 100;
 	m_spriteRender.Update();
 }
 
@@ -380,7 +399,9 @@ void Player::ArrowAnimation()
 	case 4:
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
-	
+
+		m_position = m_position;
+
 		break;
 	case 5:
 		m_arrowState = 0;

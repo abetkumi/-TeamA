@@ -26,6 +26,7 @@ public:
 
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
+	SpriteRender m_spriteRender_r;
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation;
@@ -64,12 +65,12 @@ public:
 
 	float HP,ST,ATK = 1;
 	Vector3 diff;
-	Vector3 m_HPBarposition;
+	Vector3 m_HPBar_r = { 1.0f,1.0f,1.0f };
 	int m_point = 0;
 	int m_moveFlag = 1;
 	int m_lag = 0;
 	int m_arrowLag = 0;
 	int m_damageLag = 0;
-	Vector3 m_HPGauge;
+	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
 	SoundSource* ArrowSE;
 };

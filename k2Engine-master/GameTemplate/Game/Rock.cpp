@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "Rock.h"
 
+#include "collision/CollisionObject.h"
+
+namespace
+{
+	const Vector3 rock1 = { 0.0f,0.0f,0.0f };
+}
+
 Rock::Rock()
 {
 
@@ -18,7 +25,18 @@ bool Rock::Start()
 
 	r_modelRender.SetPosition(r_position);
 
+	r_modelRender.Update();
+
+	r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
+
+	
+
 	return true;
+}
+
+void Rock::Colision()
+{
+
 }
 
 void Rock::Update()

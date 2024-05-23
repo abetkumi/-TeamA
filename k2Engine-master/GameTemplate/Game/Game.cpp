@@ -5,6 +5,7 @@
 #include "GameOver.h"
 #include "GameClear.h"
 #include "BackGround.h"
+#include "Sky.h"
 #include "Item.h"
 #include "Status.h"
 #include "Boat.h"
@@ -73,6 +74,16 @@ bool Game::Start()
 
 				return true;
 			}
+
+			else if (objData.EqualObjectName(L"sky") == true)
+			{
+				sky = NewGO<Sky>(0, "sky");
+
+				sky->s_position = objData.position;
+
+				return true;
+			}
+
 			else if (objData.EqualObjectName(L"boat") == true)
 			{
 				boat = NewGO<Boat>(0, "boat");

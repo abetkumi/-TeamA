@@ -16,7 +16,7 @@ public:
 	FontRender m_fontRender;
 	Game* game;
 	SoundSource* titleBGM;
-	//AlphaBlendMode m_alphaBlendMode = AlphaBlendMode_Trans;
+	AlphaBlendMode m_alphaBlendMode = AlphaBlendMode_Trans;
 
 	float m_shade = 0.0f;
 };

@@ -45,6 +45,13 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+
+	m_spriteRender.Init("Assets/sprite/HPRed.dds", 200.0f, 200.0f);
+	m_spriteRender.SetPivot({ 0.0f,0.5f });
+
+	m_spriteRender.SetPosition(m_position);
+	m_spriteRender.Update();
+
 	player = FindGO<Player>("player");
 	assist = FindGO<Assist>("assist");
 	gameCamera = FindGO<GameCamera>("gameCamera");
@@ -84,11 +91,13 @@ void Enemy::Update()
 	PlayAnimation();
 
 	m_modelRender.Update();
+	//m_spriteRender.Update();
 }
 
 void Enemy::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }
 
 void Enemy::Rotation()
@@ -203,10 +212,32 @@ void Enemy::PlayAnimation()
 		m_modelRender.PlayAnimation(enEnemyClip_Idle);
 		break;
 	case 1:
+		EnemyAttackBar();
 		m_modelRender.PlayAnimation(enEnemyClip_Attack);
 		break;
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
 		break;
 	}
+}
+
+void Enemy::EnemyAttackBar()
+{
+	Vector3 position = m_position;
+
+	position.y += 200.0f;
+
+	if (m_attackBar.x > 0)
+	{
+		m_attackBar.x -= 0.0098f;
+	}
+	else if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.0f;
+	}
+
+	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+	m_spriteRender.SetScale(m_attackBar);
+	m_spriteRender.Update();
 }

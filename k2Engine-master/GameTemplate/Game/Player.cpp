@@ -253,6 +253,7 @@ void Player::Move()
 	//�����Q�[���I�[�o�[�R�}���h
 	if (g_pad[0]->IsPress(enButtonY))
 	{
+		m_arrowState = 3;
 		HP -= 10;
 	}
 	if (m_arrowState != 4)
@@ -284,7 +285,7 @@ void Player::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			m_arrowState = 3;
-			HP -= 100;
+			HP -= 20;
 		}
 	}
 

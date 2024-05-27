@@ -46,7 +46,7 @@ bool Enemy::Start()
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
 
-	m_spriteRender.Init("Assets/sprite/HPRed.dds", 200.0f, 200.0f);
+	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
 	m_spriteRender.SetPosition(m_position);
@@ -227,13 +227,19 @@ void Enemy::EnemyAttackBar()
 
 	position.y += 200.0f;
 
-	if (m_attackBar.x > 0)
+	if (m_attackBar.x >= 0.4f)
 	{
-		m_attackBar.x -= 0.0098f;
+		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+		m_attackBar.x -= 0.009f;
+	}
+	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+	{
+		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+		m_attackBar.x -= 0.009f;
 	}
 	else if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.0f;
+		m_attackBar.x = 1.36f;
 	}
 
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

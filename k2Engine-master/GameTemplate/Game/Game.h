@@ -6,6 +6,7 @@ class GameCamera;
 class GameClear;
 class GameOver;
 class BackGround;
+class Sky;
 class Item;
 class Status;
 class Boat;
@@ -32,6 +33,7 @@ public:
 	GameOver* gameOver;
 	GameClear* gameClear;
 	BackGround* backGround;
+	Sky* sky;
 	Item* item;
 	Status* status;
 	Boat* boat;

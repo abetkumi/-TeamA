@@ -29,6 +29,7 @@
     <ClCompile Include="Enemy3.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Wood.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -53,5 +54,6 @@
     <ClInclude Include="Enemy3.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="Wood.h" />
   </ItemGroup>
 </Project>

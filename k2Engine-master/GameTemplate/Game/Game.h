@@ -18,6 +18,7 @@ class Boss;
 class Assist;
 class Arrow;
 class Rock;
+class Wood;
 
 class Game : public IGameObject
 {
@@ -44,6 +45,7 @@ public:
 	Assist* assist;
 	Arrow* arrow;
 	Rock* rock;
+	Wood* wood;
 
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;

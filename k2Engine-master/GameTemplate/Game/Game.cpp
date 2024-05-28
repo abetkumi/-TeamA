@@ -16,6 +16,7 @@
 #include "Assist.h"
 #include "Arrow.h"
 #include "Rock.h"
+#include "Wood.h"
 
 
 Game::Game()
@@ -156,6 +157,17 @@ bool Game::Start()
 				rock->r_rotation = objData.rotation;
 				return true;
 			}
+
+			else if (objData.ForwardMatchName(L"wood") == true)
+			{
+				wood = NewGO<Wood>(0, "wood");
+
+				wood->w_position = objData.position;
+				wood->w_scale = objData.scale;
+
+				return true;
+
+				}
 
 			return true;
 		});

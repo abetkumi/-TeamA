@@ -9,8 +9,8 @@ public:
 	void Render(RenderContext& rc);
 
 	ModelRender w_modelRender;
-	ModelRender w_scale;
 	PhysicsStaticObject w_physicsStaticObject;
 	Vector3 w_position;
+	Vector3 w_scale;
 };
 

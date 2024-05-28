@@ -30,9 +30,9 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animationClips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
+	m_animationClips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle2.tka");
 	m_animationClips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animationClips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
+	m_animationClips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot2.tka");
 	m_animationClips[enEnemy2Clip_Attack].SetLoopFlag(true);
 	m_animationClips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
 	m_animationClips[enEnemy2Clip_Down].SetLoopFlag(false);

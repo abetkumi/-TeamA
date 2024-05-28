@@ -1,6 +1,9 @@
 #pragma once
+#include "sound/SoundSource.h" 
 
 class Title;
+class Game;
+
 class GameClear : public IGameObject
 {
 public:
@@ -12,6 +15,8 @@ public:
 	Vector3 m_position;
 	SpriteRender spriteRender;
 
+	Game* game;
 	Title* title;
+	SoundSource* gameClearBGM;
 };
 

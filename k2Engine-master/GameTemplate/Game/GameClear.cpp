@@ -1,15 +1,24 @@
 #include "stdafx.h"
 #include "GameClear.h"
 #include "Title.h"
+#include "sound/SoundSource.h" 
+#include "Game.h"
 
 GameClear::GameClear()
 {
 	spriteRender.Init("Assets/modelData/GameClear.dds", 1920.0f, 1080.0f);
+	g_soundEngine->ResistWaveFileBank(2, "Assets/BGMÅESE/GameClear.wav");
+
+	gameClearBGM = NewGO<SoundSource>(2);
+	gameClearBGM->Init(2);
+	gameClearBGM->Play(true);
+	game = FindGO<Game>("game");
+
 }
 
 GameClear::~GameClear()
 {
-
+	DeleteGO(gameClearBGM);
 }
 
 void GameClear::Update()
@@ -18,6 +27,7 @@ void GameClear::Update()
 	{
 		NewGO<Title>(0);
 		DeleteGO(this);
+		DeleteGO(game);
 	}
 }
 

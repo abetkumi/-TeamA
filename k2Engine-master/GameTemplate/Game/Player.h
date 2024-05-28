@@ -59,6 +59,7 @@ public:
 		enArrowClip_Aim,
 		enArrowClip_Damage,
 		enArrowClip_Dead,
+		enArrowClip_Clear,
 		enArrowClip_Num,
 	};
 	AnimationClip m_animationClips[enArrowClip_Num];
@@ -73,4 +74,6 @@ public:
 	int m_damageLag = 0;
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
 	SoundSource* ArrowSE;
+
+	SkyCube* m_skyCube = nullptr;
 };

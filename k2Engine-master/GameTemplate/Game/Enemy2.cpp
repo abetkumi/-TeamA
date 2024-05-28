@@ -7,8 +7,9 @@
 
 #include <time.h>
 
-#define serch 1300.0f * 1300.0f
-#define attackSerch 700.0f * 700.0f
+#define serch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
+#define playerSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -29,13 +30,26 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_modelRender.Init("Assets/modelData/skelton.tkm");
+	m_animationClips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
+	m_animationClips[enEnemy2Clip_Idle].SetLoopFlag(true);
+	m_animationClips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
+	m_animationClips[enEnemy2Clip_Attack].SetLoopFlag(true);
+	m_animationClips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
+	m_animationClips[enEnemy2Clip_Down].SetLoopFlag(false);
+
+	m_modelRender.Init("Assets/modelData/skelton.tkm"
+		,m_animationClips, enEnemy2Clip_Num);
+
 	player = FindGO<Player>("player");
 
 	arrowtimer = arrowtime;
 
 	m_modelRender.SetPosition(m_position);
+	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
+	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
+	m_spriteRender.SetPosition(m_position);
+	m_spriteRender.Update();
 
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
@@ -60,8 +74,11 @@ void Enemy2::Update()
 
 	Rotation();
 	Attack();
+	Desision();
 
+	Seek();
 	Collision();
+	PlayAnimation();
 
 	m_modelRender.Update();
 }
@@ -69,6 +86,7 @@ void Enemy2::Update()
 void Enemy2::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }
 
 void Enemy2::Rotation()
@@ -96,7 +114,7 @@ void Enemy2::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();
 		return;
 	}
-
+	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
@@ -136,9 +154,81 @@ void Enemy2::Collision()
 			HP -= player->ATK;
 
 			if (HP <= 0) {
+				m_enemy2State = 2;
 				DeleteGO(this);
 			}
 		}
 	}
 }
 
+void Enemy2::Seek()
+{
+	if (Desision() == true)
+	{
+		m_pePos = m_position - player->m_position;
+		m_peDis = m_pePos.Length();
+
+
+		Vector3 v = player->m_position + m_toCameraPos;
+		v.Normalize();
+
+		Vector3 ePos = m_position + m_toCameraPos;
+		ePos.Normalize();
+
+		m_Dec = v.Dot(ePos);
+	}
+}
+
+const bool Enemy2::Desision()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() <= playerSerch)
+	{
+		return true;
+	}
+}
+
+void Enemy2::PlayAnimation()
+{
+	switch (m_enemy2State)
+	{
+	case 0:
+		m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
+		break;
+	case 1:
+		EnemyAttackBar();
+		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		break;
+	case 2:
+		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		break;
+	}
+}
+
+
+void Enemy2::EnemyAttackBar()
+{
+	Vector3 position = m_position;
+
+	position.y += 200.0f;
+
+	if (m_attackBar.x >= 0.4f)
+	{
+		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+		m_attackBar.x -= 0.009f;
+	}
+	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+	{
+		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+		m_attackBar.x -= 0.009f;
+	}
+	else if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.36f;
+	}
+
+	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+	m_spriteRender.SetScale(m_attackBar);
+	m_spriteRender.Update();
+}

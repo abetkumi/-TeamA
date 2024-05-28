@@ -20,6 +20,7 @@ Player::~Player()
 {
 	DeleteGO(arrow);
 	DeleteGO(ArrowSE);
+	DeleteGO(m_skyCube);
 }
 
 
@@ -35,6 +36,8 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Damage].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death.tka");
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
+	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
+	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
 
 	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
 
@@ -45,7 +48,7 @@ bool Player::Start()
 	m_spriteRender_r.SetPivot({ 0.0f,0.5f });
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
-	m_spriteRender.SetPosition({600.0f,-420.0f,0.0f});
+	m_spriteRender.SetPosition({ 600.0f,-420.0f,0.0f });
 	m_spriteRender.Update();
 	m_spriteRender_r.SetPosition({ 600.0f,-420.0f,0.0f });
 	m_spriteRender_r.Update();
@@ -53,6 +56,12 @@ bool Player::Start()
 	HP = 100;
 	game = FindGO<Game>("game");
 	gameCamera = FindGO<GameCamera>("gameCamera");
+
+	m_skyCube = NewGO<SkyCube>(0, "skycube");
+	m_skyCube->SetPosition(m_position);
+	m_skyCube->SetType(enSkyCubeType_Day);
+	m_skyCube->SetLuminance(0.5f);
+
 	return true;
 
 }
@@ -65,7 +74,7 @@ void Player::Update()
 	HPGauge();
 	ArrowAnimation();
 	m_modelRender.Update();
-
+	m_skyCube->SetPosition(m_position);
 }
 
 void Player::Move()
@@ -115,7 +124,7 @@ void Player::Move()
 	case MoveState_Normal:
 		// ���E�ɓ�������
 		//�E�X�e�B�b�N�őD�̈ړ�
-		if (stickL.x <= -0.8f&&m_lag==0)
+		if (stickL.x <= -0.8f&&m_lag == 0)
 		{
 			m_moveState = MoveState_Left;
 		}
@@ -256,13 +265,14 @@ void Player::Move()
 		m_arrowState = 3;
 		HP -= 10;
 	}
-	if (m_arrowState != 4)
-	{
-		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
-	}
-	else if (m_arrowState == 4)
+
+	if (m_arrowState == 4 || m_arrowState == 6)
 	{
 		m_position = m_position;
+	}
+	else
+	{
+		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
 	m_modelRender.SetPosition(m_position);
 }
@@ -313,6 +323,7 @@ void Player::Render(RenderContext& rc)
 	m_modelRender.Draw(rc);
 	m_spriteRender_r.Draw(rc);
 	m_spriteRender.Draw(rc);
+	m_skyCube->Render(rc);
 }
 
 void Player::HPGauge()
@@ -401,11 +412,13 @@ void Player::ArrowAnimation()
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
 
-		m_position = m_position;
-
 		break;
 	case 5:
 		m_arrowState = 0;
+		break;
+	case 6:
+		//ゲームクリアステート
+		m_modelRender.PlayAnimation(enArrowClip_Clear);
 		break;
 	}
 }

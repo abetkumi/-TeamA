@@ -48,6 +48,11 @@ Game::~Game()
 		});
 	DeleteGO(status);
 	DeleteGO(boss);
+	QueryGOs<Rock>("rock", [&](Rock* rock)
+		{
+			DeleteGO(rock);
+			return true;
+		});
 }
 
 bool Game::Start()
@@ -183,13 +188,44 @@ void Game::Update()
 			player->m_arrowState++;
 			player->m_arrowLag = 0;
 			gameOver = NewGO<GameOver>(0, "gameOver");
+			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
+				{
+					DeleteGO(enemy);
+					return true;
+				});
+			QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
+				{
+					DeleteGO(enemy2);
+					return true;
+				});
+			QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+				{
+					DeleteGO(enemy3);
+					return true;
+				});
 			//DeleteGO(this);
 		}
 	}
-	if (player->m_point == 100)
+	if (player->m_point == 10)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
-		DeleteGO(this);
+		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
+			{
+				DeleteGO(enemy);
+				return true;
+			});
+		QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
+			{
+				DeleteGO(enemy2);
+				return true;
+			});
+		QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+			{
+				DeleteGO(enemy3);
+				return true;
+			});
+		player->m_arrowState=6;
+		//DeleteGO(this);
 	}
 }
 

@@ -11,7 +11,7 @@ GameClear::GameClear()
 
 	gameClearBGM = NewGO<SoundSource>(2);
 	gameClearBGM->Init(2);
-	gameClearBGM->Play(true);
+	gameClearBGM->Play(false);
 	game = FindGO<Game>("game");
 
 }

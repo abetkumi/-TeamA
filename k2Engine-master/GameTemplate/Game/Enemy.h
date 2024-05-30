@@ -15,7 +15,7 @@ public:
 	void PlayAnimation();
 	void Collision();
 	void Seek();
-
+	void EnemyAttackBar();
 	bool Start();
 
 	const bool Serch();
@@ -29,12 +29,14 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_toCameraPos;
 	Vector3 m_pePos;
+	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
+	Vector2 m_spritePosition = Vector2::Zero;
 	//Vector3 m_cNPos = { 0.0f,0.0f,0.0f };
 
 	float m_peDis;
 
 	ModelRender m_modelRender;
-
+	SpriteRender m_spriteRender;
 	Quaternion m_rotation;
 
 	enum EnEnemyClip

@@ -4,6 +4,7 @@ class Enemy;
 class Player;
 class GameCamera;
 class Assist;
+class Gravity;
 class Arrow : public IGameObject
 {
 public:
@@ -51,7 +52,10 @@ public:
 
 
 	float bullettime = 1.5f;
-	float m_deleteTimer = 0.0f;
+	float m_deleteTimer,m_xBulletTime = 0.0f;
+	float m_peLen;
+	float m_velocityLen;
+
 	bool m_isDelete = false;
 	const float deletetimer = 1.0f;
 	int m_Damage;
@@ -65,6 +69,7 @@ public:
 	Vector3 m_ePos;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
+	Vector3 m_velocity2;
 	Vector3	m_scale = Vector3::One;
 	Vector3 m_CameraPos;
 
@@ -72,7 +77,11 @@ public:
 	Enemy* enemy;
 	GameCamera* gameCamera;
 	Assist* assist;
+	Gravity* gravity;
 
 	EnArrow m_enArrow = enArrow_None;
+
+	Vector3 test;
+	float jo;
 };
 

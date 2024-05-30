@@ -23,19 +23,17 @@ void Assist::Update()
 
 	for (int i = 0; i < enemys.max_size(); i++)
 	{
-		Decision();
 		Distance();
-		
 		Homing();
 	}
 }
 const bool Assist::Homing()
 {
-	/*if (Decision() == true)
+	if (enemy->Dec() == true)
 	{
 		return true;
-	}*/
-	return true;
+	}
+	/*return true;*/
 }
 
 void Assist::Distance()
@@ -47,15 +45,6 @@ void Assist::Distance()
 	{
 		m_ePos = enemy->m_position;
 	}
-}
-
-const bool Assist::Decision()
-{
-	/*if (enemy->m_Dec >= 0.98)
-	{
-		return true;
-	}*/
-	return true;
 }
 
 //bool GameCamera::Target()

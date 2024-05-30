@@ -59,123 +59,108 @@ Game::~Game()
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_trueC.tkl", [&](LevelObjectData& objData)
+	{
+		if (objData.EqualObjectName(L"a_player") == true)
 		{
-			if (objData.EqualObjectName(L"a_player") == true)
-			{
-				player = NewGO<Player>(0, "player");
+			player = NewGO<Player>(0, "player");
 
-				player->m_position = objData.position;
+			player->m_position = objData.position;
 
-				player->m_rotation = objData.rotation;
-
-				return true;
-			}
-
-			else if (objData.EqualObjectName(L"level_true") == true)
-			{
-				backGround = NewGO<BackGround>(0, "backGround");
-
-				backGround->m_position = objData.position;
-
-				return true;
-			}
-
-			else if (objData.EqualObjectName(L"sky") == true)
-			{
-				sky = NewGO<Sky>(0, "sky");
-
-				sky->s_position = objData.position;
-
-				return true;
-			}
-
-			else if (objData.EqualObjectName(L"boat") == true)
-			{
-				boat = NewGO<Boat>(0, "boat");
-
-				boat->m_position = objData.position;
-
-				//boat->m_rotation = objData.rotation;
-
-				//boat->m_scale = objData.scale;
-
-				return true;
-			}
-
-			else if (objData.ForwardMatchName(L"goblin") == true)
-			{
-				enemy = NewGO<Enemy>(0, "enemy");
-
-				enemy->m_position = objData.position;
-
-				return true;
-
-			}
-
-			else if (objData.ForwardMatchName(L"skelton") == true)
-			{
-				enemy2 = NewGO<Enemy2>(0, "enemy2");
-
-				enemy2->m_position = objData.position;
-
-				return true;
-
-			}
-
-			else if (objData.ForwardMatchName(L"bat") == true)
-			{
-				enemy3 = NewGO<Enemy3>(0, "enemy3");
-
-				enemy3->m_position = objData.position;
-
-				return true;
-
-			}
-
-			else if (objData.EqualObjectName(L"BOSS_fake") == true)
-			{
-				boss = NewGO<Boss>(0, "Boss_fake");
-				boss->m_position = objData.position;
-				boss->m_scale = objData.scale;
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"00_Path_Point_") == true) {
-				// 1 line
-				path00_pointList.push_back(objData.position);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"01_Path_Point_") == true) {
-				// 2 line
-				path01_pointList.push_back(objData.position);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"02_Path_Point_") == true) {
-				// 3 line
-				path02_pointList.push_back(objData.position);
-				return true;
-			}
-			else if(objData.ForwardMatchName(L"rock") == true) {
-				//岩
-				rock = NewGO<Rock>(0, "rock");
-				rock->r_position = objData.position;
-				rock->r_rotation = objData.rotation;
-				return true;
-			}
-
-			else if (objData.ForwardMatchName(L"wood") == true)
-			{
-				wood = NewGO<Wood>(0, "wood");
-
-				wood->w_position = objData.position;
-				wood->w_scale = objData.scale;
-
-				return true;
-
-				}
+			player->m_rotation = objData.rotation;
 
 			return true;
-		});
+		}
+		else if (objData.EqualObjectName(L"level_true") == true)
+		{
+			backGround = NewGO<BackGround>(0, "backGround");
+
+			backGround->m_position = objData.position;
+
+			return true;
+		}
+		else if (objData.EqualObjectName(L"sky") == true)
+		{
+			sky = NewGO<Sky>(0, "sky");
+
+			sky->s_position = objData.position;
+
+			return true;
+		}
+		else if (objData.EqualObjectName(L"boat") == true)
+		{
+			boat = NewGO<Boat>(0, "boat");
+
+			boat->m_position = objData.position;
+
+			//boat->m_rotation = objData.rotation;
+
+			//boat->m_scale = objData.scale;
+
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"goblin") == true)
+		{
+			enemy = NewGO<Enemy>(0, "enemy");
+
+			enemy->m_position = objData.position;
+
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"skelton") == true)
+		{
+			enemy2 = NewGO<Enemy2>(0, "enemy2");
+
+			enemy2->m_position = objData.position;
+
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"bat") == true)
+		{
+			enemy3 = NewGO<Enemy3>(0, "enemy3");
+
+			enemy3->m_position = objData.position;
+
+			return true;
+		}
+		else if (objData.EqualObjectName(L"BOSS_fake") == true)
+		{
+			boss = NewGO<Boss>(0, "Boss_fake");
+			boss->m_position = objData.position;
+			boss->m_scale = objData.scale;
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"00_Path_Point_") == true) {
+			// 1 line
+			path00_pointList.push_back(objData.position);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"01_Path_Point_") == true) {
+			// 2 line
+			path01_pointList.push_back(objData.position);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"02_Path_Point_") == true) {
+			// 3 line
+			path02_pointList.push_back(objData.position);
+			return true;
+		}
+		else if(objData.ForwardMatchName(L"rock") == true) {
+			//岩
+			rock = NewGO<Rock>(0, "rock");
+			rock->r_position = objData.position;
+			rock->r_rotation = objData.rotation;
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"wood") == true)
+		{
+			wood = NewGO<Wood>(0, "wood");
+			wood->w_position = objData.position;
+			wood->w_scale = objData.scale;
+			return true;
+		}
+		return true;
+	});
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
@@ -192,13 +177,12 @@ void Game::Update()
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
+	//ゲームオーバー判定
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
-		if (player->m_arrowLag >= 100)
+		if (player->m_arrowLag == 100)
 		{
-			player->m_arrowState++;
-			player->m_arrowLag = 0;
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 				{
@@ -218,6 +202,7 @@ void Game::Update()
 			//DeleteGO(this);
 		}
 	}
+	//クリアのポイント判定
 	if (player->m_point == 100)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");

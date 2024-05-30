@@ -18,7 +18,6 @@ public:
 	void Distance();
 
 	const bool Homing();
-	const bool Decision();
 
 	Player* player;
 	Enemy* enemy;

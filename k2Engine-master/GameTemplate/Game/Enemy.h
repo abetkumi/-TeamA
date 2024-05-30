@@ -17,9 +17,12 @@ public:
 	void Seek();
 	void EnemyAttackBar();
 	bool Start();
+
 	const bool Serch();
 	const bool AttackSerch();
 	const bool Desision();
+	const bool Dec();
+
 	Vector3 m_position;
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
@@ -28,6 +31,7 @@ public:
 	Vector3 m_pePos;
 	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
+	//Vector3 m_cNPos = { 0.0f,0.0f,0.0f };
 
 	float m_peDis;
 

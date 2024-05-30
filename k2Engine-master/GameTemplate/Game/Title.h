@@ -12,11 +12,12 @@ public:
 
 	Vector3 m_position;
 	SpriteRender m_spriteRender;
-	//SpriteRender m_spriteRender_m;
-	FontRender m_fontRender;
+	SpriteRender m_spriteRender_m;
+	//FontRender m_fontRender;
 	Game* game;
 	SoundSource* titleBGM;
 	AlphaBlendMode m_alphaBlendMode = AlphaBlendMode_Trans;
 
-	float m_shade = 0.0f;
+	float m_shade = 0.5f;
+	float m_timer = 0.5f;
 };

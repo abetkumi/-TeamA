@@ -223,7 +223,7 @@ void Player::Move()
 
 	//���̈ړ��|�C���g�֌�������
 	float disToPlayer = diff.Length();
-	if (disToPlayer <= 60.0f)
+	if (disToPlayer <= 200.0f)
 	{
 		m_point++;
 		//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j

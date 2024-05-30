@@ -2,7 +2,7 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
-
+#include "GameCamera.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -30,15 +30,15 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animationClips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle2.tka");
-	m_animationClips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animationClips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot2.tka");
-	m_animationClips[enEnemy2Clip_Attack].SetLoopFlag(true);
-	m_animationClips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
-	m_animationClips[enEnemy2Clip_Down].SetLoopFlag(false);
+	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
+	m_animation2Clips[enEnemy2Clip_Idle].SetLoopFlag(true);
+	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
+	m_animation2Clips[enEnemy2Clip_Attack].SetLoopFlag(true);
+	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
+	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 
-	m_modelRender.Init("Assets/modelData/skelton.tkm"
-		,m_animationClips, enEnemy2Clip_Num);
+	m_modelRender.Init("Assets/modelData/skelton2.tkm"
+		,m_animation2Clips, enEnemy2Clip_Num);
 
 	player = FindGO<Player>("player");
 
@@ -53,7 +53,7 @@ bool Enemy2::Start()
 
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
-	m_collisionObject = NewGO<CollisionObject>(0);
+	m_collisionObject = NewGO<CollisionObject>(1);
 
 	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
 	m_collisionObject->SetName("enemy_col");
@@ -64,6 +64,8 @@ bool Enemy2::Start()
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 
+
+	m_modelRender.Update();
 	return true;
 }
 
@@ -153,8 +155,13 @@ void Enemy2::Collision()
 		{
 			HP -= player->ATK;
 
-			if (HP <= 0) {
-				m_enemy2State = 2;
+
+		}
+		if (HP <= 0) {
+			m_enemy2State = 2;
+			m_enemy2DownLag++;
+			if (m_enemy2DownLag >= 20)
+			{
 				DeleteGO(this);
 			}
 		}

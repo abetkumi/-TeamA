@@ -1,5 +1,4 @@
 #pragma once
-
 class Player;
 class Arrow;
 class Item;
@@ -46,7 +45,7 @@ public:
 		enEnemy2Clip_Down,
 		enEnemy2Clip_Num,
 	};
-	AnimationClip m_animationClips[enEnemy2Clip_Num];
+	AnimationClip m_animation2Clips[enEnemy2Clip_Num];
 
 	int m_enemy2State = 0;
 	int m_enemy2DownLag = 0;

@@ -8,9 +8,9 @@
 #include "collision/CollisionObject.h"
 
 #include <time.h>
-
-#define serch 4000.0f * 4000.0f
-#define attackSerch 3000.0f * 3000.0f
+//4000,3000
+#define serch 5000.0f * 5000.0f
+#define attackSerch 4400.0f * 4400.0f
 #define playerSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
@@ -80,6 +80,7 @@ void Enemy::Update()
 	Desision();
 
 	Seek();
+	Dec();
 	Collision();
 	PlayAnimation();
 
@@ -99,15 +100,20 @@ void Enemy::Rotation()
 		m_moveSpeed = diff * 100.0f;
 	}
 
+	
+
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
+
+	m_rotation.AddRotationX(-45.0);
 	
 	m_collisionObject->SetPosition(m_position + corre1);
 }
 
 void Enemy::Attack()
 {
+	Vector3 diff = player->m_position - m_position;
 	if (!AttackSerch())
 		return;
 
@@ -118,11 +124,15 @@ void Enemy::Attack()
 	}
 	m_enemyState = 1;
 	arrow = NewGO<Arrow>(0);
+
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);
+	diff.y = 0.0f;
+	arrow->m_peLen = diff.Length();
+
+	arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 	arrowtimer = arrowtime;
 }
@@ -193,6 +203,15 @@ const bool Enemy::Desision()
 	{
 		return true;
 	}
+}
+
+const bool Enemy::Dec()
+{
+	/*if (m_Dec >= 0.98)
+	{
+		return true;
+	}*/
+	return true;
 }
 
 void Enemy::PlayAnimation()

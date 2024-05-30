@@ -28,6 +28,7 @@
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Enemy3.cpp" />
     <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="Gravity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -51,5 +52,6 @@
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Enemy3.h" />
     <ClInclude Include="Rock.h" />
+    <ClInclude Include="Gravity.h" />
   </ItemGroup>
 </Project>

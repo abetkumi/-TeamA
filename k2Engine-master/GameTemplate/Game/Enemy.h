@@ -15,16 +15,21 @@ public:
 	void PlayAnimation();
 	void Collision();
 	void Seek();
+
 	bool Start();
+
 	const bool Serch();
 	const bool AttackSerch();
 	const bool Desision();
+	const bool Dec();
+
 	Vector3 m_position;
 	Vector3 m_scale = Vector3::One;
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_toCameraPos;
 	Vector3 m_pePos;
+	//Vector3 m_cNPos = { 0.0f,0.0f,0.0f };
 
 	float m_peDis;
 

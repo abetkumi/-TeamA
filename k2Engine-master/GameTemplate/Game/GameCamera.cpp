@@ -59,17 +59,41 @@ void GameCamera::Update()
 	Vector3 toPosDir = m_toCameraPos;
 	toPosDir.Normalize();
 
-	if (toPosDir.y < -0.5f) {
-		m_toCameraPos = toCameraPosOld;
-	}
-	else if (toPosDir.y > 0.5f) {
-		m_toCameraPos = toCameraPosOld;
-	}
+	
 
-	pos = target + m_toCameraPos;
-	target = target - m_toCameraPos;
-	g_camera3D->SetTarget(pos);
-	g_camera3D->SetPosition(target);
+	if (m_player->m_arrowState == 4 || m_player->m_arrowState == 6)
+	{
+		if (m_player->m_arrowState == 6)
+		{
+			target.z = target.z - 300.0f;
+			target.x = target.x + m_toCameraPos.x;
+		}
+		else if (m_player->m_arrowState == 4)
+		{
+			if (m_gameOverFlag == true)
+			{
+				target.y = target.y + 900.0f;
+				target.z = target.z + 100.0f;
+				pos.y = pos.y - 300.0f;
+				m_gameOverFlag = false;
+			}
+		}
+		g_camera3D->SetTarget(pos);
+		g_camera3D->SetPosition(target);
+	}
+	else
+	{
+		if (toPosDir.y < -0.5f) {
+			m_toCameraPos = toCameraPosOld;
+		}
+		else if (toPosDir.y > 0.5f) {
+			m_toCameraPos = toCameraPosOld;
+		}
+		pos = target + m_toCameraPos;
+		target = target - m_toCameraPos;
+		g_camera3D->SetTarget(pos);
+		g_camera3D->SetPosition(target);
+	}
 }
 
 //void GameCamera::Decision()

@@ -181,29 +181,30 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
+		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
+			{
+				DeleteGO(enemy);
+				return true;
+			});
+		QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
+			{
+				DeleteGO(enemy2);
+				return true;
+			});
+		QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+			{
+				DeleteGO(enemy3);
+				return true;
+			});
 		if (player->m_arrowLag == 100)
 		{
 			gameOver = NewGO<GameOver>(0, "gameOver");
-			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-				{
-					DeleteGO(enemy);
-					return true;
-				});
-			QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
-				{
-					DeleteGO(enemy2);
-					return true;
-				});
-			QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
-				{
-					DeleteGO(enemy3);
-					return true;
-				});
+	
 			//DeleteGO(this);
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 100)
+	if (player->m_point == 10)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
@@ -222,6 +223,7 @@ void Game::Update()
 				return true;
 			});
 		player->m_arrowState=6;
+		player->m_point = 11;
 		//DeleteGO(this);
 	}
 }

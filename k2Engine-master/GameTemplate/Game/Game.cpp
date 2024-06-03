@@ -17,6 +17,7 @@
 #include "Arrow.h"
 #include "Rock.h"
 #include "Wood.h"
+#include "sound/SoundSource.h" 
 
 
 Game::Game()
@@ -31,6 +32,7 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
+	DeleteGO(m_gameBGM);
 	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
@@ -167,6 +169,11 @@ bool Game::Start()
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
+
+	m_gameBGM = NewGO<SoundSource>(3);
+	m_gameBGM->Init(3);
+	m_gameBGM->Play(false);
 
 	return true;
 }

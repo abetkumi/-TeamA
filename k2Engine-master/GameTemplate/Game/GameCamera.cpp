@@ -65,8 +65,8 @@ void GameCamera::Update()
 	{
 		if (m_player->m_arrowState == 6)
 		{
-			target.z = target.z - 300.0f;
-			target.x = target.x + m_toCameraPos.x;
+			target = pos + m_toCameraPos;
+			pos = target - m_toCameraPos;
 		}
 		else if (m_player->m_arrowState == 4)
 		{

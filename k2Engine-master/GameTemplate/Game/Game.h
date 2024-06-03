@@ -50,6 +50,7 @@ public:
 	Ship_Gauge* ship_Gauge;
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;
+	SoundSource* m_gameBGM;
 	Vector3 position;
 	std::vector<Vector3> path00_pointList;
 	std::vector<Vector3> path01_pointList;

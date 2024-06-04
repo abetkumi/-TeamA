@@ -32,7 +32,7 @@ Game::~Game()
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-	DeleteGO(m_gameBGM);
+	
 	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
@@ -205,6 +205,7 @@ void Game::Update()
 			});
 		if (player->m_arrowLag == 100)
 		{
+			DeleteGO(m_gameBGM);
 			gameOver = NewGO<GameOver>(0, "gameOver");
 	
 			//DeleteGO(this);
@@ -213,6 +214,7 @@ void Game::Update()
 	//クリアのポイント判定
 	if (player->m_point == 10)
 	{
+		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 			{

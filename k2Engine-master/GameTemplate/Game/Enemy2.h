@@ -1,8 +1,9 @@
 #pragma once
 class Player;
 class Arrow;
+class Assist;
 class Item;
-class Game;
+//class Game;
 class GameCamera;
 class Enemy2 : public IGameObject
 {
@@ -18,6 +19,7 @@ public:
 	void Seek();
 	void EnemyAttackBar();
 	bool Start();
+
 	const bool Serch();
 	const bool AttackSerch();
 	const bool Desision();
@@ -42,7 +44,7 @@ public:
 	{
 		enEnemy2Clip_Idle,
 		enEnemy2Clip_Attack,
-		enEnemy2Clip_Down,
+		//enEnemy2Clip_Down,
 		enEnemy2Clip_Num,
 	};
 	AnimationClip m_animation2Clips[enEnemy2Clip_Num];
@@ -52,6 +54,7 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	Assist* assist;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 

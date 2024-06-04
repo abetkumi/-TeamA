@@ -18,6 +18,7 @@ public:
 	Vector3 m_toPosDir;
 	Vector3 target;
 	Vector3 pos;
+	bool m_gameOverFlag = true;
 
 	SpriteRender m_spriteRender;
 };

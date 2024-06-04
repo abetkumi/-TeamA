@@ -9,6 +9,7 @@ namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
 	const Vector3 corre2 = { 30.0f,130.0f,10.0f };//??u?C???e???????u
+	const float firstPosition = 60.0f;
 }
 
 Player::Player()
@@ -274,6 +275,9 @@ void Player::Move()
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
+
+	m_position.y = firstPosition;
+
 	m_modelRender.SetPosition(m_position);
 }
 

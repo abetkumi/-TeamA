@@ -3,6 +3,7 @@
 
 class Title;
 class Game;
+class GameCamera;
 
 class GameClear : public IGameObject
 {
@@ -16,6 +17,7 @@ public:
 	SpriteRender spriteRender;
 
 	Game* game;
+	GameCamera* gameCamera;
 	Title* title;
 	SoundSource* gameClearBGM;
 };

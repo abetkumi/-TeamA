@@ -3,6 +3,7 @@
 #include "Title.h"
 #include "sound/SoundSource.h" 
 #include "Game.h"
+#include "GameCamera.h"
 
 GameClear::GameClear()
 {
@@ -13,6 +14,7 @@ GameClear::GameClear()
 	gameClearBGM->Init(2);
 	gameClearBGM->Play(false);
 	game = FindGO<Game>("game");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 
 }
 

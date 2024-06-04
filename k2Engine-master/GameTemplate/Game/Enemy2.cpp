@@ -2,6 +2,7 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Assist.h"
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
 
@@ -30,17 +31,18 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
+	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/skelton3_idle.tka");
 	m_animation2Clips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
+	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/skelton3_shot.tka");
 	m_animation2Clips[enEnemy2Clip_Attack].SetLoopFlag(true);
-	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
-	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
+	/*m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
+	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);*/
 
-	m_modelRender.Init("Assets/modelData/skelton2.tkm"
+	m_modelRender.Init("Assets/modelData/skelton3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
 
 	player = FindGO<Player>("player");
+	assist = FindGO<Assist>("assist");
 
 	arrowtimer = arrowtime;
 
@@ -65,7 +67,7 @@ bool Enemy2::Start()
 	m_rotation.Apply(m_forward);
 
 
-	m_modelRender.Update();
+	//m_modelRender.Update();
 	return true;
 }
 
@@ -118,6 +120,7 @@ void Enemy2::Attack()
 	}
 	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
+
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
@@ -206,9 +209,9 @@ void Enemy2::PlayAnimation()
 		EnemyAttackBar();
 		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
 		break;
-	case 2:
+	/*case 2:
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		break;
+		break;*/
 	}
 }
 

@@ -37,7 +37,7 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 
-	m_modelRender.Init("Assets/modelData/skelton2.tkm"
+	m_modelRender.Init("Assets/modelData/skelton.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
 
 	player = FindGO<Player>("player");

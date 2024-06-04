@@ -237,6 +237,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Loading.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rock.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Loading.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Sky.h" />

@@ -28,9 +28,7 @@ public:
 	void Inpacttime();
 	void Inpacthit();
 	void deletebullet();
-
 	void Dec();
-
 
 	void SetVelocity(const Vector3& velocity)
 	{
@@ -44,12 +42,10 @@ public:
 	{
 		m_rotation = rotation;
 	}
-
 	void SetEnArrow(const EnArrow enArrow)
 	{
 		m_enArrow = enArrow;
 	}
-
 
 	float bullettime = 1.5f;
 	float m_deleteTimer,m_xBulletTime = 0.0f;

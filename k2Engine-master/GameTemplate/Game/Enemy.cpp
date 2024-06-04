@@ -4,7 +4,7 @@
 #include "Arrow.h"
 #include "Assist.h"
 #include "GameCamera.h"
-
+#include "Item.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -90,6 +90,7 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
+	ItemDrop();
 
 	m_modelRender.Update();
 	//m_spriteRender.Update();
@@ -178,11 +179,16 @@ void Enemy::Collision()
 		}
 		if (HP <= 0) {
 			m_enemyState = 2;
-			m_enemyDownLag++;
-			if (m_enemyDownLag >= 20)
-			{
-				DeleteGO(this);
-			}
+			m_downFlag = true;
+		}
+	}
+	if (m_downFlag == true)
+	{
+		m_enemyDownLag++;
+		if (m_enemyDownLag >= 20)
+		{
+			m_itemGet = rand() % 4;
+			DeleteGO(this);
 		}
 	}
 }
@@ -265,4 +271,19 @@ void Enemy::EnemyAttackBar()
 	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 	m_spriteRender.SetScale(m_attackBar);
 	m_spriteRender.Update();
+}
+
+void Enemy::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0,"item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
+	}
 }

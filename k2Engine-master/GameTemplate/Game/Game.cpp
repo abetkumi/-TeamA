@@ -56,6 +56,11 @@ Game::~Game()
 			DeleteGO(rock);
 			return true;
 		});
+	QueryGOs<Item>("item", [&](Item* item)
+		{
+			DeleteGO(item);
+			return true;
+		});
 }
 
 bool Game::Start()
@@ -211,7 +216,7 @@ void Game::Update()
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 10)
+	if (player->m_point == 100)
 	{
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)

@@ -125,7 +125,7 @@ void Player::Move()
 	case MoveState_Normal:
 		// ���E�ɓ�������
 		//�E�X�e�B�b�N�őD�̈ړ�
-		if (stickL.x <= -0.8f&&m_lag == 0)
+		if (stickL.x <= -0.8f && m_lag == 0)
 		{
 			m_moveState = MoveState_Left;
 		}
@@ -303,6 +303,14 @@ void Player::Collision()
 		}
 	}
 
+	collisions == g_collisionObjectManager->FindCollisionObjects("c_rock");
+	for (auto collision : collisions) {
+		if (collision->IsHit(m_charaCon))
+		{
+			m_arrowState = 3;
+			HP -= 5;
+		}
+	}
 	/*collisions == g_collisionObjectManager->FindCollisionObjects("g_arrow");
 
 	for (auto collision : collisions) {
@@ -334,10 +342,18 @@ void Player::HPGauge()
 {
 	if (HP > 0)
 	{
+		if (HP >= 100)
+		{
+			HP = 100;
+		}
 		m_HPGauge.x = HP / 100;
-		if (m_HPGauge.x != m_HPBar_r.x)
+		if (m_HPGauge.x <= m_HPBar_r.x)
 		{
 			m_HPBar_r.x -= (m_HPBar_r.x - m_HPGauge.x) / 10.0f;
+		}
+		if (m_HPGauge.x >= m_HPBar_r.x)
+		{
+			m_HPBar_r.x = m_HPGauge.x;
 		}
 	}
 	if (HP <= 0)

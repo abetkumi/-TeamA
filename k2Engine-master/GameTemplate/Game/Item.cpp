@@ -45,7 +45,7 @@ Item::Item()
 Item::~Item()
 {
 
-	if (i = 0) {
+	if (i == 0) {
 		switch (r)
 		{
 		case 0:

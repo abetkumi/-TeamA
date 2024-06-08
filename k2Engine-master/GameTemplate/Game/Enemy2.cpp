@@ -117,12 +117,12 @@ void Enemy2::Attack()
 		return;
 	}
 	m_enemy2State = 1;
-	arrow = NewGO<Arrow>(0, "arrow");
+	/*arrow = NewGO<Arrow>(0, "arrow");
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);
+	arrow->SetEnArrow(Arrow::enArrow_Enemy);*/
 
 	arrowtimer = arrowtime;
 }

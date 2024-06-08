@@ -9,9 +9,10 @@
 
 #include <time.h>
 //4000,3000
-#define serch 5000.0f * 5000.0f
-#define attackSerch 4400.0f * 4400.0f
+#define serch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
+#define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -90,6 +91,15 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
+	
+	if (i == 1)
+	{
+		DeleteSerch();
+
+		if (DeleteSerch() == true) {
+			DeleteGO(this);
+		}
+	}
 
 	m_modelRender.Update();
 	//m_spriteRender.Update();
@@ -104,9 +114,16 @@ void Enemy::Render(RenderContext& rc)
 void Enemy::Rotation()
 {
 	Vector3 diff = player->m_position - m_position;
+
+	if (!Serch()) {
+		m_enemyState = 0;
+		arrowtimer = arrowtime;
+	}
+
 	if (Serch() == true)
 	{
 		m_moveSpeed = diff * 100.0f;
+		i = 1;
 	}
 
 	
@@ -131,6 +148,7 @@ void Enemy::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();		
 		return;
 	}
+	i = 1;
 	m_enemyState = 1;
 	arrow = NewGO<Arrow>(0);
 
@@ -144,6 +162,9 @@ void Enemy::Attack()
 	arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 	arrowtimer = arrowtime;
+
+
+	
 }
 
 const bool Enemy::Serch()
@@ -153,13 +174,21 @@ const bool Enemy::Serch()
 	{
 		return true;
 	}
-	arrowtimer = arrowtime;
 }
 
 const bool Enemy::AttackSerch()
 {
 	Vector3 diff = player->m_position - m_position;
 	if (diff.LengthSq() <= attackSerch)
+	{
+		return true;
+	}
+}
+
+const bool Enemy::DeleteSerch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() > deleteSerch)
 	{
 		return true;
 	}
@@ -184,6 +213,7 @@ void Enemy::Collision()
 				DeleteGO(this);
 			}
 		}
+		
 	}
 }
 

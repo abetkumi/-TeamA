@@ -248,14 +248,14 @@ void Player::Move()
 	}
 	////�����܂�3���C���̈ړ���
 
-	//if (m_charaCon.IsOnGround())
-	//{
-	//	m_moveSpeed.y = 0.0f;
-	//}
-	//else
-	//{
-	//	m_moveSpeed.y -= 10.0f;
-	//}
+	if (m_charaCon.IsOnGround())
+	{
+		m_moveSpeed.y = 0.0f;
+	}
+	else
+	{
+		m_moveSpeed.y -= 10.0f;
+	}
 	
 	
 

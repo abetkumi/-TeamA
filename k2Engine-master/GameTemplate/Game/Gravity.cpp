@@ -9,7 +9,6 @@ using namespace std;
 namespace
 {
 	float const g = 9.8f;
-	float const ang = 45.0f;
 }
 
 void  Gravity::Move(Vector3 v, const float Len)
@@ -19,3 +18,5 @@ void  Gravity::Move(Vector3 v, const float Len)
 	x = g * 80 * Len * 2;
 	m_sNew = sqrt(x) / 2;
 }
+
+//01_Path_Point_003

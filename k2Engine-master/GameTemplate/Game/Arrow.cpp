@@ -24,10 +24,6 @@ Arrow::Arrow()
 Arrow::~Arrow()
 {
 	DeleteGO(m_collisionObject);
-	test = m_position - m_1stPosition;
-	jo = test.Length();
-
-	jo = jo;
 }
 
 bool Arrow::Start()
@@ -175,7 +171,7 @@ void Arrow::Render(RenderContext& rc)
 
 void Arrow::Inpacttime()
 {
-	if (bullettime > 0 && m_position.y > 75)
+	if (bullettime > 0 && m_position.y > 0)
 	{
 		return;
 	}

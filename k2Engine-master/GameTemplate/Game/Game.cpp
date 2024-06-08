@@ -212,7 +212,7 @@ void Game::Update()
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 10)
+	if (player->m_point == 100)
 	{
 		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");

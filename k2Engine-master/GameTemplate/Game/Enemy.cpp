@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Assist.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 #include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
@@ -45,6 +47,8 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -181,6 +185,10 @@ void Enemy::Collision()
 			m_enemyDownLag++;
 			if (m_enemyDownLag >= 20)
 			{
+				SoundSource* se = NewGO<SoundSource>(0);
+				se->Init(1);
+				se->Play(false);
+
 				DeleteGO(this);
 			}
 		}

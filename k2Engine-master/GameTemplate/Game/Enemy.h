@@ -23,6 +23,7 @@ public:
 
 	const bool Serch();
 	const bool AttackSerch();
+	const bool DeleteSerch();
 	const bool Desision();
 	const bool Dec();
 
@@ -67,4 +68,6 @@ public:
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
+
+	int i;
 };

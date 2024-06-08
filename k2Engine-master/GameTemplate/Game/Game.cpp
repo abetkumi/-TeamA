@@ -174,8 +174,14 @@ bool Game::Start()
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
-	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
+	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
+	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
+	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 
+	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
 	m_gameBGM = NewGO<SoundSource>(3);
 	m_gameBGM->Init(3);
 	m_gameBGM->Play(false);
@@ -240,9 +246,46 @@ void Game::Update()
 		player->m_point = 11;
 		//DeleteGO(this);
 	}
+	SpriteFlag();
+}
+
+void Game::SpriteFlag()
+{
+	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
+	if (m_shade >= 1.0f)
+	{
+		spritetimer *= -1.0f;
+	}
+	if (m_shade <= 0.2f)
+	{
+		spritetimer *= -1.0f;
+		m_spriteStatus++;
+	}
+	if (m_spriteStatus >= 4)
+	{
+		m_spriteStatus = 4;
+	}
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_L.Update();
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.Update();
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
+	if (m_spriteStatus == 1)
+	{
+		m_spriteRender_L.Draw(rc);
+	}
+	if (m_spriteStatus == 2)
+	{
+		m_spriteRender_R.Draw(rc);
+	}
+	if (m_spriteStatus == 3)
+	{
+		m_spriteRender_LB.Draw(rc);
+	}
 }

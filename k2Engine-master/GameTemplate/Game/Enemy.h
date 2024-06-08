@@ -63,7 +63,7 @@ public:
 	CollisionObject* m_collisionObject;
 
 	float arrowtimer = 0.0f;
-	float arrowtime = 3.1f;
+	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
 	int m_itemGet = 0;

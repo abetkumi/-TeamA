@@ -17,6 +17,7 @@ public:
 	Game* game;
 	Loading* loading;
 	SoundSource* titleBGM;
+	SoundSource* titleSE;
 	AlphaBlendMode m_alphaBlendMode = AlphaBlendMode_Trans;
 
 	float m_shade = 0.5f;

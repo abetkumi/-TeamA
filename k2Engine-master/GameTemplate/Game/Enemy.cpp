@@ -133,18 +133,24 @@ void Enemy::Attack()
 		return;
 	}
 	m_enemyState = 1;
-	arrow = NewGO<Arrow>(0);
+	if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.6f;
 
-	arrow->m_position = (m_position + corre2);
-	arrow->m_1stPosition = arrow->m_position;
-	arrow->m_rotation = m_rotation;
+		arrow = NewGO<Arrow>(0);
 
-	diff.y = 0.0f;
-	arrow->m_peLen = diff.Length();
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Goblin);
+		diff.y = 0.0f;
+		arrow->m_peLen = diff.Length();
 
-	arrowtimer = arrowtime;
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
+
+		arrowtimer = arrowtime;
+
+	}
 }
 
 const bool Enemy::Serch()
@@ -261,10 +267,6 @@ void Enemy::EnemyAttackBar()
 	{
 		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
 		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x <= 0)
-	{
-		m_attackBar.x = 1.36f;
 	}
 
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

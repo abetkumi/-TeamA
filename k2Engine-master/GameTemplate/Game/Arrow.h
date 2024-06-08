@@ -79,5 +79,6 @@ public:
 
 	Vector3 test;
 	float jo;
+	SoundSource* ArrowSE;
 };
 

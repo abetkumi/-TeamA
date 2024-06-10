@@ -29,5 +29,6 @@ public:
 	Game* game;
 
 	int HP = 1;
+	int m_shipPoint = 0;
 };
 

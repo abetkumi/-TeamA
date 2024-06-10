@@ -53,6 +53,7 @@ public:
 	SpriteRender m_spriteRender_L;
 	SpriteRender m_spriteRender_R;
 	SpriteRender m_spriteRender_LB;
+	SpriteRender m_spriteRender_UI;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
 	Vector3 position;
@@ -65,7 +66,7 @@ public:
 	Vector3 m_nextPosition1;
 	Vector3 m_pointPosition2;
 	Vector3 m_nextPosition2;
-	float spritetimer = 0.1f;
+	float spritetimer = 0.5f;
 	float spritetime = 3.0f;
 	float m_shade = 0.5f;
 	int m_spriteStatus = 1;

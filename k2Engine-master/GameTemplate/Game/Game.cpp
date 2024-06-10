@@ -177,10 +177,11 @@ bool Game::Start()
 	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
 	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
 	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
+	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
-
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
 	m_gameBGM = NewGO<SoundSource>(3);
 	m_gameBGM->Init(3);
@@ -254,16 +255,20 @@ void Game::SpriteFlag()
 	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
 	if (m_shade >= 1.0f)
 	{
-		spritetimer *= -1.0f;
+		m_shade = 1.0f;
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			spritetimer *= -1.0f;
+		}
 	}
 	if (m_shade <= 0.2f)
 	{
 		spritetimer *= -1.0f;
 		m_spriteStatus++;
 	}
-	if (m_spriteStatus >= 4)
+	if (m_spriteStatus >= 5)
 	{
-		m_spriteStatus = 4;
+		m_spriteStatus = 5;
 	}
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_L.Update();
@@ -271,6 +276,8 @@ void Game::SpriteFlag()
 	m_spriteRender_R.Update();
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.Update();
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_UI.Update();
 }
 
 void Game::Render(RenderContext& rc)
@@ -287,5 +294,9 @@ void Game::Render(RenderContext& rc)
 	if (m_spriteStatus == 3)
 	{
 		m_spriteRender_LB.Draw(rc);
+	}
+	if (m_spriteStatus == 4)
+	{
+		m_spriteRender_UI.Draw(rc);
 	}
 }

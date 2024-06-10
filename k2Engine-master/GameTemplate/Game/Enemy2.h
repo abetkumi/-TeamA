@@ -3,8 +3,11 @@ class Player;
 class Arrow;
 class Assist;
 class Item;
-//class Game;
+class Game;
 class GameCamera;
+
+#include "sound/SoundSource.h"
+
 class Enemy2 : public IGameObject
 {
 public:
@@ -44,7 +47,7 @@ public:
 	{
 		enEnemy2Clip_Idle,
 		enEnemy2Clip_Attack,
-		//enEnemy2Clip_Down,
+		enEnemy2Clip_Down,
 		enEnemy2Clip_Num,
 	};
 	AnimationClip m_animation2Clips[enEnemy2Clip_Num];
@@ -57,6 +60,7 @@ public:
 	Assist* assist;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
+	SoundSource* se;
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;

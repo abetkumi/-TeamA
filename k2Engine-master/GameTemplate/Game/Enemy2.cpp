@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Assist.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
 
@@ -31,18 +33,22 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/skelton3_idle.tka");
+	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/goblinArcher_idle.tka");
 	m_animation2Clips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/skelton3_shot.tka");
+	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/goblinArcher_attack.tka");
 	m_animation2Clips[enEnemy2Clip_Attack].SetLoopFlag(true);
-	/*m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
-	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);*/
+	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/goblinArcher_death.tka");
+	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 
-	m_modelRender.Init("Assets/modelData/skelton3.tkm"
-		,m_animation2Clips, enEnemy2Clip_Num);
+	/*m_modelRender.Init("Assets/modelData/goblin_Archer.tkm"
+		,m_animation2Clips, enEnemy2Clip_Num);*/
+
+	m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
 
 	player = FindGO<Player>("player");
-	assist = FindGO<Assist>("assist");
+	//assist = FindGO<Assist>("assist");
 
 	arrowtimer = arrowtime;
 
@@ -165,6 +171,10 @@ void Enemy2::Collision()
 			m_enemy2DownLag++;
 			if (m_enemy2DownLag >= 20)
 			{
+				SoundSource* se = NewGO<SoundSource>(0);
+				se->Init(1);
+				se->Play(false);
+
 				DeleteGO(this);
 			}
 		}
@@ -203,15 +213,15 @@ void Enemy2::PlayAnimation()
 	switch (m_enemy2State)
 	{
 	case 0:
-		m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
+		//m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
 		break;
 	case 1:
 		EnemyAttackBar();
-		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		//m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
 		break;
-	/*case 2:
-		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		break;*/
+	case 2:
+		//m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		break;
 	}
 }
 

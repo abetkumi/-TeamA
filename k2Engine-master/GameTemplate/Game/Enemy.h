@@ -3,6 +3,9 @@ class Player;
 class Arrow;
 class Assist;
 class GameCamera;
+
+#include "sound/SoundSource.h"
+
 class Enemy : public IGameObject
 {
 public:
@@ -39,6 +42,8 @@ public:
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
 	Quaternion m_rotation;
+	SoundSource* se;
+
 
 	enum EnEnemyClip
 	{

@@ -9,6 +9,6 @@ public:
 	Arrow* arrow;
 
 	float m_sNew;
-	float i, x;
+	float x;
 };
 

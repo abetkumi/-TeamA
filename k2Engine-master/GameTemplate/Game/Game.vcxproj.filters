@@ -31,7 +31,7 @@
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Wood.cpp" />
-    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="Ghost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -58,6 +58,6 @@
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Wood.h" />
-    <ClInclude Include="Loading.h" />
+    <ClInclude Include="Ghost.h" />
   </ItemGroup>
 </Project>

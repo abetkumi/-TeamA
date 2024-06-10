@@ -19,6 +19,7 @@ class Assist;
 class Arrow;
 class Rock;
 class Wood;
+class Ghost;
 
 class Game : public IGameObject
 {
@@ -28,7 +29,6 @@ public:
 	~Game();
 	void Update();
 	void Render(RenderContext& rc);
-	void SpriteFlag();
 
 	Player* player;
 	GameCamera* gameCamera;
@@ -47,28 +47,34 @@ public:
 	Arrow* arrow;
 	Rock* rock;
 	Wood* wood;
-
+	Ghost* ghost;
 	Ship_Gauge* ship_Gauge;
+
+
 	SpriteRender m_spriteRender;
-	SpriteRender m_spriteRender_L;
-	SpriteRender m_spriteRender_R;
-	SpriteRender m_spriteRender_LB;
-	SpriteRender m_spriteRender_UI;
 	LevelRender m_levelRender;
-	SoundSource* m_gameBGM;
+
+
 	Vector3 position;
+
+
 	std::vector<Vector3> path00_pointList;
 	std::vector<Vector3> path01_pointList;
 	std::vector<Vector3> path02_pointList;
+
 	Vector3 m_pointPosition;
 	Vector3 m_nextPosition;
 	Vector3 m_pointPosition1;
 	Vector3 m_nextPosition1;
 	Vector3 m_pointPosition2;
 	Vector3 m_nextPosition2;
-	float spritetimer = 0.5f;
-	float spritetime = 3.0f;
-	float m_shade = 0.5f;
-	int m_spriteStatus = 1;
+
+
+	Vector3 m_pointPositionG;
+	Vector3 m_nextPositionG;
+	Vector3 m_pointPosition1G;
+	Vector3 m_nextPosition1G;
+	Vector3 m_pointPosition2G;
+	Vector3 m_nextPosition2G;
 };
 

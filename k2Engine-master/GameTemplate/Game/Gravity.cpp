@@ -8,14 +8,16 @@ using namespace std;
 
 namespace
 {
-	float const g = 9.8f;
-	float const ang = 45.0f;
+	float const g = 2000.0f;
 }
 
 void  Gravity::Move(Vector3 v, const float Len)
 {
 	arrow = FindGO<Arrow>("arrow");
 
-	x = g * 80 * Len * 2;
-	m_sNew = sqrt(x) / 2;
+	float vy = sqrt((Len * g) / 2.0f);
+	
+	m_sNew = vy;
 }
+
+//01_Path_Point_003

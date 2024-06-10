@@ -3,7 +3,6 @@ class Player;
 class Arrow;
 class Assist;
 class GameCamera;
-class Item;
 class Enemy : public IGameObject
 {
 public:
@@ -17,11 +16,11 @@ public:
 	void Collision();
 	void Seek();
 	void EnemyAttackBar();
-	void ItemDrop();
 	bool Start();
 
 	const bool Serch();
 	const bool AttackSerch();
+	const bool DeleteSerch();
 	const bool Desision();
 	const bool Dec();
 
@@ -52,13 +51,11 @@ public:
 
 	int m_enemyState = 0;
 	int m_enemyDownLag = 0;
-	bool m_downFlag = false;
 	//CharacterController m_charaCon;
 
 	Player* player;
 	Arrow* arrow;
 	Assist* assist;
-	Item* item;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 
@@ -66,5 +63,6 @@ public:
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
-	int m_itemGet = 0;
+
+	int i;
 };

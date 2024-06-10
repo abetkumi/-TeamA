@@ -11,8 +11,8 @@
 
 namespace
 {
-	const Vector3 scale = { 1.0f,1.0f,1.0f };
-	const float s = 9.8f;
+	const Vector3 scale = { 0.02f,0.02f,0.02f };
+	const float s = 2000.0f;
 	const float i = 0.143796784f;
 }
 
@@ -24,10 +24,6 @@ Arrow::Arrow()
 Arrow::~Arrow()
 {
 	DeleteGO(m_collisionObject);
-	test = m_position - m_1stPosition;
-	jo = test.Length();
-
-	jo = jo;
 }
 
 bool Arrow::Start()
@@ -42,8 +38,8 @@ bool Arrow::Start()
 	m_modelRender.SetScale(scale);
 	m_modelRender.SetRotation(m_rotation);
 
-	m_velocity = Vector3::AxisZ;
-	m_rotation.Apply(m_velocity);
+	//m_velocity = Vector3::AxisZ;
+	//m_rotation.Apply(m_velocity);
 
 
 	if (m_enArrow == enArrow_Player)
@@ -58,7 +54,7 @@ bool Arrow::Start()
 	else if (m_enArrow == enArrow_Goblin)
 	{
 		m_collisionObject->SetName("e_arrow");
-		m_velocity.y -= i;
+		//m_velocity.y -= i;
 		m_Damage = 5;
 	}
 	else if (m_enArrow == enArrow_Skeleton)
@@ -73,9 +69,6 @@ bool Arrow::Start()
 	}*/
 
 
-	
-	m_velocity2 = m_velocity;
-
 	m_position += m_velocity * 50.0f;
 	m_velocity *= 3000.0f;
 	m_rotation.AddRotationDegY(360.0f);
@@ -88,21 +81,26 @@ bool Arrow::Start()
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		break;
 
-	case Arrow::enArrow_Goblin:
-		//m_modelRnder.Init("Assts/modelData/");
-		m_modelRender.Init("Assets/modelData/amo.tkm");
+	case Arrow::enArrow_Goblin: {
+		m_modelRender.Init("Assets/modelData/rock1.tkm");
+		//m_modelRender.Init("Assets/modelData/amo.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-		
-		m_velocity *= 0.4f;
+
 		bullettime = 7.0f;
 
-		gravity = NewGO<Gravity>(0, "gravity");
-		gravity->Move(m_velocity, m_peLen);
-		m_velocity = m_velocity2 * gravity->m_sNew;
+		// 初速度を求める
+		float initVel = sqrt((m_peLen * s) / 2.0f);
+		// XZ平面での速度を計算する
+		Vector3 velXZ = m_velocity;
+		velXZ.y = 0.0f;
+		velXZ.Normalize();
+		velXZ *= initVel;
+		m_velocity = velXZ;
 
-		DeleteGO(gravity);
+		// Y方向の速度を求める
+		m_velocity.y = initVel;
 
-		break;
+	}break;
 
 	case Arrow::enArrow_Boss:
 		//m_modelRnder.Init("Assts/modelData/");
@@ -161,9 +159,14 @@ void Arrow::Move()
 
 	if (m_enArrow == enArrow_Goblin)
 	{
-		m_xBulletTime = -(bullettime - 7.0f);
+		// 速度に対して重力加速度を加える
+		// このフレームで加速する速度する
+		float addSpeed = s * g_gameTime->GetFrameDeltaTime();
+		m_velocity.y -= addSpeed;
 
-		m_position.y -= s * m_xBulletTime;	//重力
+		/*m_xBulletTime = -(bullettime - 7.0f);
+
+		m_position.y -= s * m_xBulletTime;	//重力*/
 	}
 	
 
@@ -179,7 +182,7 @@ void Arrow::Render(RenderContext& rc)
 
 void Arrow::Inpacttime()
 {
-	if (bullettime > 0 && m_position.y > 75)
+	if (bullettime > 0 && m_position.y > 0)
 	{
 		return;
 	}

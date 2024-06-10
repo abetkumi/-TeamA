@@ -4,14 +4,15 @@
 #include "Arrow.h"
 #include "Assist.h"
 #include "GameCamera.h"
-#include "Item.h"
+
 #include "collision/CollisionObject.h"
 
 #include <time.h>
 //4000,3000
-#define serch 5000.0f * 5000.0f
-#define attackSerch 4400.0f * 4400.0f
+#define serch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
+#define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -54,7 +55,7 @@ bool Enemy::Start()
 
 	player = FindGO<Player>("player");
 	assist = FindGO<Assist>("assist");
-	//gameCamera = FindGO<GameCamera>("gameCamera");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
 
@@ -90,7 +91,15 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
-	ItemDrop();
+	
+	if (i == 1)
+	{
+		DeleteSerch();
+
+		if (DeleteSerch() == true) {
+			DeleteGO(this);
+		}
+	}
 
 	m_modelRender.Update();
 	//m_spriteRender.Update();
@@ -105,9 +114,16 @@ void Enemy::Render(RenderContext& rc)
 void Enemy::Rotation()
 {
 	Vector3 diff = player->m_position - m_position;
+
+	if (!Serch()) {
+		m_enemyState = 0;
+		arrowtimer = arrowtime;
+	}
+
 	if (Serch() == true)
 	{
 		m_moveSpeed = diff * 100.0f;
+		i = 1;
 	}
 
 	
@@ -132,25 +148,29 @@ void Enemy::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();		
 		return;
 	}
+	i = 1;
 	m_enemyState = 1;
-	if (m_attackBar.x <= 0)
-	{
-		m_attackBar.x = 1.6f;
+	arrow = NewGO<Arrow>(0);
 
-		arrow = NewGO<Arrow>(0);
+	arrow->m_position = (m_position + corre2);
+	arrow->m_1stPosition = arrow->m_position;
+	arrow->m_rotation = m_rotation;
 
-		arrow->m_position = (m_position + corre2);
-		arrow->m_1stPosition = arrow->m_position;
-		arrow->m_rotation = m_rotation;
+	diff.y = 0.0f;
+	arrow->m_velocity = diff;
+	arrow->m_velocity.y = 0.0f;
+	arrow->m_velocity.Normalize();
+	arrow->m_velocity *= sqrt(2)/2;
+	arrow->m_velocity.y = sqrt(2) / 2;
 
-		diff.y = 0.0f;
-		arrow->m_peLen = diff.Length();
+	arrow->m_peLen = diff.Length();
 
-		arrow->SetEnArrow(Arrow::enArrow_Goblin);
+	arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
-		arrowtimer = arrowtime;
+	arrowtimer = arrowtime;
 
-	}
+
+	
 }
 
 const bool Enemy::Serch()
@@ -160,13 +180,21 @@ const bool Enemy::Serch()
 	{
 		return true;
 	}
-	arrowtimer = arrowtime;
 }
 
 const bool Enemy::AttackSerch()
 {
 	Vector3 diff = player->m_position - m_position;
 	if (diff.LengthSq() <= attackSerch)
+	{
+		return true;
+	}
+}
+
+const bool Enemy::DeleteSerch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() > deleteSerch)
 	{
 		return true;
 	}
@@ -185,17 +213,13 @@ void Enemy::Collision()
 		}
 		if (HP <= 0) {
 			m_enemyState = 2;
-			m_downFlag = true;
+			m_enemyDownLag++;
+			if (m_enemyDownLag >= 20)
+			{
+				DeleteGO(this);
+			}
 		}
-	}
-	if (m_downFlag == true)
-	{
-		m_enemyDownLag++;
-		if (m_enemyDownLag >= 20)
-		{
-			m_itemGet = rand() % 4;
-			DeleteGO(this);
-		}
+		
 	}
 }
 
@@ -268,24 +292,13 @@ void Enemy::EnemyAttackBar()
 		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
 		m_attackBar.x -= 0.009f;
 	}
+	else if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.36f;
+	}
 
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 	m_spriteRender.SetScale(m_attackBar);
 	m_spriteRender.Update();
-}
-
-void Enemy::ItemDrop()
-{
-	switch (m_itemGet)
-	{
-	case 0:
-		break;
-	case 1:
-		item = NewGO<Item>(0,"item");
-		m_itemGet = 0;
-		break;
-	default:
-		break;
-	}
 }

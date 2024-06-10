@@ -47,9 +47,9 @@ public:
 	Arrow* arrow;
 	Rock* rock;
 	Wood* wood;
-	Ghost* ghost;
+	//Ghost* ghost;
 	Ship_Gauge* ship_Gauge;
-
+	SoundSource* m_gameBGM;
 
 	SpriteRender m_spriteRender;
 	LevelRender m_levelRender;

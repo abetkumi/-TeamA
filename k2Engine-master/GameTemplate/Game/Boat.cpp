@@ -26,7 +26,7 @@ bool Boat::Start()
 	m_spriteRender.SetPosition(m_shipposition);
 
 	m_modelRender.Update();
-	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
 	player = FindGO<Player>("player");
 	game = FindGO<Game>("game");

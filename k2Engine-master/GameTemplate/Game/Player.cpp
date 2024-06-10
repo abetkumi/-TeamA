@@ -45,6 +45,8 @@ bool Player::Start()
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	m_spriteRender_HP.Init("Assets/sprite/HPBar.dds", 512.0f, 512.0f);
+	m_spriteRender_HP.SetPivot({ 0.0f,0.5f });
 	m_spriteRender_r.Init("Assets/sprite/HPRed.dds", 512.0f, 512.0f);
 	m_spriteRender_r.SetPivot({ 0.0f,0.5f });
 	m_spriteRender.Init("Assets/sprite/HPBarGreen.dds", 512.0f, 512.0f);
@@ -53,6 +55,8 @@ bool Player::Start()
 	m_spriteRender.Update();
 	m_spriteRender_r.SetPosition({ 600.0f,-420.0f,0.0f });
 	m_spriteRender_r.Update();
+	m_spriteRender_HP.SetPosition({ 597.0f,-420.0f,0.0f });
+	m_spriteRender_HP.Update();
 
 	HP = 100;
 	game = FindGO<Game>("game");
@@ -80,9 +84,9 @@ void Player::Update()
 
 void Player::Move()
 {
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
-	//通常の移動モーション
+//	m_moveSpeed.x = 0.0f;
+//	m_moveSpeed.z = 0.0f;
+//	//通常の移動モーション
 //	Vector3 stickL;
 //	stickL.x = g_pad[0]->GetLStickXF();
 //	stickL.y = g_pad[0]->GetLStickYF();
@@ -107,7 +111,7 @@ void Player::Move()
 //	{
 //		m_moveSpeed = (right + forward) * 7.5;
 //	}
-
+//// 
 
 	//ここから3ラインの移動式
 	game->m_pointPosition = game->path00_pointList[m_point];
@@ -118,6 +122,9 @@ void Player::Move()
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
 	//川の3ライン間を移動するための計算
+	 if (game->m_spriteStatus == 5)
+	{
+
 	Vector3 stickL;
 	stickL.x = g_pad[0]->GetLStickXF();
 
@@ -247,6 +254,7 @@ void Player::Move()
 		//�ړ��X�s�[�h
 		m_moveSpeed = diff * 300.0f;
 	}
+	 }
 	//�����܂�3���C���̈ړ���
 
 	if (m_charaCon.IsOnGround())
@@ -275,9 +283,6 @@ void Player::Move()
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
-
-	m_position.y = firstPosition;
-
 	m_modelRender.SetPosition(m_position);
 }
 
@@ -325,6 +330,7 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender_HP.Draw(rc);
 	m_spriteRender_r.Draw(rc);
 	m_spriteRender.Draw(rc);
 	m_skyCube->Render(rc);
@@ -338,6 +344,10 @@ void Player::HPGauge()
 		if (m_HPGauge.x != m_HPBar_r.x)
 		{
 			m_HPBar_r.x -= (m_HPBar_r.x - m_HPGauge.x) / 10.0f;
+		}
+		if (m_HPGauge.x >= m_HPBar_r.x)
+		{
+			m_HPBar_r.x = m_HPGauge.x;
 		}
 	}
 	if (HP <= 0)

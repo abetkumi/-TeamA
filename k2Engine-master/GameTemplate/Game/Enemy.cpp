@@ -59,7 +59,7 @@ bool Enemy::Start()
 
 	player = FindGO<Player>("player");
 	assist = FindGO<Assist>("assist");
-	//gameCamera = FindGO<GameCamera>("gameCamera");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
 

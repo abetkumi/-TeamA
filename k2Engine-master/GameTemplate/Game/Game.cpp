@@ -17,8 +17,8 @@
 #include "Arrow.h"
 #include "Rock.h"
 #include "Wood.h"
+#include "Ghost.h"
 #include "sound/SoundSource.h" 
-
 
 Game::Game()
 {
@@ -29,11 +29,10 @@ Game::~Game()
 {
 	/*DeleteGO(assist);*/
 	DeleteGO(player);
-	//DeleteGO(ghost);
+	DeleteGO(ghost);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
-	
 	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 		{
@@ -57,12 +56,17 @@ Game::~Game()
 			DeleteGO(rock);
 			return true;
 		});
+	QueryGOs<Item>("item", [&](Item* item)
+		{
+			DeleteGO(item);
+			return true;
+		});
 }
 
 bool Game::Start()
 {
 
-	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
+	m_levelRender.Init("Assets/Level/stage_trueC.tkl", [&](LevelObjectData& objData)
 	{
 		if (objData.EqualObjectName(L"a_player") == true)
 		{
@@ -149,7 +153,7 @@ bool Game::Start()
 			return true;
 		}
 		else if(objData.ForwardMatchName(L"rock") == true) {
-			//ÔøΩÔøΩ
+			//ä‚
 			rock = NewGO<Rock>(0, "rock");
 			rock->r_position = objData.position;
 			rock->r_rotation = objData.rotation;
@@ -167,12 +171,19 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	//ghost = NewGO<Ghost>(0, "ghost");
+	ghost = NewGO<Ghost>(0, "ghost");
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
-	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÔøΩESE/GameBGM.wav");
-
+	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
+	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
+	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
+	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
 	m_gameBGM = NewGO<SoundSource>(3);
 	m_gameBGM->Init(3);
 	m_gameBGM->Play(false);
@@ -186,34 +197,32 @@ void Game::Update()
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
-	//ÔøΩQÔøΩ[ÔøΩÔøΩÔøΩIÔøΩ[ÔøΩoÔøΩ[ÔøΩÔøΩÔøΩÔøΩ
+	//ÉQÅ[ÉÄÉIÅ[ÉoÅ[îªíË
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
-		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-			{
-				DeleteGO(enemy);
-				return true;
-			});
-		QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
-			{
-				DeleteGO(enemy2);
-				return true;
-			});
-		QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
-			{
-				DeleteGO(enemy3);
-				return true;
-			});
 		if (player->m_arrowLag == 100)
 		{
-			DeleteGO(m_gameBGM);
 			gameOver = NewGO<GameOver>(0, "gameOver");
-	
+			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
+				{
+					DeleteGO(enemy);
+					return true;
+				});
+			QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
+				{
+					DeleteGO(enemy2);
+					return true;
+				});
+			QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
+				{
+					DeleteGO(enemy3);
+					return true;
+				});
 			//DeleteGO(this);
 		}
 	}
-	//ÔøΩNÔøΩÔøΩÔøΩAÔøΩÃÉ|ÔøΩCÔøΩÔøΩÔøΩgÔøΩÔøΩÔøΩÔøΩ
+	//ÉNÉäÉAÇÃÉ|ÉCÉìÉgîªíË
 	if (player->m_point == 100)
 	{
 		DeleteGO(m_gameBGM);
@@ -237,9 +246,56 @@ void Game::Update()
 		player->m_point = 11;
 		//DeleteGO(this);
 	}
+	SpriteFlag();
+}
+
+void Game::SpriteFlag()
+{
+	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
+	if (m_shade >= 1.0f)
+	{
+		m_shade = 1.0f;
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			spritetimer *= -1.0f;
+		}
+	}
+	if (m_shade <= 0.2f)
+	{
+		spritetimer *= -1.0f;
+		m_spriteStatus++;
+	}
+	if (m_spriteStatus >= 5)
+	{
+		m_spriteStatus = 5;
+	}
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_L.Update();
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.Update();
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.Update();
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_UI.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
+	if (m_spriteStatus == 1)
+	{
+		m_spriteRender_L.Draw(rc);
+	}
+	if (m_spriteStatus == 2)
+	{
+		m_spriteRender_R.Draw(rc);
+	}
+	if (m_spriteStatus == 3)
+	{
+		m_spriteRender_LB.Draw(rc);
+	}
+	if (m_spriteStatus == 4)
+	{
+		m_spriteRender_UI.Draw(rc);
+	}
 }

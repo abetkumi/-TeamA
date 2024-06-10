@@ -31,6 +31,8 @@ bool Boat::Start()
 	player = FindGO<Player>("player");
 	game = FindGO<Game>("game");
 	
+	m_shipPoint = player->m_point;
+
 	return true;
 }
 
@@ -86,8 +88,10 @@ void Boat::Rotation()
 
 void Boat::ShipMove()
 {
-	if (m_position.z < m_shipGauge.z)
+
+	if (player->m_point > m_shipPoint)
 	{
-		m_shipposition.x += 0.1f;
+		m_shipposition.x += 4.0f;
+		m_shipPoint = player->m_point;
 	}
 }

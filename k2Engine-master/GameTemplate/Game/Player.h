@@ -27,6 +27,7 @@ public:
 	ModelRender m_modelRender;
 	SpriteRender m_spriteRender;
 	SpriteRender m_spriteRender_r;
+	SpriteRender m_spriteRender_HP;
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation;

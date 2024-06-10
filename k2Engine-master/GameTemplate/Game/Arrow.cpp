@@ -120,6 +120,10 @@ bool Arrow::Start()
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
 
+	//arrowSE = NewGO<SoundSource>(0);
+	//arrowSE->Init(0);
+	//arrowSE->Play(true);
+
 	return true;
 }
 

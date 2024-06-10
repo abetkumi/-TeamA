@@ -29,6 +29,7 @@ public:
 	~Game();
 	void Update();
 	void Render(RenderContext& rc);
+	void SpriteFlag();
 
 	Player* player;
 	GameCamera* gameCamera;
@@ -52,11 +53,18 @@ public:
 
 
 	SpriteRender m_spriteRender;
+	SpriteRender m_spriteRender_L;
+	SpriteRender m_spriteRender_R;
+	SpriteRender m_spriteRender_LB;
+	SpriteRender m_spriteRender_UI;
 	LevelRender m_levelRender;
-
+	SoundSource* m_gameBGM;
 
 	Vector3 position;
-
+	float spritetimer = 0.5f;
+	float spritetime = 3.0f;
+	float m_shade = 0.5f;
+	int m_spriteStatus = 1;
 
 	std::vector<Vector3> path00_pointList;
 	std::vector<Vector3> path01_pointList;

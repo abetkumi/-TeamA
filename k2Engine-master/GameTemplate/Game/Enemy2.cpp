@@ -63,7 +63,7 @@ bool Enemy2::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(1);
 
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 60.0f * m_scale.y);
 	m_collisionObject->SetName("enemy_col");
 	m_collisionObject->SetPosition(m_position + corre1);
 

@@ -179,6 +179,7 @@ bool Game::Start()
 	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
 	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
 	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
@@ -252,9 +253,12 @@ void Game::Update()
 void Game::SpriteFlag()
 {
 	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
-	if (m_shade >= 1.0f)
+	if (m_shade >= 0.7f)
 	{
-		m_shade = 1.0f;
+		if (m_shade >= 1.0f)
+		{
+			m_shade = 1.0f;
+		}
 		if (g_pad[0]->IsTrigger(enButtonA))
 		{
 			spritetimer *= -1.0f;
@@ -265,7 +269,7 @@ void Game::SpriteFlag()
 		spritetimer *= -1.0f;
 		m_spriteStatus++;
 	}
-	if (m_spriteStatus >= 5)
+	if (m_spriteStatus >= 5||g_pad[0]->IsTrigger(enButtonB))
 	{
 		m_spriteStatus = 5;
 	}
@@ -285,17 +289,21 @@ void Game::Render(RenderContext& rc)
 	if (m_spriteStatus == 1)
 	{
 		m_spriteRender_L.Draw(rc);
+		m_spriteRender_B.Draw(rc);
 	}
 	if (m_spriteStatus == 2)
 	{
 		m_spriteRender_R.Draw(rc);
+		m_spriteRender_B.Draw(rc);
 	}
 	if (m_spriteStatus == 3)
 	{
 		m_spriteRender_LB.Draw(rc);
+		m_spriteRender_B.Draw(rc);
 	}
 	if (m_spriteStatus == 4)
 	{
 		m_spriteRender_UI.Draw(rc);
+		m_spriteRender_B.Draw(rc);
 	}
 }

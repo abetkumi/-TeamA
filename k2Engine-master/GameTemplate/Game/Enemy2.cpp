@@ -40,10 +40,10 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/goblinArcher_death.tka");
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 
-	/*m_modelRender.Init("Assets/modelData/goblin_Archer.tkm"
-		,m_animation2Clips, enEnemy2Clip_Num);*/
+	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
+		, m_animation2Clips, enEnemy2Clip_Num);
 
-	m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
+	//m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm");
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
 
@@ -52,7 +52,9 @@ bool Enemy2::Start()
 
 	arrowtimer = arrowtime;
 
+	m_scale = { 1.5f, 1.5f, 1.5f };
 	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetScale(m_scale);
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
@@ -125,15 +127,18 @@ void Enemy2::Attack()
 		return;
 	}
 	m_enemy2State = 1;
-	arrow = NewGO<Arrow>(0, "arrow");
+	if (m_attackBar.x <= 0)
+	{
+		arrow = NewGO<Arrow>(0, "arrow");
 
-	arrow->m_position = (m_position + corre2);
-	arrow->m_1stPosition = arrow->m_position;
-	arrow->m_rotation = m_rotation;
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);
+		arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
-	arrowtimer = arrowtime;
+		arrowtimer = arrowtime;
+	}
 }
 
 const bool Enemy2::Serch()
@@ -213,14 +218,14 @@ void Enemy2::PlayAnimation()
 	switch (m_enemy2State)
 	{
 	case 0:
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
 		break;
 	case 1:
 		EnemyAttackBar();
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
 		break;
 	case 2:
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
 		break;
 	}
 }
@@ -244,7 +249,7 @@ void Enemy2::EnemyAttackBar()
 	}
 	else if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.36f;
+		m_attackBar.x = 1.0f;
 	}
 
 	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

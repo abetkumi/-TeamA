@@ -40,10 +40,10 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/goblinArcher_death.tka");
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 
-	/*m_modelRender.Init("Assets/modelData/goblin_Archer.tkm"
-		,m_animation2Clips, enEnemy2Clip_Num);*/
+	m_modelRender.Init("Assets/modelData/goblin_Archer.tkm"
+		,m_animation2Clips, enEnemy2Clip_Num);
 
-	m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
+	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
 

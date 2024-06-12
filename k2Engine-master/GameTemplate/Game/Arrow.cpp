@@ -11,9 +11,9 @@
 
 namespace
 {
-	const Vector3 scale = { 0.02f,0.02f,0.02f };
-	const float s = 2000.0f;
-	const float i = 0.143796784f;
+	const Vector3 scale = { 1.0f,1.0f,1.0f };
+	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
+	const float g = 2000.0f;
 }
 
 Arrow::Arrow()
@@ -38,8 +38,8 @@ bool Arrow::Start()
 	m_modelRender.SetScale(scale);
 	m_modelRender.SetRotation(m_rotation);
 
-	//m_velocity = Vector3::AxisZ;
-	//m_rotation.Apply(m_velocity);
+	m_velocity = Vector3::AxisZ;
+	m_rotation.Apply(m_velocity);
 
 
 	if (m_enArrow == enArrow_Player)
@@ -89,7 +89,7 @@ bool Arrow::Start()
 		bullettime = 7.0f;
 
 		// 初速度を求める
-		float initVel = sqrt((m_peLen * s) / 2.0f);
+		float initVel = sqrt((m_peLen * g * 0.95f) / 2.0f);
 		// XZ平面での速度を計算する
 		Vector3 velXZ = m_velocity;
 		velXZ.y = 0.0f;
@@ -99,6 +99,8 @@ bool Arrow::Start()
 
 		// Y方向の速度を求める
 		m_velocity.y = initVel;
+
+		m_modelRender.SetScale(scale2);
 
 	}break;
 
@@ -157,14 +159,9 @@ void Arrow::Move()
 	{
 		// 速度に対して重力加速度を加える
 		// このフレームで加速する速度する
-		float addSpeed = s * g_gameTime->GetFrameDeltaTime();
+		float addSpeed = g * g_gameTime->GetFrameDeltaTime();
 		m_velocity.y -= addSpeed;
-
-		/*m_xBulletTime = -(bullettime - 7.0f);
-
-		m_position.y -= s * m_xBulletTime;	//重力*/
 	}
-	
 
 	m_modelRender.SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position);

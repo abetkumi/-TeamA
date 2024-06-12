@@ -131,8 +131,6 @@ void Enemy::Rotation()
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
-
-	m_rotation.AddRotationX(-45.0);
 	
 	m_collisionObject->SetPosition(m_position + corre1);
 }

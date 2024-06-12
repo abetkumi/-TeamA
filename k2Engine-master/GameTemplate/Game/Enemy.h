@@ -19,6 +19,7 @@ public:
 	void Collision();
 	void Seek();
 	void EnemyAttackBar();
+
 	bool Start();
 
 	const bool Serch();
@@ -64,7 +65,7 @@ public:
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 
-	float arrowtimer = 0.0f;
+	float arrowtimer = 0.01f;
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;

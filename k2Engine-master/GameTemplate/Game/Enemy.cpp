@@ -70,7 +70,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -135,8 +135,6 @@ void Enemy::Rotation()
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
-
-	m_rotation.AddRotationX(-45.0);
 	
 	m_collisionObject->SetPosition(m_position + corre1);
 }
@@ -154,27 +152,29 @@ void Enemy::Attack()
 	}
 	i = 1;
 	m_enemyState = 1;
-	arrow = NewGO<Arrow>(0);
+	if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.6f;
+		arrow = NewGO<Arrow>(0);
 
-	arrow->m_position = (m_position + corre2);
-	arrow->m_1stPosition = arrow->m_position;
-	arrow->m_rotation = m_rotation;
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
 
-	diff.y = 0.0f;
-	arrow->m_velocity = diff;
-	arrow->m_velocity.y = 0.0f;
-	arrow->m_velocity.Normalize();
-	arrow->m_velocity *= sqrt(2)/2;
-	arrow->m_velocity.y = sqrt(2) / 2;
+		diff.y = 0.0f;
+		arrow->m_velocity = diff;
+		arrow->m_velocity.y = 0.0f;
+		arrow->m_velocity.Normalize();
+		arrow->m_velocity *= sqrt(2) / 2;
+		arrow->m_velocity.y = sqrt(2) / 2;
 
-	arrow->m_peLen = diff.Length();
+		arrow->m_peLen = diff.Length();
 
-	arrow->SetEnArrow(Arrow::enArrow_Goblin);
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
-	arrowtimer = arrowtime;
+		arrowtimer = arrowtime;
 
-
-	
+	}
 }
 
 const bool Enemy::Serch()

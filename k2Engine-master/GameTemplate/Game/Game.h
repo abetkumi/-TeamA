@@ -57,6 +57,7 @@ public:
 	SpriteRender m_spriteRender_R;
 	SpriteRender m_spriteRender_LB;
 	SpriteRender m_spriteRender_UI;
+	SpriteRender m_spriteRender_B;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
 

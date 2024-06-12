@@ -19,7 +19,6 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(arrow);
 	DeleteGO(ArrowSE);
 	DeleteGO(m_skyCube);
 }
@@ -45,6 +44,8 @@ bool Player::Start()
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
 	m_charaCon.Init(25.0f, 75.0f, m_position);
+	
+	//HPバーの表示
 	m_spriteRender_HP.Init("Assets/sprite/HPBar.dds", 512.0f, 512.0f);
 	m_spriteRender_HP.SetPivot({ 0.0f,0.5f });
 	m_spriteRender_r.Init("Assets/sprite/HPRed.dds", 512.0f, 512.0f);
@@ -234,11 +235,6 @@ void Player::Move()
 	if (disToPlayer <= 200.0f)
 	{
 		m_point++;
-		//����̑D�̃��[�u�|�C���g����i������ƃG���[���o��j
-		//if (m_point == 13)
-		//{
-		//	m_point = 0;
-		//}
 	}
 
 
@@ -414,6 +410,7 @@ void Player::ArrowAnimation()
 		
 		break;
 	case 3:
+		//ダメージを受けたステート
 		m_modelRender.PlayAnimation(enArrowClip_Damage);
 		m_damageLag++;
 		if (m_damageLag >= 10)
@@ -423,11 +420,13 @@ void Player::ArrowAnimation()
 		}
 		break;
 	case 4:
+		//ゲームオーバーステート
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
 
 		break;
 	case 5:
+		//初期ステートに戻る
 		m_arrowState = 0;
 		break;
 	case 6:

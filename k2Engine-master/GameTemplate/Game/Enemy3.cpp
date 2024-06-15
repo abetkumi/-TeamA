@@ -50,6 +50,14 @@ bool Enemy3::Start()
 	m_collisionObject->SetIsEnableAutoDelete(false);
 
 
+
+	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
+	m_spriteRender.SetPivot({ 0.0f,0.5f });
+
+	m_spriteRender.SetPosition(m_position);
+	m_spriteRender.Update();
+
+
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 
@@ -64,16 +72,13 @@ void Enemy3::Update()
 	Rotation();
 	Attack();
 
-	switch (a)
+	switch (initialAng)
 	{
 	case 0:
 		if(Serch() == true)
-		a = 1;
-		break;
-	case 1:
 		Calculation();
 		break;
-	case 2:
+	case 1:
 		Move();
 		break;
 	default:
@@ -86,6 +91,7 @@ void Enemy3::Update()
 void Enemy3::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }
 
 void Enemy3::Move()
@@ -131,13 +137,13 @@ void Enemy3::AttackMove()
 	diff1.Normalize();
 	diff2.Normalize();
 
-	if (AM == 0) {
+	if (moveStatus == 0) {
 		moveSpeed = diff1 * 2000.0f;
 
 		m_attackPos += moveSpeed * g_gameTime->GetFrameDeltaTime();
 
 		if (Distance() == true) {
-			AM = 1;
+			moveStatus = 1;
 		}
 	}
 	else {
@@ -146,9 +152,9 @@ void Enemy3::AttackMove()
 		m_attackPos += moveSpeed * g_gameTime->GetFrameDeltaTime();
 
 		if (PosDistance() == true) {
-			AM = 0;
+			moveStatus = 0;
 			arrowtimer = arrowtime;
-			b = 0;
+			initialPos = 0;
 		}
 	}
 
@@ -184,27 +190,19 @@ void Enemy3::Attack()
 	if (arrowtimer > 0.0f)
 	{
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();
+		EnemyAttackBar();
 		return;
 	}
 
 	else {
-		if (b == 0) {
+		if (initialPos == 0) {
 			m_attackPos = m_position;
-			AttackMove();
-			b = 1;
+			initialPos = 1;
 		}
-		else if (b == 1)
-		{
-			AttackMove();
-		}
-	}
-	else
-	if (b == 0) {
-		m_attackPos = m_position;
-		b = 1;
 	}
 
 	AttackMove();
+	
 	
 	//arrowtimer = arrowtime;
 }
@@ -222,8 +220,53 @@ void Enemy3::Calculation()
 	x1 += 3.1f;
 	
 
-	a = 2;
+	initialAng = 1;
 }
+
+void Enemy3::EnemyAttackBar()
+{
+	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
+
+	Vector3 V0, V1;
+	float V2;
+
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
+
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+
+	if (V2 >= 0)
+	{
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= Decrease;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= Decrease;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			//m_enemy2State = 2;
+			m_attackBar.x = 1.0f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
+}
+
+
 
 const bool Enemy3::Serch()
 {

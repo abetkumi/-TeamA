@@ -188,15 +188,12 @@ void Enemy3::Attack()
 	}
 
 	else
-		if (b == 0) {
-			m_attackPos = m_position;
-			AttackMove();
-			b = 1;
-		}
-		else if (b == 1)
-		{
-			AttackMove();
-		}
+	if (b == 0) {
+		m_attackPos = m_position;
+		b = 1;
+	}
+
+	AttackMove();
 	
 	//arrowtimer = arrowtime;
 }

@@ -46,6 +46,7 @@ public:
 	enum EnEnemy2Clip
 	{
 		enEnemy2Clip_Idle,
+		enEnemy2Clip_Pull,
 		enEnemy2Clip_Attack,
 		enEnemy2Clip_Down,
 		enEnemy2Clip_Num,

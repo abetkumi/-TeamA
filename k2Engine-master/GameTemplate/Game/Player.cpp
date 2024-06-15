@@ -64,9 +64,11 @@ bool Player::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	m_skyCube = NewGO<SkyCube>(0, "skycube");
+	m_skyCube->SetScale({ 2000.0f,2000.0f,2000.0f });
 	m_skyCube->SetPosition(m_position);
 	m_skyCube->SetType(enSkyCubeType_Day);
 	m_skyCube->SetLuminance(0.5f);
+	
 
 	return true;
 

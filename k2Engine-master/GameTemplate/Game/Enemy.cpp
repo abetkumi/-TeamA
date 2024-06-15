@@ -217,15 +217,6 @@ void Enemy::Collision()
 		}
 		if (HP <= 0) {
 			m_enemyState = 2;
-			m_enemyDownLag++;
-			if (m_enemyDownLag >= 20)
-			{
-				SoundSource* se = NewGO<SoundSource>(0);
-				se->Init(1);
-				se->Play(false);
-
-				DeleteGO(this);
-			}
 		}
 		
 	}
@@ -280,6 +271,15 @@ void Enemy::PlayAnimation()
 		break;
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
+		m_enemyDownLag++;
+		if (m_enemyDownLag >= 20)
+		{
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(1);
+			se->Play(false);
+
+			DeleteGO(this);
+		}
 		break;
 	}
 }

@@ -2,6 +2,9 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Assist.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
 
@@ -10,6 +13,7 @@
 #define serch 4000.0f * 4000.0f
 #define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
+#define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -30,17 +34,23 @@ Enemy2::~Enemy2()
 
 bool Enemy2::Start()
 {
-	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/skelton_idle.tka");
+	m_animation2Clips[enEnemy2Clip_Idle].Load("Assets/animData/goblinArcher_idle.tka");
 	m_animation2Clips[enEnemy2Clip_Idle].SetLoopFlag(true);
-	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/skelton_shot.tka");
+	m_animation2Clips[enEnemy2Clip_Attack].Load("Assets/animData/goblinArcher_attack.tka");
 	m_animation2Clips[enEnemy2Clip_Attack].SetLoopFlag(true);
-	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/skelton_death.tka");
+	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/goblinArcher_death.tka");
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
-
-	m_modelRender.Init("Assets/modelData/skelton2.tkm"
+	m_animation2Clips[enEnemy2Clip_Pull].Load("Assets/animData/goblinArcher_aimhold.tka");
+	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
+	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
 
+	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
+
 	player = FindGO<Player>("player");
+	//assist = FindGO<Assist>("assist");
 
 	arrowtimer = arrowtime;
 
@@ -65,7 +75,7 @@ bool Enemy2::Start()
 	m_rotation.Apply(m_forward);
 
 
-	m_modelRender.Update();
+	//m_modelRender.Update();
 	return true;
 }
 
@@ -82,6 +92,15 @@ void Enemy2::Update()
 	Collision();
 	PlayAnimation();
 
+	if (i == 1)
+	{
+		DeleteSerch();
+
+		if (DeleteSerch() == true) {
+			DeleteGO(this);
+		}
+	}
+
 	m_modelRender.Update();
 }
 
@@ -97,6 +116,7 @@ void Enemy2::Rotation()
 	if (Serch() == true)
 	{
 		m_moveSpeed = diff * 100.0f;
+		i = 1;
 	}
 
 	m_modelRender.SetPosition(m_position);
@@ -117,12 +137,13 @@ void Enemy2::Attack()
 		return;
 	}
 	m_enemy2State = 1;
-	/*arrow = NewGO<Arrow>(0, "arrow");
+	arrow = NewGO<Arrow>(0, "arrow");
+
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);*/
+	arrow->SetEnArrow(Arrow::enArrow_Enemy);
 
 	arrowtimer = arrowtime;
 }
@@ -135,6 +156,7 @@ const bool Enemy2::Serch()
 		return true;
 	}
 	arrowtimer = arrowtime;
+	return false;
 }
 
 const bool Enemy2::AttackSerch()
@@ -144,6 +166,17 @@ const bool Enemy2::AttackSerch()
 	{
 		return true;
 	}
+	return false;
+}
+
+const bool Enemy2::DeleteSerch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() > deleteSerch)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Enemy2::Collision()
@@ -158,10 +191,14 @@ void Enemy2::Collision()
 
 		}
 		if (HP <= 0) {
-			m_enemy2State = 2;
+			m_enemy2State = 3;
 			m_enemy2DownLag++;
 			if (m_enemy2DownLag >= 20)
 			{
+				SoundSource* se = NewGO<SoundSource>(0);
+				se->Init(1);
+				se->Play(false);
+
 				DeleteGO(this);
 			}
 		}
@@ -204,10 +241,22 @@ void Enemy2::PlayAnimation()
 		break;
 	case 1:
 		EnemyAttackBar();
-		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Pull);
 		break;
 	case 2:
+		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		break;
+	case 3:
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		m_enemy2DownLag++;
+		if (m_enemy2DownLag >= 20)
+		{
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(1);
+			se->Play(false);
+
+			DeleteGO(this);
+		}
 		break;
 	}
 }
@@ -215,27 +264,41 @@ void Enemy2::PlayAnimation()
 
 void Enemy2::EnemyAttackBar()
 {
-	Vector3 position = m_position;
+	Vector3 V0, V1;
+	float V2;
 
-	position.y += 200.0f;
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
 
-	if (m_attackBar.x >= 0.4f)
-	{
-		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
-	{
-		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x <= 0)
-	{
-		m_attackBar.x = 1.36f;
-	}
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
-	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
-	m_spriteRender.SetScale(m_attackBar);
-	m_spriteRender.Update();
+	if (V2 >= 0)
+	{
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			m_enemy2State = 2;
+			m_attackBar.x = 1.36f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
 }

@@ -33,7 +33,7 @@ const bool Assist::Homing()
 	{
 		return true;
 	}
-	/*return true;*/
+	return false;
 }
 
 void Assist::Distance()

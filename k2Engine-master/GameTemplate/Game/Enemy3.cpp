@@ -16,8 +16,8 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	//const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	//const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy3::Enemy3()
@@ -121,6 +121,7 @@ void Enemy3::Move()
 void Enemy3::AttackMove()
 {
 	Distance();
+	PosDistance();
 
 	
 	Vector3 moveSpeed;
@@ -177,8 +178,7 @@ void Enemy3::Rotation()
 void Enemy3::Attack()
 {
 	
-
-	if (Serch() == false)
+	if (!Serch())
 		return;
 
 	if (arrowtimer > 0.0f)
@@ -187,6 +187,17 @@ void Enemy3::Attack()
 		return;
 	}
 
+	else {
+		if (b == 0) {
+			m_attackPos = m_position;
+			AttackMove();
+			b = 1;
+		}
+		else if (b == 1)
+		{
+			AttackMove();
+		}
+	}
 	else
 	if (b == 0) {
 		m_attackPos = m_position;
@@ -222,6 +233,7 @@ const bool Enemy3::Serch()
 		return true;
 	}
 	//arrowtimer = arrowtime;
+	return false;
 }
 
 const bool Enemy3::MoveSerch()
@@ -231,6 +243,7 @@ const bool Enemy3::MoveSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy3::Distance()
@@ -240,6 +253,7 @@ const bool Enemy3::Distance()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy3::PosDistance()
@@ -249,6 +263,7 @@ const bool Enemy3::PosDistance()
 	{
 		return true;
 	}
+	return false;
 }
 
 void Enemy3::Collision()
@@ -259,7 +274,7 @@ void Enemy3::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_collisionObject))
 		{
-			HP -= player->ATK;
+			HP -= (int)player->ATK;
 
 			if (HP <= 0) {
 				DeleteGO(this);

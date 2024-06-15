@@ -11,7 +11,7 @@ GameOver::GameOver()
 
 	gameOverBGM = NewGO<SoundSource>(1);
 	gameOverBGM->Init(1);
-	gameOverBGM->Play(true);
+	gameOverBGM->Play(false);
 	game = FindGO<Game>("game");
 }
 

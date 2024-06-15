@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Assist.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 #include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
@@ -47,6 +49,8 @@ bool Enemy::Start()
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
 
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
@@ -66,7 +70,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -148,27 +152,29 @@ void Enemy::Attack()
 	}
 	i = 1;
 	m_enemyState = 1;
-	arrow = NewGO<Arrow>(0);
+	if (m_attackBar.x <= 0)
+	{
+		m_attackBar.x = 1.6f;
+		arrow = NewGO<Arrow>(0);
 
-	arrow->m_position = (m_position + corre2);
-	arrow->m_1stPosition = arrow->m_position;
-	arrow->m_rotation = m_rotation;
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
 
-	diff.y = 0.0f;
-	arrow->m_velocity = diff;
-	arrow->m_velocity.y = 0.0f;
-	arrow->m_velocity.Normalize();
-	arrow->m_velocity *= sqrt(2)/2;
-	arrow->m_velocity.y = sqrt(2) / 2;
+		diff.y = 0.0f;
+		arrow->m_velocity = diff;
+		arrow->m_velocity.y = 0.0f;
+		arrow->m_velocity.Normalize();
+		arrow->m_velocity *= sqrt(2) / 2;
+		arrow->m_velocity.y = sqrt(2) / 2;
 
-	arrow->m_peLen = diff.Length();
+		arrow->m_peLen = diff.Length();
 
-	arrow->SetEnArrow(Arrow::enArrow_Goblin);
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
-	arrowtimer = arrowtime;
+		arrowtimer = arrowtime;
 
-
-	
+	}
 }
 
 const bool Enemy::Serch()
@@ -178,6 +184,7 @@ const bool Enemy::Serch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::AttackSerch()
@@ -187,6 +194,7 @@ const bool Enemy::AttackSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::DeleteSerch()
@@ -196,6 +204,7 @@ const bool Enemy::DeleteSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 
@@ -211,11 +220,6 @@ void Enemy::Collision()
 		}
 		if (HP <= 0) {
 			m_enemyState = 2;
-			m_enemyDownLag++;
-			if (m_enemyDownLag >= 20)
-			{
-				DeleteGO(this);
-			}
 		}
 		
 	}
@@ -246,6 +250,7 @@ const bool Enemy::Desision()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::Dec()
@@ -270,33 +275,56 @@ void Enemy::PlayAnimation()
 		break;
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
+		m_enemyDownLag++;
+		if (m_enemyDownLag >= 20)
+		{
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(1);
+			se->Play(false);
+
+			DeleteGO(this);
+		}
 		break;
 	}
 }
 
 void Enemy::EnemyAttackBar()
 {
-	Vector3 position = m_position;
+	Vector3 V0, V1;
+	float V2;
 
-	position.y += 200.0f;
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
 
-	if (m_attackBar.x >= 0.4f)
-	{
-		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
-	{
-		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x <= 0)
-	{
-		m_attackBar.x = 1.36f;
-	}
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
 
-	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
-	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
-	m_spriteRender.SetScale(m_attackBar);
-	m_spriteRender.Update();
+	if (V2 >= 0)
+	{
+
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			m_attackBar.x = 1.36f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
 }

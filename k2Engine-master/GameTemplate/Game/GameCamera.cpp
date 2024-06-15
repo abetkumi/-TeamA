@@ -27,7 +27,7 @@ bool GameCamera::Start()
 	m_player = FindGO<Player>("player");
 
 	g_camera3D->SetNear(1.0f);
-	g_camera3D->SetFar(11000.0f);
+	g_camera3D->SetFar(21000.0f);
 
 	m_spriteRender.Init("Assets/sprite/syoujun.dds", 350.0f, 250.0f);
 	m_spriteRender.SetPosition(corre3);
@@ -59,17 +59,41 @@ void GameCamera::Update()
 	Vector3 toPosDir = m_toCameraPos;
 	toPosDir.Normalize();
 
-	if (toPosDir.y < -0.5f) {
-		m_toCameraPos = toCameraPosOld;
-	}
-	else if (toPosDir.y > 0.5f) {
-		m_toCameraPos = toCameraPosOld;
-	}
+	
 
-	pos = target + m_toCameraPos;
-	target = target - m_toCameraPos;
-	g_camera3D->SetTarget(pos);
-	g_camera3D->SetPosition(target);
+	if (m_player->m_arrowState == 4 || m_player->m_arrowState == 6)
+	{
+		if (m_player->m_arrowState == 6)
+		{
+			target = pos + m_toCameraPos;
+			pos = target - m_toCameraPos;
+		}
+		else if (m_player->m_arrowState == 4)
+		{
+			if (m_gameOverFlag == true)
+			{
+				target.y = target.y + 900.0f;
+				target.z = target.z + 100.0f;
+				pos.y = pos.y - 300.0f;
+				m_gameOverFlag = false;
+			}
+		}
+		g_camera3D->SetTarget(pos);
+		g_camera3D->SetPosition(target);
+	}
+	else
+	{
+		if (toPosDir.y < -0.5f) {
+			m_toCameraPos = toCameraPosOld;
+		}
+		else if (toPosDir.y > 0.5f) {
+			m_toCameraPos = toCameraPosOld;
+		}
+		pos = target + m_toCameraPos;
+		target = target - m_toCameraPos;
+		g_camera3D->SetTarget(pos);
+		g_camera3D->SetPosition(target);
+	}
 }
 
 //void GameCamera::Decision()

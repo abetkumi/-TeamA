@@ -18,7 +18,7 @@
 #include "Rock.h"
 #include "Wood.h"
 #include "Ghost.h"
-
+#include "sound/SoundSource.h" 
 
 Game::Game()
 {
@@ -50,10 +50,15 @@ Game::~Game()
 			return true;
 		});
 	DeleteGO(status);
-	DeleteGO(boss);
+	//DeleteGO(boss);
 	QueryGOs<Rock>("rock", [&](Rock* rock)
 		{
 			DeleteGO(rock);
+			return true;
+		});
+	QueryGOs<Item>("item", [&](Item* item)
+		{
+			DeleteGO(item);
 			return true;
 		});
 }
@@ -81,14 +86,14 @@ bool Game::Start()
 
 			return true;
 		}
-		else if (objData.EqualObjectName(L"sky") == true)
-		{
-			sky = NewGO<Sky>(0, "sky");
+		//else if (objData.EqualObjectName(L"sky") == true)
+		//{
+		//	sky = NewGO<Sky>(0, "sky");
 
-			sky->s_position = objData.position;
+		//	sky->s_position = objData.position;
 
-			return true;
-		}
+		//	return true;
+		//}
 		else if (objData.EqualObjectName(L"boat") == true)
 		{
 			boat = NewGO<Boat>(0, "boat");
@@ -125,13 +130,13 @@ bool Game::Start()
 
 			return true;
 		}
-		else if (objData.EqualObjectName(L"BOSS_fake") == true)
-		{
-			boss = NewGO<Boss>(0, "Boss_fake");
-			boss->m_position = objData.position;
-			boss->m_scale = objData.scale;
-			return true;
-		}
+		//else if (objData.EqualObjectName(L"BOSS_fake") == true)
+		//{
+		//	boss = NewGO<Boss>(0, "Boss_fake");
+		//	boss->m_position = objData.position;
+		//	boss->m_scale = objData.scale;
+		//	return true;
+		//}
 		else if (objData.ForwardMatchName(L"00_Path_Point_") == true) {
 			// 1 line
 			path00_pointList.push_back(objData.position);
@@ -170,6 +175,19 @@ bool Game::Start()
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
+	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
+	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
+	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	g_soundEngine->ResistWaveFileBank(3, "Assets/BGM・SE/GameBGM.wav");
+	m_gameBGM = NewGO<SoundSource>(3);
+	m_gameBGM->Init(3);
+	m_gameBGM->Play(false);
 
 	return true;
 }
@@ -208,6 +226,7 @@ void Game::Update()
 	//クリアのポイント判定
 	if (player->m_point == 100)
 	{
+		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 			{
@@ -225,11 +244,66 @@ void Game::Update()
 				return true;
 			});
 		player->m_arrowState=6;
+		player->m_point = 11;
 		//DeleteGO(this);
 	}
+	SpriteFlag();
+}
+
+void Game::SpriteFlag()
+{
+	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
+	if (m_shade >= 0.7f)
+	{
+		if (m_shade >= 1.0f)
+		{
+			m_shade = 1.0f;
+		}
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			spritetimer *= -1.0f;
+		}
+	}
+	if (m_shade <= 0.2f)
+	{
+		spritetimer *= -1.0f;
+		m_spriteStatus++;
+	}
+	if (m_spriteStatus >= 5||g_pad[0]->IsTrigger(enButtonB))
+	{
+		m_spriteStatus = 5;
+	}
+	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_L.Update();
+	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_R.Update();
+	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_LB.Update();
+	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	m_spriteRender_UI.Update();
 }
 
 void Game::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
+	if (m_spriteStatus == 1)
+	{
+		m_spriteRender_L.Draw(rc);
+		m_spriteRender_B.Draw(rc);
+	}
+	if (m_spriteStatus == 2)
+	{
+		m_spriteRender_R.Draw(rc);
+		m_spriteRender_B.Draw(rc);
+	}
+	if (m_spriteStatus == 3)
+	{
+		m_spriteRender_LB.Draw(rc);
+		m_spriteRender_B.Draw(rc);
+	}
+	if (m_spriteStatus == 4)
+	{
+		m_spriteRender_UI.Draw(rc);
+		m_spriteRender_B.Draw(rc);
+	}
 }

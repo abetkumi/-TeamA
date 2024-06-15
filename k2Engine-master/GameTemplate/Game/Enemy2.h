@@ -1,9 +1,13 @@
 #pragma once
 class Player;
 class Arrow;
+class Assist;
 class Item;
 class Game;
 class GameCamera;
+
+#include "sound/SoundSource.h"
+
 class Enemy2 : public IGameObject
 {
 public:
@@ -18,8 +22,10 @@ public:
 	void Seek();
 	void EnemyAttackBar();
 	bool Start();
+
 	const bool Serch();
 	const bool AttackSerch();
+	const bool DeleteSerch();
 	const bool Desision();
 
 	Vector3 m_position;
@@ -41,6 +47,7 @@ public:
 	enum EnEnemy2Clip
 	{
 		enEnemy2Clip_Idle,
+		enEnemy2Clip_Pull,
 		enEnemy2Clip_Attack,
 		enEnemy2Clip_Down,
 		enEnemy2Clip_Num,
@@ -52,13 +59,16 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	Assist* assist;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
+	SoundSource* se;
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
+	int i = 0;
 };
 
 

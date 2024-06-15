@@ -184,6 +184,7 @@ const bool Enemy::Serch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::AttackSerch()
@@ -193,6 +194,7 @@ const bool Enemy::AttackSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::DeleteSerch()
@@ -202,6 +204,7 @@ const bool Enemy::DeleteSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 
@@ -247,6 +250,7 @@ const bool Enemy::Desision()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy::Dec()
@@ -286,27 +290,41 @@ void Enemy::PlayAnimation()
 
 void Enemy::EnemyAttackBar()
 {
-	Vector3 position = m_position;
+	Vector3 V0, V1;
+	float V2;
 
-	position.y += 200.0f;
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
 
-	if (m_attackBar.x >= 0.4f)
-	{
-		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
-	{
-		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x <= 0)
-	{
-		m_attackBar.x = 1.36f;
-	}
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
 
-	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
-	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
-	m_spriteRender.SetScale(m_attackBar);
-	m_spriteRender.Update();
+	if (V2 >= 0)
+	{
+
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			m_attackBar.x = 1.36f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
 }

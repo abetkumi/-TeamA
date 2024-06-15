@@ -121,6 +121,7 @@ void Enemy3::Move()
 void Enemy3::AttackMove()
 {
 	Distance();
+	PosDistance();
 
 	
 	Vector3 moveSpeed;
@@ -177,8 +178,7 @@ void Enemy3::Rotation()
 void Enemy3::Attack()
 {
 	
-
-	if (Serch() == false)
+	if (!Serch())
 		return;
 
 	if (arrowtimer > 0.0f)
@@ -187,7 +187,7 @@ void Enemy3::Attack()
 		return;
 	}
 
-	else
+	else {
 		if (b == 0) {
 			m_attackPos = m_position;
 			AttackMove();
@@ -197,6 +197,7 @@ void Enemy3::Attack()
 		{
 			AttackMove();
 		}
+	}
 	
 	//arrowtimer = arrowtime;
 }
@@ -225,6 +226,7 @@ const bool Enemy3::Serch()
 		return true;
 	}
 	//arrowtimer = arrowtime;
+	return false;
 }
 
 const bool Enemy3::MoveSerch()
@@ -234,6 +236,7 @@ const bool Enemy3::MoveSerch()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy3::Distance()
@@ -243,6 +246,7 @@ const bool Enemy3::Distance()
 	{
 		return true;
 	}
+	return false;
 }
 
 const bool Enemy3::PosDistance()
@@ -252,6 +256,7 @@ const bool Enemy3::PosDistance()
 	{
 		return true;
 	}
+	return false;
 }
 
 void Enemy3::Collision()
@@ -262,7 +267,7 @@ void Enemy3::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_collisionObject))
 		{
-			HP -= player->ATK;
+			HP -= (int)player->ATK;
 
 			if (HP <= 0) {
 				DeleteGO(this);

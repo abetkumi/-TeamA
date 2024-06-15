@@ -68,7 +68,6 @@ bool Player::Start()
 	m_skyCube->SetPosition(m_position);
 	m_skyCube->SetType(enSkyCubeType_Day);
 	m_skyCube->SetLuminance(0.5f);
-	
 
 	return true;
 
@@ -312,7 +311,7 @@ void Player::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			m_arrowState = 3;
-			HP -= 20;
+			HP -= 2;
 		}
 	}
 }

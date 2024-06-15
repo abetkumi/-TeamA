@@ -31,6 +31,7 @@ public:
 	PhysicsStaticObject r_physicsStaticObject;
 	CollisionObject* r_collisionObject;
 	bool r_rockFlag = false;
-	float damageLag = 0.0f;
+	Vector3 r_damagePosition;
+	float r_damageLag = 0.0f;
 };
 

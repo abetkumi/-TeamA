@@ -13,6 +13,7 @@
 #define serch 4000.0f * 4000.0f
 #define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
+#define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
@@ -91,6 +92,15 @@ void Enemy2::Update()
 	Collision();
 	PlayAnimation();
 
+	if (i == 1)
+	{
+		DeleteSerch();
+
+		if (DeleteSerch() == true) {
+			DeleteGO(this);
+		}
+	}
+
 	m_modelRender.Update();
 }
 
@@ -106,6 +116,7 @@ void Enemy2::Rotation()
 	if (Serch() == true)
 	{
 		m_moveSpeed = diff * 100.0f;
+		i = 1;
 	}
 
 	m_modelRender.SetPosition(m_position);
@@ -145,6 +156,7 @@ const bool Enemy2::Serch()
 		return true;
 	}
 	arrowtimer = arrowtime;
+	return false;
 }
 
 const bool Enemy2::AttackSerch()
@@ -154,6 +166,17 @@ const bool Enemy2::AttackSerch()
 	{
 		return true;
 	}
+	return false;
+}
+
+const bool Enemy2::DeleteSerch()
+{
+	Vector3 diff = player->m_position - m_position;
+	if (diff.LengthSq() > deleteSerch)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Enemy2::Collision()
@@ -241,28 +264,41 @@ void Enemy2::PlayAnimation()
 
 void Enemy2::EnemyAttackBar()
 {
-	Vector3 position = m_position;
+	Vector3 V0, V1;
+	float V2;
 
-	position.y += 200.0f;
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
 
-	if (m_attackBar.x >= 0.4f)
-	{
-		m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
-	{
-		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		m_attackBar.x -= 0.009f;
-	}
-	else if (m_attackBar.x <= 0)
-	{
-		m_enemy2State = 2;
-		m_attackBar.x = 1.36f;
-	}
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
-	m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
-	m_spriteRender.SetScale(m_attackBar);
-	m_spriteRender.Update();
+	if (V2 >= 0)
+	{
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= 0.009f;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			m_enemy2State = 2;
+			m_attackBar.x = 1.36f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
 }

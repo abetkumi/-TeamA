@@ -50,7 +50,7 @@ void Rock::Colision()
 		{
 			player->m_arrowState = 3;
 			player->HP -= 5;
-			player->m_position = game->m_pointPosition;
+			player->m_position = game->path00_pointList[player->m_point - 1];
 			r_rockFlag = true;
 		}
 	}

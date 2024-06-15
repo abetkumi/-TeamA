@@ -307,23 +307,14 @@ void Player::Collision()
 		}
 	}
 
-	/*collisions == g_collisionObjectManager->FindCollisionObjects("g_arrow");
-
-	for (auto collision : collisions) {
+	const auto& collisions2 = g_collisionObjectManager->FindCollisionObjects("bat_enemy_col");
+	for (auto collision : collisions2) {
 		if (collision->IsHit(m_charaCon))
 		{
+			m_arrowState = 3;
 			HP -= 20;
 		}
 	}
-
-	collisions == g_collisionObjectManager->FindCollisionObjects("s_arrow");
-
-	for (auto collision : collisions) {
-		if (collision->IsHit(m_charaCon))
-		{
-			HP -= 8;
-		}
-	}*/
 }
 
 void Player::Render(RenderContext& rc)

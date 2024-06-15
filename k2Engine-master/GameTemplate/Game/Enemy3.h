@@ -10,6 +10,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();
+	void AttackMove();
 	void Rotation();
 	void Attack();
 	void Calculation();
@@ -18,6 +19,8 @@ public:
 
 	const bool Serch();
 	const bool MoveSerch();
+	const bool Distance();
+	const bool PosDistance();
 
 	void Collision();
 
@@ -43,12 +46,14 @@ public:
 
 	int HP = 1;
 	int a = 0;
+	int b = 0;
+	int AM = 0;
 
 	//Move()“à‚Ì‚Ý
 	float x1,x2 = 0.0f;
 	int y = 0;
 	
-	float Xt = 0.8f;
+	float Xt = 0.3f;
 };
 
 

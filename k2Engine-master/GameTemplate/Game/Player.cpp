@@ -281,6 +281,7 @@ void Player::Move()
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
+	
 	m_modelRender.SetPosition(m_position);
 }
 

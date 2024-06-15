@@ -39,8 +39,9 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Attack].SetLoopFlag(true);
 	m_animation2Clips[enEnemy2Clip_Down].Load("Assets/animData/goblinArcher_death.tka");
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
-
-	m_modelRender.Init("Assets/modelData/goblin_Archer.tkm"
+	m_animation2Clips[enEnemy2Clip_Pull].Load("Assets/animData/goblinArcher_aimhold.tka");
+	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
+	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
@@ -167,7 +168,7 @@ void Enemy2::Collision()
 
 		}
 		if (HP <= 0) {
-			m_enemy2State = 2;
+			m_enemy2State = 3;
 			m_enemy2DownLag++;
 			if (m_enemy2DownLag >= 20)
 			{
@@ -213,14 +214,26 @@ void Enemy2::PlayAnimation()
 	switch (m_enemy2State)
 	{
 	case 0:
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Idle);
 		break;
 	case 1:
 		EnemyAttackBar();
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Pull);
 		break;
 	case 2:
-		//m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		m_modelRender.PlayAnimation(enEnemy2Clip_Attack);
+		break;
+	case 3:
+		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
+		m_enemy2DownLag++;
+		if (m_enemy2DownLag >= 20)
+		{
+			SoundSource* se = NewGO<SoundSource>(0);
+			se->Init(1);
+			se->Play(false);
+
+			DeleteGO(this);
+		}
 		break;
 	}
 }
@@ -244,6 +257,7 @@ void Enemy2::EnemyAttackBar()
 	}
 	else if (m_attackBar.x <= 0)
 	{
+		m_enemy2State = 2;
 		m_attackBar.x = 1.36f;
 	}
 

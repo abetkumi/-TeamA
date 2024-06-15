@@ -24,7 +24,10 @@ bool Boat::Start()
 	m_shipposition.x = -850.0f;
 	m_shipposition.y = 470.0f;
 	m_spriteRender.SetPosition(m_shipposition);
-
+	Quaternion rot;
+	rot.SetRotationDegY(90.0f);
+	rot = { 0.0f,90.0f,0.0f,0.0f };
+	m_modelRender.SetRotation(rot);
 	m_modelRender.Update();
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 
@@ -46,8 +49,6 @@ void Boat::Update()
 	Rotation();
 
 	m_modelRender.Update();
-	m_physicsStaticObject.Release();
-	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//����
 
@@ -67,7 +68,7 @@ void Boat::Move()
 	/*m_position.z -= 1.0f;*/
 
 	m_position = player->m_position;
-	m_position.y -= 70.0f;
+	//m_position.y -= 70.0f;
 	
 	m_modelRender.SetPosition(m_position);
 

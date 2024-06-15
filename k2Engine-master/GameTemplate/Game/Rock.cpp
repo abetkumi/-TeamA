@@ -24,6 +24,7 @@ bool Rock::Start()
 	r_modelRender.SetScale({ 0.1f,0.1f,0.1f });
 
 	r_modelRender.SetPosition(r_position);
+	r_modelRender.SetRotation(r_rotation);
 
 	r_modelRender.Update();
 

@@ -224,7 +224,7 @@ void Enemy3::Calculation()
 }
 
 void Enemy3::EnemyAttackBar()
-{
+ {
 	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
 
 	Vector3 V0, V1;

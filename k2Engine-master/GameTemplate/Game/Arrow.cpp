@@ -29,7 +29,7 @@ Arrow::~Arrow()
 bool Arrow::Start()
 {
 	gameCamera = FindGO<GameCamera>("gameCamera");
-	assist = FindGO<Assist>("assist");
+	//assist = FindGO<Assist>("assist");
 	player = FindGO<Player>("player");
 
 	m_collisionObject = NewGO<CollisionObject>(0);

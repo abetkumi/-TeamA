@@ -50,6 +50,7 @@ bool Enemy::Start()
 	,m_animationClips,enEnemyClip_Num);
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -155,6 +156,11 @@ void Enemy::Attack()
 	if (m_attackBar.x <= 0)
 	{
 		m_attackBar.x = 1.6f;
+
+		SoundSource* se = NewGO<SoundSource>(7);
+		se->Init(7);
+		se->Play(false);
+
 		arrow = NewGO<Arrow>(0);
 
 		arrow->m_position = (m_position + corre2);

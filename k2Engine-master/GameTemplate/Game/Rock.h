@@ -8,7 +8,7 @@ public:
 	bool Start();
 	Rock();
 	~Rock();
-	void Colision();
+	void RockDamage();
 	void Update();
 	void Render(RenderContext& rc);
 
@@ -29,7 +29,6 @@ public:
 	Vector3 r_scale = Vector3::One;
 	ModelRender r_modelRender;
 	PhysicsStaticObject r_physicsStaticObject;
-	CollisionObject* r_collisionObject;
 	bool r_rockFlag = false;
 	Vector3 r_damagePosition;
 	float r_damageLag = 0.0f;

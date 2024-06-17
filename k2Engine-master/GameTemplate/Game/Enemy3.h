@@ -14,6 +14,7 @@ public:
 	void Rotation();
 	void Attack();
 	void Calculation();
+	void EnemyAttackBar();
 	
 	bool Start();
 
@@ -31,8 +32,11 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_cNPos;
 
-	Quaternion m_rotation;
+	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
+	Vector2 m_spritePosition = Vector2::Zero;
 
+	Quaternion m_rotation;
+	SpriteRender m_spriteRender;
 	ModelRender m_modelRender;
 
 	//CharacterController m_charaCon;
@@ -45,9 +49,9 @@ public:
 	float arrowtime = 3.0f;
 
 	int HP = 1;
-	int a = 0;
-	int b = 0;
-	int AM = 0;
+	int initialAng = 0;			//Move初期角度設定用
+	int initialPos = 0;			//AttackMove初期位置設定用
+	int moveStatus = 0;
 
 	//Move()内のみ
 	float x1,x2 = 0.0f;

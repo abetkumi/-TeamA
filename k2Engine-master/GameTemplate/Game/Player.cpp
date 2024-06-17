@@ -40,6 +40,7 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
 
 	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
+	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM・SE/player_shot.wav");
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
@@ -369,7 +370,7 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			ArrowSE = NewGO<SoundSource>(5);
+			ArrowSE = NewGO<SoundSource>(0);
 			ArrowSE->Init(5);
 			ArrowSE->Play(false);
 
@@ -393,6 +394,11 @@ void Player::ArrowAnimation()
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
 			arrow = NewGO<Arrow>(0);
+
+			ArrowSE = NewGO<SoundSource>(0);
+			ArrowSE->Init(9);
+			ArrowSE->Play(false);
+
 			arrow->m_position = (m_position + corre2);
 			arrow->m_1stPosition = arrow->m_position;
 			arrow->m_rotation = m_rotation;

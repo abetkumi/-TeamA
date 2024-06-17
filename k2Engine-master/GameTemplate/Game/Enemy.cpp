@@ -157,7 +157,7 @@ void Enemy::Attack()
 	{
 		m_attackBar.x = 1.6f;
 
-		SoundSource* se = NewGO<SoundSource>(7);
+		SoundSource* se = NewGO<SoundSource>(0);
 		se->Init(7);
 		se->Play(false);
 

@@ -204,6 +204,7 @@ void Game::Update()
 		player->m_arrowState = 4;
 		if (player->m_arrowLag == 100)
 		{
+			DeleteGO(m_gameBGM);
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 				{

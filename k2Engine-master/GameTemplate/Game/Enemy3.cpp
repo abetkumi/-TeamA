@@ -10,12 +10,14 @@
 
 #define serch 1300.0f * 1300.0f
 #define moveSerch 5000.0f * 5000.0f
+
+#define distance 100.0f * 100.0f
 //#define attacktime 5.0f
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	//const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	//const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy3::Enemy3()
@@ -40,12 +42,20 @@ bool Enemy3::Start()
 	m_collisionObject = NewGO<CollisionObject>(0);
 
 	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
-	m_collisionObject->SetName("enemy_col");
+	m_collisionObject->SetName("bat_enemy_col");
 	
 	m_modelRender.SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position + corre1);
 
 	m_collisionObject->SetIsEnableAutoDelete(false);
+
+
+
+	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
+	m_spriteRender.SetPivot({ 0.0f,0.5f });
+
+	m_spriteRender.SetPosition(m_position);
+	m_spriteRender.Update();
 
 
 	m_forward = Vector3::AxisZ;
@@ -62,16 +72,13 @@ void Enemy3::Update()
 	Rotation();
 	Attack();
 
-	switch (a)
+	switch (initialAng)
 	{
 	case 0:
 		if(Serch() == true)
-		a = 1;
-		break;
-	case 1:
 		Calculation();
 		break;
-	case 2:
+	case 1:
 		Move();
 		break;
 	default:
@@ -84,6 +91,7 @@ void Enemy3::Update()
 void Enemy3::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_spriteRender.Draw(rc);
 }
 
 void Enemy3::Move()
@@ -97,17 +105,61 @@ void Enemy3::Move()
 		}
 
 		m_position = { 
-			player->m_position.x + cos(x1) * 1200.0f,
+			player->m_position.x + cos(x1) * 1190.0f,
 			m_position.y,
-			player->m_position.z + sin(x1) * 1200.0f
+			player->m_position.z + sin(x1) * 1190.0f
 		};
-		x1, x2 += Xt * g_gameTime->GetFrameDeltaTime();
+		x1 += Xt * g_gameTime->GetFrameDeltaTime();
 
 		//m_position += player->m_moveSpeed * 3.0f * g_gameTime->GetFrameDeltaTime();
 	}
 	
+	if (arrowtimer > 0.0f) {
+		m_modelRender.SetPosition(m_position);
+		m_collisionObject->SetPosition(m_position);
+	}
+	else {
+		
+	}
 	
-	m_modelRender.SetPosition(m_position);
+}
+
+void Enemy3::AttackMove()
+{
+	Distance();
+	PosDistance();
+
+	
+	Vector3 moveSpeed;
+	Vector3 diff1 = player->m_position - m_attackPos;
+	Vector3 diff2 = m_position - m_attackPos;
+	
+	diff1.Normalize();
+	diff2.Normalize();
+
+	if (moveStatus == 0) {
+		moveSpeed = diff1 * 2000.0f;
+
+		m_attackPos += moveSpeed * g_gameTime->GetFrameDeltaTime();
+
+		if (Distance() == true) {
+			moveStatus = 1;
+		}
+	}
+	else {
+		moveSpeed = diff2 * 2000.0f;
+
+		m_attackPos += moveSpeed * g_gameTime->GetFrameDeltaTime();
+
+		if (PosDistance() == true) {
+			moveStatus = 0;
+			arrowtimer = arrowtime;
+			initialPos = 0;
+		}
+	}
+
+	m_modelRender.SetPosition(m_attackPos);
+	m_collisionObject->SetPosition(m_attackPos);
 }
 
 void Enemy3::Rotation()
@@ -118,7 +170,7 @@ void Enemy3::Rotation()
 		m_moveSpeed = diff * 100.0f;
 	}
 
-	m_modelRender.SetPosition(m_position);
+	//m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
 
@@ -126,40 +178,95 @@ void Enemy3::Rotation()
 	m_cNPos.Normalize();
 	m_rotation.AddRotationX(m_cNPos.y);
 
-	m_collisionObject->SetPosition(m_position + corre1);
+	
 }
 
 void Enemy3::Attack()
 {
+	
 	if (!Serch())
 		return;
 
-	if (arrowtimer > 0)
+	if (arrowtimer > 0.0f)
 	{
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();
+		EnemyAttackBar();
 		return;
 	}
 
-	arrowtimer = arrowtime;
+	else {
+		if (initialPos == 0) {
+			m_attackPos = m_position;
+			initialPos = 1;
+		}
+	}
+
+	AttackMove();
+	
+	
+	//arrowtimer = arrowtime;
 }
 
 void Enemy3::Calculation()
 {
-	/*Vector3 diff = player->m_position - m_position;
+	Vector3 diff = player->m_position - m_position;
+
 	diff.y = 0;
 	diff.Normalize();
-	x1 = asin(diff.x);*/
 
-	//m_position.x = player->m_position.x + cos(x) * 1200.0f;
 
-	x1 = (m_position.x - player->m_position.x) / 1200.0f;
-	x1 = acos(x1);
+	x1 = diff.z / diff.x;
+	x1 = atan(x1);
+	x1 += 3.1f;
+	
 
-	x2 = (m_position.z - player->m_position.z) / 1200.0f;
-	x2 = asin(x2);
-
-	a = 2;
+	initialAng = 1;
 }
+
+void Enemy3::EnemyAttackBar()
+{
+	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
+
+	Vector3 V0, V1;
+	float V2;
+
+	V0 = g_camera3D->GetForward();
+	V1 = m_position - g_camera3D->GetPosition();
+	V1.Normalize();
+
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+
+	if (V2 >= 0)
+	{
+
+		Vector3 position = m_position;
+
+		position.y += 200.0f;
+
+		if (m_attackBar.x >= 0.4f)
+		{
+			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
+			m_attackBar.x -= Decrease;
+		}
+		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
+		{
+			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+			m_attackBar.x -= Decrease;
+		}
+		else if (m_attackBar.x <= 0)
+		{
+			//m_enemy2State = 2;
+			m_attackBar.x = 1.0f;
+		}
+
+		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
+		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
+		m_spriteRender.SetScale(m_attackBar);
+		m_spriteRender.Update();
+	}
+}
+
+
 
 const bool Enemy3::Serch()
 {
@@ -168,7 +275,8 @@ const bool Enemy3::Serch()
 	{
 		return true;
 	}
-	arrowtimer = arrowtime;
+	//arrowtimer = arrowtime;
+	return false;
 }
 
 const bool Enemy3::MoveSerch()
@@ -178,6 +286,27 @@ const bool Enemy3::MoveSerch()
 	{
 		return true;
 	}
+	return false;
+}
+
+const bool Enemy3::Distance()
+{
+	Vector3 diff = player->m_position - m_attackPos;
+	if (diff.LengthSq() <= distance)
+	{
+		return true;
+	}
+	return false;
+}
+
+const bool Enemy3::PosDistance()
+{
+	Vector3 diff = m_position - m_attackPos;
+	if (diff.LengthSq() <= distance / 25.0f)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Enemy3::Collision()
@@ -188,7 +317,7 @@ void Enemy3::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_collisionObject))
 		{
-			HP -= player->ATK;
+			HP -= (int)player->ATK;
 
 			if (HP <= 0) {
 				DeleteGO(this);

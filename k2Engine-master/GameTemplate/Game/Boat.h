@@ -18,8 +18,7 @@ public:
 	ModelRender m_modelRender;
 	Quaternion m_rotation;
 	SpriteRender m_spriteRender;
-	PhysicsStaticObject m_physicsStaticObject;
-
+	
 	Vector3 m_position;
 	Vector3 m_scale;
 	Vector3 m_shipGauge;

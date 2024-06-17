@@ -25,6 +25,7 @@ public:
 
 	const bool Serch();
 	const bool AttackSerch();
+	const bool DeleteSerch();
 	const bool Desision();
 
 	Vector3 m_position;
@@ -46,6 +47,7 @@ public:
 	enum EnEnemy2Clip
 	{
 		enEnemy2Clip_Idle,
+		enEnemy2Clip_Pull,
 		enEnemy2Clip_Attack,
 		enEnemy2Clip_Down,
 		enEnemy2Clip_Num,
@@ -66,6 +68,7 @@ public:
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
+	int i = 0;
 };
 
 

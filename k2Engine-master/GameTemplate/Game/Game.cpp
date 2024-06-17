@@ -50,7 +50,7 @@ Game::~Game()
 			return true;
 		});
 	DeleteGO(status);
-	DeleteGO(boss);
+	//DeleteGO(boss);
 	QueryGOs<Rock>("rock", [&](Rock* rock)
 		{
 			DeleteGO(rock);
@@ -86,14 +86,14 @@ bool Game::Start()
 
 			return true;
 		}
-		else if (objData.EqualObjectName(L"sky") == true)
-		{
-			sky = NewGO<Sky>(0, "sky");
+		//else if (objData.EqualObjectName(L"sky") == true)
+		//{
+		//	sky = NewGO<Sky>(0, "sky");
 
-			sky->s_position = objData.position;
+		//	sky->s_position = objData.position;
 
-			return true;
-		}
+		//	return true;
+		//}
 		else if (objData.EqualObjectName(L"boat") == true)
 		{
 			boat = NewGO<Boat>(0, "boat");
@@ -130,13 +130,13 @@ bool Game::Start()
 
 			return true;
 		}
-		else if (objData.EqualObjectName(L"BOSS_fake") == true)
-		{
-			boss = NewGO<Boss>(0, "Boss_fake");
-			boss->m_position = objData.position;
-			boss->m_scale = objData.scale;
-			return true;
-		}
+		//else if (objData.EqualObjectName(L"BOSS_fake") == true)
+		//{
+		//	boss = NewGO<Boss>(0, "Boss_fake");
+		//	boss->m_position = objData.position;
+		//	boss->m_scale = objData.scale;
+		//	return true;
+		//}
 		else if (objData.ForwardMatchName(L"00_Path_Point_") == true) {
 			// 1 line
 			path00_pointList.push_back(objData.position);

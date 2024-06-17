@@ -24,6 +24,9 @@ bool Boat::Start()
 	m_shipposition.x = -850.0f;
 	m_shipposition.y = 470.0f;
 	m_spriteRender.SetPosition(m_shipposition);
+	/*Quaternion rot;*/
+	m_rotation.SetRotationDegY(180.0f);
+	m_modelRender.SetRotation(m_rotation);
 
 	m_modelRender.Update();
 	//m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
@@ -46,8 +49,6 @@ void Boat::Update()
 	Rotation();
 
 	m_modelRender.Update();
-	m_physicsStaticObject.Release();
-	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
 	
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//����
 
@@ -67,7 +68,7 @@ void Boat::Move()
 	/*m_position.z -= 1.0f;*/
 
 	m_position = player->m_position;
-	m_position.y -= 70.0f;
+	//m_position.y -= 70.0f;
 	
 	m_modelRender.SetPosition(m_position);
 
@@ -78,12 +79,15 @@ void Boat::Move()
 
 void Boat::Rotation()
 {
-	auto moveDir = player->m_moveSpeed;
-	moveDir.Normalize();
-	m_direction = m_direction * 0.98f + moveDir * 0.02f;
-	m_direction.Normalize();
-	m_rotation.SetRotationYFromDirectionXZ(m_direction);
-	m_modelRender.SetRotation(m_rotation);
+	if (game->m_spriteStatus == 5 && player->m_moveSpeed.z != 0.0f)
+	{
+		auto moveDir = player->m_moveSpeed;
+		moveDir.Normalize();
+		m_direction = m_direction * 0.98f + moveDir * 0.02f;
+		m_direction.Normalize();
+		m_rotation.SetRotationYFromDirectionXZ(m_direction);
+		m_modelRender.SetRotation(m_rotation);
+	}
 }
 
 void Boat::ShipMove()

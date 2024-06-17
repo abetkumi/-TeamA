@@ -10,14 +10,18 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 	void Move();
+	void AttackMove();
 	void Rotation();
 	void Attack();
 	void Calculation();
+	void EnemyAttackBar();
 	
 	bool Start();
 
 	const bool Serch();
 	const bool MoveSerch();
+	const bool Distance();
+	const bool PosDistance();
 
 	void Collision();
 
@@ -28,8 +32,11 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_cNPos;
 
-	Quaternion m_rotation;
+	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
+	Vector2 m_spritePosition = Vector2::Zero;
 
+	Quaternion m_rotation;
+	SpriteRender m_spriteRender;
 	ModelRender m_modelRender;
 
 	//CharacterController m_charaCon;
@@ -42,13 +49,15 @@ public:
 	float arrowtime = 3.0f;
 
 	int HP = 1;
-	int a = 0;
+	int initialAng = 0;			//Move初期角度設定用
+	int initialPos = 0;			//AttackMove初期位置設定用
+	int moveStatus = 0;
 
 	//Move()内のみ
 	float x1,x2 = 0.0f;
 	int y = 0;
 	
-	float Xt = 0.8f;
+	float Xt = 0.3f;
 };
 
 

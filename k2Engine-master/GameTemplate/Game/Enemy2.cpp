@@ -48,6 +48,7 @@ bool Enemy2::Start()
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMESE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM?ESE/enemy_shot.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");
@@ -138,6 +139,10 @@ void Enemy2::Attack()
 	}
 	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
+
+	SoundSource* se = NewGO<SoundSource>(0);
+	se->Init(10);
+	se->Play(false);
 
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;

@@ -184,6 +184,7 @@ bool Game::Start()
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
+	
 	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
 	m_gameBGM = NewGO<SoundSource>(3);
 	m_gameBGM->Init(3);

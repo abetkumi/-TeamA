@@ -48,7 +48,7 @@ bool Enemy2::Start()
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM?ESE/enemy_shot.wav");
+	g_soundEngine->ResistWaveFileBank(10, "Assets/BGMÅESE/enemy_shot.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");

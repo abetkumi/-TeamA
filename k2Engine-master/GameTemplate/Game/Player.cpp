@@ -250,7 +250,7 @@ void Player::Move()
 	}
 	else {
 		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 300.0f;
+		m_moveSpeed = diff * 200.0f;
 	}
 	 }
 	//�����܂�3���C���̈ړ���
@@ -267,11 +267,11 @@ void Player::Move()
 	
 
 	//�����Q�[���I�[�o�[�R�}���h
-	if (g_pad[0]->IsPress(enButtonY))
-	{
-		m_arrowState = 3;
-		HP -= 10;
-	}
+	//if (g_pad[0]->IsPress(enButtonY))
+	//{
+	//	m_arrowState = 3;
+	//	HP -= 10;
+	//}
 
 	if (m_arrowState == 4 || m_arrowState == 6)
 	{

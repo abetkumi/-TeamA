@@ -26,6 +26,7 @@ bool Rock::Start()
 	r_modelRender.Init("Assets/modelData/rock1.tkm");
 	r_modelRender.SetScale({ 0.1f,0.1f,0.1f });
 	r_modelRender.SetPosition(r_position);
+	r_modelRender.SetRotation(r_rotation);
 	r_modelRender.Update();
 
 	Vector3 hoge = { 0.0f,0.0f,0.0f };

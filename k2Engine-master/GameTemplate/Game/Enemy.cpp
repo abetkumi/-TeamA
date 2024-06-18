@@ -48,6 +48,7 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
 	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
@@ -71,7 +72,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,250.0f*m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -157,7 +158,7 @@ void Enemy::Attack()
 	{
 		m_attackBar.x = 1.6f;
 
-		SoundSource* se = NewGO<SoundSource>(0);
+		SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
 		se->Play(false);
 
@@ -284,7 +285,7 @@ void Enemy::PlayAnimation()
 		m_enemyDownLag++;
 		if (m_enemyDownLag >= 20)
 		{
-			SoundSource* se = NewGO<SoundSource>(0);
+			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
 

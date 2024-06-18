@@ -42,8 +42,11 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 	m_animation2Clips[enEnemy2Clip_Pull].Load("Assets/animData/goblinArcher_aimhold.tka");
 	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
+
 	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
+
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
@@ -196,7 +199,7 @@ void Enemy2::Collision()
 			m_enemy2DownLag++;
 			if (m_enemy2DownLag >= 20)
 			{
-				SoundSource* se = NewGO<SoundSource>(0);
+				SoundSource* se = NewGO<SoundSource>(1);
 				se->Init(1);
 				se->Play(false);
 
@@ -252,7 +255,7 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
-			SoundSource* se = NewGO<SoundSource>(0);
+			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
 

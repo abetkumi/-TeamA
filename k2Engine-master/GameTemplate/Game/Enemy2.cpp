@@ -6,6 +6,7 @@
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
+#include "Item.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -66,7 +67,7 @@ bool Enemy2::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(1);
 
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 80.0f * m_scale.y);
 	m_collisionObject->SetName("enemy_col");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -92,6 +93,7 @@ void Enemy2::Update()
 	Seek();
 	Collision();
 	PlayAnimation();
+	ItemDrop();
 
 	if (i == 1)
 	{
@@ -140,7 +142,7 @@ void Enemy2::Attack()
 	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
 
-	SoundSource* se = NewGO<SoundSource>(0);
+	SoundSource* se = NewGO<SoundSource>(10);
 	se->Init(10);
 	se->Play(false);
 
@@ -193,19 +195,10 @@ void Enemy2::Collision()
 		{
 			HP -= player->ATK;
 
-
 		}
 		if (HP <= 0) {
 			m_enemy2State = 3;
 			m_enemy2DownLag++;
-			if (m_enemy2DownLag >= 20)
-			{
-				SoundSource* se = NewGO<SoundSource>(0);
-				se->Init(1);
-				se->Play(false);
-
-				DeleteGO(this);
-			}
 		}
 	}
 }
@@ -256,10 +249,10 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
-			SoundSource* se = NewGO<SoundSource>(0);
-			se->Init(1);
+			SoundSource* se = NewGO<SoundSource>(10);
+			se->Init(10);
 			se->Play(false);
-
+			m_itemGet = rand() % 4;
 			DeleteGO(this);
 		}
 		break;
@@ -270,15 +263,15 @@ void Enemy2::PlayAnimation()
 void Enemy2::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float V2;
+	float m_enemy2camera;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+	m_enemy2camera = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	if (V2 >= 0)
+	if (m_enemy2camera >= 0)
 	{
 
 		Vector3 position = m_position;
@@ -305,5 +298,20 @@ void Enemy2::EnemyAttackBar()
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
+	}
+}
+
+void Enemy2::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0, "item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
 	}
 }

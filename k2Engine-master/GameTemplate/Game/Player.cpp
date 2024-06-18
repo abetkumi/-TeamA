@@ -395,7 +395,7 @@ void Player::ArrowAnimation()
 		{
 			arrow = NewGO<Arrow>(0);
 
-			ArrowSE = NewGO<SoundSource>(0);
+			ArrowSE = NewGO<SoundSource>(9);
 			ArrowSE->Init(9);
 			ArrowSE->Play(false);
 

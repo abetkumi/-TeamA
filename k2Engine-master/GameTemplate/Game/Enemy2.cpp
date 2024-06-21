@@ -255,11 +255,11 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
+			DeleteGO(this);
+
 			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
-
-			DeleteGO(this);
 		}
 		break;
 	}

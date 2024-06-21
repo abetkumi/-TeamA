@@ -370,7 +370,7 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			ArrowSE = NewGO<SoundSource>(0);
+			ArrowSE = NewGO<SoundSource>(5);
 			ArrowSE->Init(5);
 			ArrowSE->Play(false);
 

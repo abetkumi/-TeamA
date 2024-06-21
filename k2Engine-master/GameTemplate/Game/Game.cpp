@@ -187,7 +187,7 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(3, "Assets/BGM・SE/GameBGM.wav");
 	m_gameBGM = NewGO<SoundSource>(3);
 	m_gameBGM->Init(3);
-	m_gameBGM->Play(false);
+	m_gameBGM->Play(true);
 
 	return true;
 }
@@ -225,7 +225,7 @@ void Game::Update()
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 102)
+	if (player->m_point == 200)
 	{
 		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");

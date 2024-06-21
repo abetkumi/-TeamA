@@ -1,4 +1,5 @@
 #pragma once
+#include "sound/SoundSource.h"
 
 class Player;
 class Arrow;
@@ -44,6 +45,7 @@ public:
 	Player* player;
 	Arrow* arrow;
 	CollisionObject* m_collisionObject;
+	SoundSource* se;
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;

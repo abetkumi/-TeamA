@@ -6,7 +6,7 @@
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
-
+#include "Item.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -35,6 +35,7 @@ Enemy::~Enemy()
 
 	//assist->
 	DeleteGO(assist);
+	player->m_score += 100;
 }
 bool Enemy::Start()
 {
@@ -97,7 +98,7 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
-	
+	ItemDrop();
 	if (i == 1)
 	{
 		DeleteSerch();
@@ -226,9 +227,17 @@ void Enemy::Collision()
 			HP -= 100;
 		}
 		if (HP <= 0) {
-			m_enemyState = 2;
+			m_downFlag = true;
 		}
-		
+	}
+	if (m_downFlag == true)
+	{
+		m_enemyDownLag++;
+		if (m_enemyDownLag >= 20)
+		{
+			m_itemGet = rand() % 4;
+			DeleteGO(this);
+		}
 	}
 }
 
@@ -298,18 +307,16 @@ void Enemy::PlayAnimation()
 void Enemy::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float V2;
+	float m_enemycamara;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
+	m_enemycamara = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
 
-	if (V2 >= 0)
+	if (m_enemycamara >= 0)
 	{
-
-
 		Vector3 position = m_position;
 
 		position.y += 200.0f;
@@ -333,5 +340,20 @@ void Enemy::EnemyAttackBar()
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
+	}
+}
+
+void Enemy::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0, "item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
 	}
 }

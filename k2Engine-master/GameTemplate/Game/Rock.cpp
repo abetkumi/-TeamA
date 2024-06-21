@@ -63,6 +63,7 @@ void Rock::RockDamage()
 		player->HP -= 5;
 		player->m_arrowState = 3;
 		player->m_position = game->path01_pointList[player->m_point - 2];
+		player->m_moveFlag = 1;
 		player->m_modelRender.SetPosition(player->m_position);
 		player->m_charaCon.SetPosition(player->m_position);
 		player->m_modelRender.Update();

@@ -21,6 +21,7 @@ public:
 	void Collision();
 	void Seek();
 	void EnemyAttackBar();
+	void ItemDrop();
 	bool Start();
 
 	const bool Serch();
@@ -60,6 +61,7 @@ public:
 	Player* player;
 	Arrow* arrow;
 	Assist* assist;
+	Item* item;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 	SoundSource* se;
@@ -69,6 +71,7 @@ public:
 	double m_Dec;
 	int HP = 1;
 	int i = 0;
+	int m_itemGet = 0;
 };
 
 

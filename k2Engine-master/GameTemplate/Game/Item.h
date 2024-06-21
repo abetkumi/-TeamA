@@ -15,11 +15,12 @@ public:
 
 	ModelRender m_modelRender;
 	Vector3 m_position;
+	Vector3 m_firstPosition;
 	Quaternion m_rotation;
 	Player* player;
 	Game* game;
 	SoundSource* ItemGetSE;
-
+	
 	int Count, r, i = 0;
 };
 

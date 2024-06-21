@@ -28,6 +28,11 @@ Game::Game()
 Game::~Game()
 {
 	/*DeleteGO(assist);*/
+	QueryGOs<Item>("item", [&](Item* item)
+	{
+		DeleteGO(item);
+		return true;
+	});
 	DeleteGO(player);
 	DeleteGO(ghost);
 	DeleteGO(gameCamera);
@@ -35,32 +40,27 @@ Game::~Game()
 	DeleteGO(boat);
 	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-		{
-			DeleteGO(enemy);
-			return true;
-		});
+	{
+		DeleteGO(enemy);
+		return true;
+	});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
-		{
-			DeleteGO(enemy2);
-			return true;
-		});
+	{
+		DeleteGO(enemy2);
+		return true;
+	});
 	QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
-		{
-			DeleteGO(enemy3);
-			return true;
-		});
+	{
+		DeleteGO(enemy3);
+		return true;
+	});
 	DeleteGO(status);
 	//DeleteGO(boss);
 	QueryGOs<Rock>("rock", [&](Rock* rock)
-		{
+	{
 			DeleteGO(rock);
 			return true;
-		});
-	QueryGOs<Item>("item", [&](Item* item)
-		{
-			DeleteGO(item);
-			return true;
-		});
+	});
 }
 
 bool Game::Start()

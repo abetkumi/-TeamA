@@ -28,6 +28,7 @@ public:
 	Game();
 	~Game();
 	void Update();
+	void Score();
 	void Render(RenderContext& rc);
 	void SpriteFlag();
 

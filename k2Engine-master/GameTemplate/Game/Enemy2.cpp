@@ -31,6 +31,7 @@ Enemy2::Enemy2()
 Enemy2::~Enemy2()
 {
 	DeleteGO(m_collisionObject);
+	player->m_score += 200;
 }
 
 bool Enemy2::Start()

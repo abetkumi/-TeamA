@@ -35,6 +35,7 @@ Enemy::~Enemy()
 
 	//assist->
 	DeleteGO(assist);
+	player->m_score += 100;
 }
 bool Enemy::Start()
 {

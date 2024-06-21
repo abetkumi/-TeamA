@@ -106,7 +106,6 @@ void Item::Rotation()
 
 void Item::Despawn()
 {
-
 	Vector3 diff = player->m_position - m_position;
 	if (diff.Length() >= 3000.0f)
 	{

@@ -34,7 +34,7 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_toCameraPos;
 	Vector3 m_pePos;
-	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
+	Vector3 m_attackBar = { 0.9f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
 	//Vector3 m_cNPos = { 0.0f,0.0f,0.0f };
 

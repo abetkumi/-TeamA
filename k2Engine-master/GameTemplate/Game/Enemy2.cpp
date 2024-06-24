@@ -56,6 +56,8 @@ bool Enemy2::Start()
 
 	arrowtimer = arrowtime;
 
+	m_modelRender.SetScale(1.7f, 1.7f, 1.7f);
+	m_position.y -= 70.0f;
 	m_modelRender.SetPosition(m_position);
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });

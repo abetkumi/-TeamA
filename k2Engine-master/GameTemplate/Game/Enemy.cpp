@@ -19,7 +19,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//�ʒu�C���{�̓����蔻��
+	const Vector3 corre1 = { 0.0f,50.0f,0.0f };//�ʒu�C���{�̓����蔻��
 	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//�ʒu�C���e�۔����ʒu
 }
 
@@ -62,15 +62,15 @@ bool Enemy::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
-
+	m_position.y -= 70.0f;
 	m_modelRender.SetPosition(m_position);
-
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 80.0f * m_scale.z,120.0f*m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -131,7 +131,7 @@ void Enemy::Rotation()
 	}
 
 	
-
+	
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
@@ -154,7 +154,7 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.6f;
+		m_attackBar.x = 1.0f;
 
 		arrow = NewGO<Arrow>(0);
 
@@ -329,7 +329,7 @@ void Enemy::EnemyAttackBar()
 		}
 		else if (m_attackBar.x <= 0)
 		{
-			m_attackBar.x = 1.36f;
+			m_attackBar.x = 1.00f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

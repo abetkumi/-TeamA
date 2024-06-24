@@ -46,6 +46,7 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
 	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 

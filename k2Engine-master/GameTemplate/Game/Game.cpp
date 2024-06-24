@@ -28,6 +28,11 @@ Game::Game()
 Game::~Game()
 {
 	/*DeleteGO(assist);*/
+	QueryGOs<Item>("item", [&](Item* item)
+		{
+			DeleteGO(item);
+			return true;
+		});
 	DeleteGO(player);
 	DeleteGO(ghost);
 	DeleteGO(gameCamera);
@@ -54,11 +59,6 @@ Game::~Game()
 	QueryGOs<Rock>("rock", [&](Rock* rock)
 		{
 			DeleteGO(rock);
-			return true;
-		});
-	QueryGOs<Item>("item", [&](Item* item)
-		{
-			DeleteGO(item);
 			return true;
 		});
 }
@@ -171,7 +171,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	ghost = NewGO<Ghost>(0, "ghost");
+	//ghost = NewGO<Ghost>(0, "ghost");
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);

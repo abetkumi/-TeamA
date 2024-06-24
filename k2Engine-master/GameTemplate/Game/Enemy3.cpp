@@ -4,7 +4,7 @@
 #include "Arrow.h"
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
-
+#include "Item.h"
 
 #include "collision/CollisionObject.h"
 
@@ -75,6 +75,7 @@ void Enemy3::Update()
 	Collision();
 	Rotation();
 	Attack();
+	ItemDrop();
 
 	switch (initialAng)
 	{
@@ -324,8 +325,7 @@ void Enemy3::Collision()
 			HP -= (int)player->ATK;
 
 			if (HP <= 0) {
-
-				DeleteGO(this);
+				m_downFlag = true;
 
 				SoundSource* se = NewGO<SoundSource>(1);
 				se->Init(1);
@@ -334,5 +334,29 @@ void Enemy3::Collision()
 			}
 		}
 	}
+	if (m_downFlag == true)
+	{
+		m_enemy3DownLag++;
+		if (m_enemy3DownLag >= 20)
+		{
+			m_itemGet = rand() % 4;
+			player->m_score += 300;
+			DeleteGO(this);
+		}
+	}
 }
 
+void Enemy3::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0, "item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
+	}
+}

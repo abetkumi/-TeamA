@@ -81,6 +81,7 @@ void Player::Update()
 	Collision();
 	HPGauge();
 	ArrowAnimation();
+	Score();
 	m_modelRender.Update();
 	m_skyCube->SetPosition(m_position);
 }
@@ -320,6 +321,7 @@ void Player::Collision()
 void Player::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+	m_fontRender.Draw(rc);
 	m_spriteRender_HP.Draw(rc);
 	m_spriteRender_r.Draw(rc);
 	m_spriteRender.Draw(rc);
@@ -436,4 +438,19 @@ void Player::ArrowAnimation()
 		m_modelRender.PlayAnimation(enArrowClip_Clear);
 		break;
 	}
+}
+
+void Player::Score()
+{
+	wchar_t wcsbuf[256];
+	swprintf_s(wcsbuf, 256, L"%dpoint", int(m_score));
+
+	//表示するテキストを設定。
+	m_fontRender.SetText(wcsbuf);
+	//フォントの位置を設定。
+	m_fontRender.SetPosition(Vector3(500.0f, 500.0f, 0.0f));
+	//フォントの大きさを設定。
+	m_fontRender.SetScale(2.0f);
+	//フォントの色を設定。
+	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 }

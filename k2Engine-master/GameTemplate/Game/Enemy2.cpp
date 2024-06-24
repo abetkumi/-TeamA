@@ -7,11 +7,11 @@
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
-
+#include "Item.h"
 #include <time.h>
 
 #define serch 4000.0f * 4000.0f
-#define attackSerch 3000.0f * 3000.0f
+#define attackSerch 4000.0f * 4000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
@@ -62,6 +62,7 @@ bool Enemy2::Start()
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
+	m_position.y -= 70.0f;
 	m_spriteRender.SetPosition(m_position);
 	m_spriteRender.Update();
 
@@ -69,7 +70,7 @@ bool Enemy2::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(1);
 
-	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 80.0f * m_scale.y);
 	m_collisionObject->SetName("enemy_col");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -95,6 +96,7 @@ void Enemy2::Update()
 	Seek();
 	Collision();
 	PlayAnimation();
+	ItemDrop();
 
 	if (i == 1)
 	{
@@ -199,6 +201,9 @@ void Enemy2::Collision()
 			m_enemy2DownLag++;
 			if (m_enemy2DownLag >= 20)
 			{
+				m_itemGet = rand() % 4;
+				player->m_score += 200;
+
 				SoundSource* se = NewGO<SoundSource>(1);
 				se->Init(1);
 				se->Play(false);
@@ -269,15 +274,15 @@ void Enemy2::PlayAnimation()
 void Enemy2::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float V2;
+	float m_enemy2camera;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+	m_enemy2camera = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	if (V2 >= 0)
+	if (m_enemy2camera >= 0)
 	{
 
 		Vector3 position = m_position;
@@ -304,5 +309,20 @@ void Enemy2::EnemyAttackBar()
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
+	}
+}
+
+void Enemy2::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0, "item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
 	}
 }

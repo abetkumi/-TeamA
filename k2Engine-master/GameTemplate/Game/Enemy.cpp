@@ -6,20 +6,20 @@
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
-#include "Item.h"
+
 #include "collision/CollisionObject.h"
 
 #include <time.h>
 //4000,3000
 #define serch 4000.0f * 4000.0f
-#define attackSerch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,50.0f,0.0f };//�ʒu�C���{�̓����蔻��
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//�ʒu�C���{�̓����蔻��
 	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//�ʒu�C���e�۔����ʒu
 }
 
@@ -48,8 +48,10 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
-	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM・SE/goblin_throw.wav");
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -62,15 +64,15 @@ bool Enemy::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	arrowtimer = arrowtime;
-	m_position.y -= 70.0f;
+
 	m_modelRender.SetPosition(m_position);
-	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
+
 
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 80.0f * m_scale.z,120.0f*m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 250.0f * m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -95,7 +97,7 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
-	ItemDrop();
+	
 	if (i == 1)
 	{
 		DeleteSerch();
@@ -131,7 +133,7 @@ void Enemy::Rotation()
 	}
 
 	
-	
+
 	m_modelRender.SetPosition(m_position);
 	m_rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
 	m_modelRender.SetRotation(m_rotation);
@@ -154,7 +156,11 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.0f;
+		m_attackBar.x = 1.6f;
+
+		SoundSource* se = NewGO<SoundSource>(7);
+		se->Init(7);
+		se->Play(false);
 
 		arrow = NewGO<Arrow>(0);
 
@@ -174,9 +180,7 @@ void Enemy::Attack()
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
-		SoundSource* se = NewGO<SoundSource>(13);
-		se->Init(13);
-		se->Play(false);
+
 	}
 }
 
@@ -222,18 +226,9 @@ void Enemy::Collision()
 			HP -= 100;
 		}
 		if (HP <= 0) {
-			m_downFlag = true;
+			m_enemyState = 2;
 		}
-	}
-	if (m_downFlag == true)
-	{
-		m_enemyDownLag++;
-		if (m_enemyDownLag >= 20)
-		{
-			m_itemGet = rand() % 4;
-			player->m_score += 100;
-			DeleteGO(this);
-		}
+		
 	}
 }
 
@@ -290,11 +285,11 @@ void Enemy::PlayAnimation()
 		m_enemyDownLag++;
 		if (m_enemyDownLag >= 20)
 		{
-			se = NewGO<SoundSource>(11);
-			se->Init(11);
-			se->Play(false);
-
 			DeleteGO(this);
+
+			SoundSource* se = NewGO<SoundSource>(1);
+			se->Init(1);
+			se->Play(false);
 		}
 		break;
 	}
@@ -303,16 +298,18 @@ void Enemy::PlayAnimation()
 void Enemy::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float m_enemycamara;
+	float V2;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	m_enemycamara = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
 
-	if (m_enemycamara >= 0)
+	if (V2 >= 0)
 	{
+
+
 		Vector3 position = m_position;
 
 		position.y += 200.0f;
@@ -329,27 +326,12 @@ void Enemy::EnemyAttackBar()
 		}
 		else if (m_attackBar.x <= 0)
 		{
-			m_attackBar.x = 1.00f;
+			m_attackBar.x = 1.36f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
-	}
-}
-
-void Enemy::ItemDrop()
-{
-	switch (m_itemGet)
-	{
-	case 0:
-		break;
-	case 1:
-		item = NewGO<Item>(0, "item");
-		m_itemGet = 0;
-		break;
-	default:
-		break;
 	}
 }

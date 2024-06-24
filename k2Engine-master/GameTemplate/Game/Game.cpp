@@ -28,11 +28,6 @@ Game::Game()
 Game::~Game()
 {
 	/*DeleteGO(assist);*/
-	QueryGOs<Item>("item", [&](Item* item)
-	{
-		DeleteGO(item);
-		return true;
-	});
 	DeleteGO(player);
 	DeleteGO(ghost);
 	DeleteGO(gameCamera);
@@ -40,27 +35,32 @@ Game::~Game()
 	DeleteGO(boat);
 	
 	QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
-	{
-		DeleteGO(enemy);
-		return true;
-	});
+		{
+			DeleteGO(enemy);
+			return true;
+		});
 	QueryGOs<Enemy2>("enemy2", [&](Enemy2* enemy2)
-	{
-		DeleteGO(enemy2);
-		return true;
-	});
+		{
+			DeleteGO(enemy2);
+			return true;
+		});
 	QueryGOs<Enemy3>("enemy3", [&](Enemy3* enemy3)
-	{
-		DeleteGO(enemy3);
-		return true;
-	});
+		{
+			DeleteGO(enemy3);
+			return true;
+		});
 	DeleteGO(status);
 	//DeleteGO(boss);
 	QueryGOs<Rock>("rock", [&](Rock* rock)
-	{
+		{
 			DeleteGO(rock);
 			return true;
-	});
+		});
+	QueryGOs<Item>("item", [&](Item* item)
+		{
+			DeleteGO(item);
+			return true;
+		});
 }
 
 bool Game::Start()
@@ -171,7 +171,7 @@ bool Game::Start()
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");
-	//-ghost = NewGO<Ghost>(0, "ghost");
+	ghost = NewGO<Ghost>(0, "ghost");
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
@@ -184,11 +184,10 @@ bool Game::Start()
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
-	
-	g_soundEngine->ResistWaveFileBank(2, "Assets/BGM・SE/GameBGM.wav");
-	m_gameBGM = NewGO<SoundSource>(2);
-	m_gameBGM->Init(2);
-	m_gameBGM->Play(false);
+	g_soundEngine->ResistWaveFileBank(3, "Assets/BGM・SE/GameBGM.wav");
+	m_gameBGM = NewGO<SoundSource>(3);
+	m_gameBGM->Init(3);
+	m_gameBGM->Play(true);
 
 	return true;
 }
@@ -226,7 +225,7 @@ void Game::Update()
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 102)
+	if (player->m_point == 200)
 	{
 		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");
@@ -246,7 +245,7 @@ void Game::Update()
 				return true;
 			});
 		player->m_arrowState=6;
-		player->m_point = 0;
+		player->m_point = 11;
 		//DeleteGO(this);
 	}
 	SpriteFlag();

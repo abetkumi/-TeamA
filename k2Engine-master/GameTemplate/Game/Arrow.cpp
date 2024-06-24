@@ -79,13 +79,19 @@ bool Arrow::Start()
 
 	m_position += m_velocity * 50.0f;
 	m_velocity *= 3000.0f;
-	m_rotation.AddRotationDegY(360.0f);
+	m_rotation.SetRotationDegX(90.0f);
+
+	/*Quaternion tmp;
+	tmp.SetRotationDegX(90.0f);
+
+	m_modelRender.SetRotation(tmp);*/
+	m_modelRender.Update();
 
 	switch (m_enArrow)
 	{
 	case Arrow::enArrow_Player:
 	case Arrow::enArrow_Skeleton:
-		m_modelRender.Init("Assets/modelData/amo.tkm");
+		m_modelRender.Init("Assets/modelData/Arrow.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		break;
 
@@ -121,7 +127,7 @@ bool Arrow::Start()
 		break;
 
 	case Arrow::enArrow_Enemy:
-		m_modelRender.Init("Assets/modelData/amo.tkm");
+		m_modelRender.Init("Assets/modelData/Arrow.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		break;
 
@@ -154,7 +160,7 @@ void Arrow::Rotation()
 {
 	float angle = atan2(-m_velocity.x, m_velocity.z);
 	m_rotation.SetRotationY(-angle);
-	m_modelRender.SetRotation(m_rotation);
+	//m_modelRender.SetRotation(m_rotation);
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 }

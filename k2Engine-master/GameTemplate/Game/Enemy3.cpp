@@ -2,7 +2,10 @@
 #include "Enemy3.h"
 #include "Player.h"
 #include "Arrow.h"
-#include "Item.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
+
+
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -34,6 +37,7 @@ bool Enemy3::Start()
 {
 	m_modelRender.Init("Assets/modelData/bat.tkm");
 
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
 
 	player = FindGO<Player>("player");
 	arrowtimer = arrowtime;
@@ -71,7 +75,6 @@ void Enemy3::Update()
 	Collision();
 	Rotation();
 	Attack();
-	ItemDrop();
 
 	switch (initialAng)
 	{
@@ -321,33 +324,15 @@ void Enemy3::Collision()
 			HP -= (int)player->ATK;
 
 			if (HP <= 0) {
-				m_downFlag = true;
+
+				DeleteGO(this);
+
+				SoundSource* se = NewGO<SoundSource>(1);
+				se->Init(1);
+				se->Play(false);
+
 			}
-		}
-	}
-	if (m_downFlag == true)
-	{
-		m_enemy3DownLag++;
-		if (m_enemy3DownLag >= 20)
-		{
-			m_itemGet = rand() % 4;
-			player->m_score += 300;
-			DeleteGO(this);
 		}
 	}
 }
 
-void Enemy3::ItemDrop()
-{
-	switch (m_itemGet)
-	{
-	case 0:
-		break;
-	case 1:
-		item = NewGO<Item>(0, "item");
-		m_itemGet = 0;
-		break;
-	default:
-		break;
-	}
-}

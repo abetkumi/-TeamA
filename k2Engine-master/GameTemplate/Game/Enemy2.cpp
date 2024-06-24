@@ -6,21 +6,20 @@
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
-#include "Item.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
 
 #define serch 4000.0f * 4000.0f
-#define attackSerch 4000.0f * 4000.0f
+#define attackSerch 3000.0f * 3000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//ˆÊ’uC³–{‘Ì“–‚½‚è”»’è
-	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ˆÊ’uC³’eŠÛ”­¶ˆÊ’u
+	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½{ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
+	const Vector3 corre2 = { 0.0f,80.0f,10.0f };//ï¿½Ê’uï¿½Cï¿½ï¿½ï¿½eï¿½Û”ï¿½ï¿½ï¿½ï¿½Ê’u
 }
 
 Enemy2::Enemy2()
@@ -43,21 +42,22 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Down].SetLoopFlag(false);
 	m_animation2Clips[enEnemy2Clip_Pull].Load("Assets/animData/goblinArcher_aimhold.tka");
 	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
+
 	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
 		,m_animation2Clips, enEnemy2Clip_Num);
 
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
+
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
-	g_soundEngine->ResistWaveFileBank(10, "Assets/BGMESE/enemy_shot.wav");
-	g_soundEngine->ResistWaveFileBank(11, "Assets/BGMESE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMï¿½ESE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(10, "Assets/BGMï¿½ESE/enemy_shot.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");
 
 	arrowtimer = arrowtime;
 
-	m_modelRender.SetScale(1.7f, 1.7f, 1.7f);
-	m_position.y -= 70.0f;
 	m_modelRender.SetPosition(m_position);
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -69,7 +69,7 @@ bool Enemy2::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(1);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 80.0f * m_scale.y);
+	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
 	m_collisionObject->SetName("enemy_col");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -95,7 +95,6 @@ void Enemy2::Update()
 	Seek();
 	Collision();
 	PlayAnimation();
-	ItemDrop();
 
 	if (i == 1)
 	{
@@ -143,10 +142,6 @@ void Enemy2::Attack()
 	}
 	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
-
-	se = NewGO<SoundSource>(10);
-	se->Init(10);
-	se->Play(false);
 
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
@@ -197,10 +192,19 @@ void Enemy2::Collision()
 		{
 			HP -= player->ATK;
 
+
 		}
 		if (HP <= 0) {
 			m_enemy2State = 3;
 			m_enemy2DownLag++;
+			if (m_enemy2DownLag >= 20)
+			{
+				SoundSource* se = NewGO<SoundSource>(1);
+				se->Init(1);
+				se->Play(false);
+
+				DeleteGO(this);
+			}
 		}
 	}
 }
@@ -251,12 +255,11 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
-			se = NewGO<SoundSource>(11);
-			se->Init(11);
-			se->Play(false);
-			m_itemGet = rand() % 4;
-			player->m_score += 200;
 			DeleteGO(this);
+
+			SoundSource* se = NewGO<SoundSource>(1);
+			se->Init(1);
+			se->Play(false);
 		}
 		break;
 	}
@@ -266,15 +269,15 @@ void Enemy2::PlayAnimation()
 void Enemy2::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float m_enemy2camera;
+	float V2;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	m_enemy2camera = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	if (m_enemy2camera >= 0)
+	if (V2 >= 0)
 	{
 
 		Vector3 position = m_position;
@@ -301,20 +304,5 @@ void Enemy2::EnemyAttackBar()
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
-	}
-}
-
-void Enemy2::ItemDrop()
-{
-	switch (m_itemGet)
-	{
-	case 0:
-		break;
-	case 1:
-		item = NewGO<Item>(0, "item");
-		m_itemGet = 0;
-		break;
-	default:
-		break;
 	}
 }

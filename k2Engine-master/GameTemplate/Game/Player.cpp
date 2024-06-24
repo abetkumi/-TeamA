@@ -3,11 +3,12 @@
 #include "Arrow.h"
 #include "Game.h"
 #include "GameCamera.h"
+#include "sound/SoundSource.h" 
 
 namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
-	const Vector3 corre2 = { 30.0f,130.0f,10.0f };//??u?C???e???????u
+	const Vector3 corre2 = { 0.0f,130.0f,10.0f };//??u?C???e???????u
 	const float firstPosition = 60.0f;
 }
 
@@ -18,6 +19,7 @@ Player::Player()
 
 Player::~Player()
 {
+	DeleteGO(ArrowSE);
 	DeleteGO(m_skyCube);
 }
 
@@ -36,6 +38,9 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
+
+	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
+	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM・SE/player_shot.wav");
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
@@ -76,7 +81,6 @@ void Player::Update()
 	Collision();
 	HPGauge();
 	ArrowAnimation();
-	Score();
 	m_modelRender.Update();
 	m_skyCube->SetPosition(m_position);
 }
@@ -85,7 +89,7 @@ void Player::Move()
 {
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
-	//通常の移動モーション
+//	//通常の移動モーション
 //	Vector3 stickL;
 //	stickL.x = g_pad[0]->GetLStickXF();
 //	stickL.y = g_pad[0]->GetLStickYF();
@@ -246,7 +250,7 @@ void Player::Move()
 	}
 	else {
 		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 200.0f;
+		m_moveSpeed = diff * 300.0f;
 	}
 	 }
 	//�����܂�3���C���̈ړ���
@@ -263,11 +267,11 @@ void Player::Move()
 	
 
 	//�����Q�[���I�[�o�[�R�}���h
-	//if (g_pad[0]->IsPress(enButtonY))
-	//{
-	//	m_arrowState = 3;
-	//	HP -= 10;
-	//}
+	if (g_pad[0]->IsPress(enButtonY))
+	{
+		m_arrowState = 3;
+		HP -= 10;
+	}
 
 	if (m_arrowState == 4 || m_arrowState == 6)
 	{
@@ -319,7 +323,6 @@ void Player::Render(RenderContext& rc)
 	m_spriteRender_HP.Draw(rc);
 	m_spriteRender_r.Draw(rc);
 	m_spriteRender.Draw(rc);
-	m_fontRender.Draw(rc);
 	m_skyCube->Render(rc);
 }
 
@@ -367,9 +370,13 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
+			ArrowSE = NewGO<SoundSource>(5);
+			ArrowSE->Init(5);
+			ArrowSE->Play(false);
+
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
-			if (m_arrowLag >= 25)
+			if (m_arrowLag >=25)
 			{
 				m_arrowState++;
 				m_arrowLag = 0;
@@ -382,18 +389,25 @@ void Player::ArrowAnimation()
 		}
 		break;
 	case 2:
-		//m_modelRender.PlayAnimation(enArrowClip_Aim);
+		m_modelRender.PlayAnimation(enArrowClip_Aim);
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
 			arrow = NewGO<Arrow>(0);
 
-			arrow->m_position = (m_position + corre2);
+			ArrowSE = NewGO<SoundSource>(9);
+			ArrowSE->Init(9);
+			ArrowSE->Play(false);
+
+			Vector3 arrowPos = corre2;
+			m_rotation.Apply(arrowPos);
+
+			arrow->m_position = (m_position + arrowPos);
 			arrow->m_1stPosition = arrow->m_position;
 			arrow->m_rotation = m_rotation;
 
 			arrow->SetEnArrow(Arrow::enArrow_Player);
-			m_arrowState = 0;
+			m_arrowState = 5;
 		}
 		
 		break;
@@ -422,19 +436,4 @@ void Player::ArrowAnimation()
 		m_modelRender.PlayAnimation(enArrowClip_Clear);
 		break;
 	}
-}
-
-void Player::Score()
-{
-	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%dpoint", int(m_score));
-
-	//表示するテキストを設定。
-	m_fontRender.SetText(wcsbuf);
-	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(500.0f, 500.0f, 0.0f));
-	//フォントの大きさを設定。
-	m_fontRender.SetScale(2.0f);
-	//フォントの色を設定。
-	m_fontRender.SetColor({ 1.0f,1.0f,1.0f,1.0f });
 }

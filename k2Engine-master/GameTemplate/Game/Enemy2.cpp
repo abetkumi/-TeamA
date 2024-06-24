@@ -62,7 +62,6 @@ bool Enemy2::Start()
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
 
-	m_position.y -= 70.0f;
 	m_spriteRender.SetPosition(m_position);
 	m_spriteRender.Update();
 
@@ -198,18 +197,22 @@ void Enemy2::Collision()
 		}
 		if (HP <= 0) {
 			m_enemy2State = 3;
-			m_enemy2DownLag++;
-			if (m_enemy2DownLag >= 20)
-			{
-				m_itemGet = rand() % 4;
-				player->m_score += 200;
+			m_downFlag = true;
+		}
+	}
+	if (m_downFlag == true)
+	{
+		m_enemy2DownLag++;
+		if (m_enemy2DownLag >= 20)
+		{
+			m_itemGet = rand() % 4;
+			player->m_score += 200;
 
-				SoundSource* se = NewGO<SoundSource>(1);
-				se->Init(1);
-				se->Play(false);
+			SoundSource* se = NewGO<SoundSource>(1);
+			se->Init(1);
+			se->Play(false);
 
-				DeleteGO(this);
-			}
+			DeleteGO(this);
 		}
 	}
 }
@@ -260,8 +263,6 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
-			DeleteGO(this);
-
 			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);

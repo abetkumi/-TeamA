@@ -68,6 +68,7 @@ public:
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
+	bool m_downFlag = false;
 	double m_Dec;
 	int HP = 1;
 	int i = 0;

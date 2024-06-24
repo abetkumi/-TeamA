@@ -64,7 +64,6 @@ bool Enemy::Start()
 
 	arrowtimer = arrowtime;
 
-	m_position.y -= 70.0f;
 	m_modelRender.SetPosition(m_position);
 
 

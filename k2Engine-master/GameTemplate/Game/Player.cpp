@@ -3,7 +3,6 @@
 #include "Arrow.h"
 #include "Game.h"
 #include "GameCamera.h"
-#include "sound/SoundSource.h" 
 
 namespace
 {
@@ -19,7 +18,6 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(ArrowSE);
 	DeleteGO(m_skyCube);
 }
 
@@ -38,9 +36,6 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
 	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
-
-	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
-	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM・SE/player_shot.wav");
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
 		enArrowClip_Num);
@@ -372,10 +367,6 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			ArrowSE = NewGO<SoundSource>(5);
-			ArrowSE->Init(5);
-			ArrowSE->Play(false);
-
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
 			if (m_arrowLag >= 25)
@@ -400,10 +391,6 @@ void Player::ArrowAnimation()
 			arrow->m_position = (m_position + corre2);
 			arrow->m_1stPosition = arrow->m_position;
 			arrow->m_rotation = m_rotation;
-
-			ArrowSE = NewGO<SoundSource>(9);
-			ArrowSE->Init(9);
-			ArrowSE->Play(false);
 
 			arrow->SetEnArrow(Arrow::enArrow_Player);
 			m_arrowState = 0;

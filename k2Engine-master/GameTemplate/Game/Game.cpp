@@ -185,9 +185,9 @@ bool Game::Start()
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	
-	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
-	m_gameBGM = NewGO<SoundSource>(3);
-	m_gameBGM->Init(3);
+	g_soundEngine->ResistWaveFileBank(2, "Assets/BGMÅESE/GameBGM.wav");
+	m_gameBGM = NewGO<SoundSource>(2);
+	m_gameBGM->Init(2);
 	m_gameBGM->Play(false);
 
 	return true;
@@ -246,7 +246,7 @@ void Game::Update()
 				return true;
 			});
 		player->m_arrowState=6;
-		player->m_point = 11;
+		player->m_point = 0;
 		//DeleteGO(this);
 	}
 	SpriteFlag();

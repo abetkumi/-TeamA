@@ -203,17 +203,6 @@ void Enemy2::Collision()
 	if (m_downFlag == true)
 	{
 		m_enemy2DownLag++;
-		if (m_enemy2DownLag >= 20)
-		{
-			m_itemGet = rand() % 4;
-			player->m_score += 200;
-
-			SoundSource* se = NewGO<SoundSource>(1);
-			se->Init(1);
-			se->Play(false);
-
-			DeleteGO(this);
-		}
 	}
 }
 
@@ -260,12 +249,16 @@ void Enemy2::PlayAnimation()
 		break;
 	case 3:
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		m_enemy2DownLag++;
-		if (m_enemy2DownLag >= 20)
+		if (m_enemy2DownLag >= 30)
 		{
+			m_itemGet = rand() % 4;
+			player->m_score += 200;
+
 			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
+
+			DeleteGO(this);
 		}
 		break;
 	}

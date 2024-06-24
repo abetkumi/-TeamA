@@ -231,14 +231,7 @@ void Enemy::Collision()
 	}
 	if (m_downFlag == true)
 	{
-		m_enemyDownLag++;
-		if (m_enemyDownLag >= 20)
-		{
-			m_itemGet = rand() % 4;
-			player->m_score += 100;
-			DeleteGO(this);
-			m_enemyState = 2;
-		}
+		m_enemyState = 2;
 	}
 }
 
@@ -293,10 +286,11 @@ void Enemy::PlayAnimation()
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
 		m_enemyDownLag++;
-		if (m_enemyDownLag >= 20)
+		if (m_enemyDownLag >= 40)
 		{
 			DeleteGO(this);
-
+			m_itemGet = rand() % 4;
+			player->m_score += 100;
 			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);

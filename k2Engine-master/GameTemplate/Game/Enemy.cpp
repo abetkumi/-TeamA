@@ -12,7 +12,7 @@
 #include <time.h>
 //4000,3000
 #define serch 4000.0f * 4000.0f
-#define attackSerch 3000.0f * 3000.0f
+#define attackSerch 4000.0f * 4000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
@@ -35,7 +35,6 @@ Enemy::~Enemy()
 
 	//assist->
 	DeleteGO(assist);
-	player->m_score += 100;
 }
 bool Enemy::Start()
 {
@@ -49,10 +48,8 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
-	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
+	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM・SE/goblin_throw.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -73,7 +70,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 250.0f * m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -159,10 +156,6 @@ void Enemy::Attack()
 	{
 		m_attackBar.x = 1.6f;
 
-		SoundSource* se = NewGO<SoundSource>(7);
-		se->Init(7);
-		se->Play(false);
-
 		arrow = NewGO<Arrow>(0);
 
 		arrow->m_position = (m_position + corre2);
@@ -181,7 +174,9 @@ void Enemy::Attack()
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
-
+		SoundSource* se = NewGO<SoundSource>(13);
+		se->Init(13);
+		se->Play(false);
 	}
 }
 
@@ -236,6 +231,7 @@ void Enemy::Collision()
 		if (m_enemyDownLag >= 20)
 		{
 			m_itemGet = rand() % 4;
+			player->m_score += 100;
 			DeleteGO(this);
 		}
 	}
@@ -294,11 +290,11 @@ void Enemy::PlayAnimation()
 		m_enemyDownLag++;
 		if (m_enemyDownLag >= 20)
 		{
-			DeleteGO(this);
-
-			SoundSource* se = NewGO<SoundSource>(1);
-			se->Init(1);
+			se = NewGO<SoundSource>(11);
+			se->Init(11);
 			se->Play(false);
+
+			DeleteGO(this);
 		}
 		break;
 	}

@@ -12,7 +12,7 @@
 #include <time.h>
 
 #define serch 4000.0f * 4000.0f
-#define attackSerch 3000.0f * 3000.0f
+#define attackSerch 4000.0f * 4000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
@@ -31,7 +31,6 @@ Enemy2::Enemy2()
 Enemy2::~Enemy2()
 {
 	DeleteGO(m_collisionObject);
-	player->m_score += 200;
 }
 
 bool Enemy2::Start()
@@ -50,8 +49,8 @@ bool Enemy2::Start()
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/hit.wav");
 	g_soundEngine->ResistWaveFileBank(10, "Assets/BGMÅESE/enemy_shot.wav");
+	g_soundEngine->ResistWaveFileBank(11, "Assets/BGMÅESE/hit.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");
@@ -144,7 +143,7 @@ void Enemy2::Attack()
 	m_enemy2State = 1;
 	arrow = NewGO<Arrow>(0, "arrow");
 
-	SoundSource* se = NewGO<SoundSource>(10);
+	se = NewGO<SoundSource>(10);
 	se->Init(10);
 	se->Play(false);
 
@@ -251,10 +250,11 @@ void Enemy2::PlayAnimation()
 		m_enemy2DownLag++;
 		if (m_enemy2DownLag >= 20)
 		{
-			SoundSource* se = NewGO<SoundSource>(10);
-			se->Init(10);
+			se = NewGO<SoundSource>(11);
+			se->Init(11);
 			se->Play(false);
 			m_itemGet = rand() % 4;
+			player->m_score += 200;
 			DeleteGO(this);
 		}
 		break;

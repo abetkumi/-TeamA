@@ -28,7 +28,6 @@ Enemy3::Enemy3()
 Enemy3::~Enemy3()
 {
 	DeleteGO(m_collisionObject);
-	player->m_score += 300;
 }
 
 bool Enemy3::Start()
@@ -333,6 +332,7 @@ void Enemy3::Collision()
 		if (m_enemy3DownLag >= 20)
 		{
 			m_itemGet = rand() % 4;
+			player->m_score += 300;
 			DeleteGO(this);
 		}
 	}

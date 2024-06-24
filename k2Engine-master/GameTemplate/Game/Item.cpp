@@ -3,12 +3,12 @@
 #include "Player.h"
 #include "Game.h"
 #include <random>
-#include "sound/SoundSource.h" 
+#include "sound/SoundEngine.h" 
 
 Item::Item()
 {
 	m_modelRender.Init("Assets/modelData/BlueBottle.tkm");
-	g_soundEngine->ResistWaveFileBank(4, "Assets/BGMÅESE/TitleBGM.wav");
+	g_soundEngine->ResistWaveFileBank(15, "Assets/BGMÅESE/ItemGet.wav");
 
 	player = FindGO<Player>("player");
 
@@ -45,7 +45,7 @@ Item::Item()
 
 Item::~Item()
 {
-	DeleteGO(ItemGetSE);
+
 }
 
 void Item::Update()
@@ -58,8 +58,8 @@ void Item::Update()
 	Vector3 diff = player->m_position - m_position;
 	if (diff.Length() <= 300.0f)
 	{
-		ItemGetSE = NewGO<SoundSource>(4);
-		ItemGetSE->Init(4);
+		ItemGetSE = NewGO<SoundSource>(15);
+		ItemGetSE->Init(15);
 		ItemGetSE->Play(false);
 		if (i == 0) {
 			switch (r)

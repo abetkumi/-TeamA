@@ -48,12 +48,13 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
-	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM・SE/goblin_throw.wav");
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
-
 	m_spriteRender.SetPosition(m_position);
 	m_spriteRender.Update();
 
@@ -70,7 +71,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 250.0f * m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -96,6 +97,7 @@ void Enemy::Update()
 	Collision();
 	PlayAnimation();
 	ItemDrop();
+	
 	if (i == 1)
 	{
 		DeleteSerch();
@@ -154,7 +156,11 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.6f;
+		m_attackBar.x = 1.0f;
+
+		SoundSource* se = NewGO<SoundSource>(7);
+		se->Init(7);
+		se->Play(false);
 
 		arrow = NewGO<Arrow>(0);
 
@@ -174,9 +180,7 @@ void Enemy::Attack()
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
-		SoundSource* se = NewGO<SoundSource>(13);
-		se->Init(13);
-		se->Play(false);
+
 	}
 }
 
@@ -233,6 +237,7 @@ void Enemy::Collision()
 			m_itemGet = rand() % 4;
 			player->m_score += 100;
 			DeleteGO(this);
+			m_enemyState = 2;
 		}
 	}
 }
@@ -290,11 +295,11 @@ void Enemy::PlayAnimation()
 		m_enemyDownLag++;
 		if (m_enemyDownLag >= 20)
 		{
-			se = NewGO<SoundSource>(11);
-			se->Init(11);
-			se->Play(false);
-
 			DeleteGO(this);
+
+			SoundSource* se = NewGO<SoundSource>(1);
+			se->Init(1);
+			se->Play(false);
 		}
 		break;
 	}
@@ -303,7 +308,7 @@ void Enemy::PlayAnimation()
 void Enemy::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float m_enemycamara;
+	float  m_enemycamara;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
@@ -313,6 +318,8 @@ void Enemy::EnemyAttackBar()
 
 	if (m_enemycamara >= 0)
 	{
+
+
 		Vector3 position = m_position;
 
 		position.y += 200.0f;
@@ -329,7 +336,7 @@ void Enemy::EnemyAttackBar()
 		}
 		else if (m_attackBar.x <= 0)
 		{
-			m_attackBar.x = 1.36f;
+			m_attackBar.x = 1.0f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

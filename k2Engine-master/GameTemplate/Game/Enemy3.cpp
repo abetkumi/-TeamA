@@ -2,7 +2,10 @@
 #include "Enemy3.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 #include "Item.h"
+
 #include "collision/CollisionObject.h"
 
 #include <time.h>
@@ -323,6 +326,11 @@ void Enemy3::Collision()
 
 			if (HP <= 0) {
 				m_downFlag = true;
+
+				SoundSource* se = NewGO<SoundSource>(1);
+				se->Init(1);
+				se->Play(false);
+
 			}
 		}
 	}

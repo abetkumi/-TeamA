@@ -1,7 +1,9 @@
 #pragma once
+#include "sound/SoundSource.h"
 
 class Player;
 class Arrow;
+class Item;
 class GameCamera;
 class EnemyTarget;
 class Enemy3 : public IGameObject
@@ -18,7 +20,7 @@ public:
 	void HomingDec();
 	void Calculation();
 	void EnemyAttackBar();
-	
+	void ItemDrop();
 	bool Start();
 
 	const bool Serch();
@@ -49,21 +51,25 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	Item* item;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
+	SoundSource* se;
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
 
+	bool m_downFlag = false;
 	int HP = 1;
-	int initialAng = 0;			//Move‰ŠúŠp“xİ’è—p
-	int initialPos = 0;			//AttackMove‰ŠúˆÊ’uİ’è—p
+	int initialAng = 0;			//Moveï¿½ï¿½ï¿½ï¿½ï¿½pï¿½xï¿½İ’ï¿½p
+	int initialPos = 0;			//AttackMoveï¿½ï¿½ï¿½ï¿½ï¿½Ê’uï¿½İ’ï¿½p
 	int moveStatus = 0;
+	int m_enemy3DownLag = 0;
+	int m_itemGet = 0;
 
-	//Move()“à‚Ì‚İ
+	//Move()ï¿½ï¿½Ì‚ï¿½
 	float firstAng, Ang = 0.0f;
 	int y = 0;
-	
 	float Xt = 0.3f;
 	float m_Dir;
 

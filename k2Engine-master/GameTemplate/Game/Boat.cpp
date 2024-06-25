@@ -25,6 +25,7 @@ bool Boat::Start()
 	m_shipposition.y = 470.0f;
 	m_spriteRender.SetPosition(m_shipposition);
 	/*Quaternion rot;*/
+	m_position.y -= 20.0f;
 	m_rotation.SetRotationDegY(180.0f);
 	m_modelRender.SetRotation(m_rotation);
 
@@ -47,7 +48,7 @@ void Boat::Update()
 	}
 	Move();
 	Rotation();
-
+	ShipMove();
 	m_modelRender.Update();
 	
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//����
@@ -65,16 +66,18 @@ void Boat::Render(RenderContext& rc)
 
 void Boat::Move()
 {
-	/*m_position.z -= 1.0f;*/
 
-	m_position = player->m_position;
-	//m_position.y -= 70.0f;
-	
+	m_position.x = player->m_position.x;
+	m_position.z = player->m_position.z;
+
+	//船を上下に揺らす
+	m_position.y -= 0.05f * m_shipswitch;
+	m_shiptimer += g_gameTime->GetFrameDeltaTime() * m_shipswitch;
+	if (m_shiptimer > 3.0f || m_shiptimer < 0.0f)
+	{
+		m_shipswitch *= -1.0f;
+	}
 	m_modelRender.SetPosition(m_position);
-
-	ShipMove();
-	m_shipGauge.z = m_position.z;
-
 }
 
 void Boat::Rotation()

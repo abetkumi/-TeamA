@@ -6,13 +6,13 @@
 #include "sound/SoundEngine.h"
 #include "sound/SoundSource.h"
 #include "GameCamera.h"
-
+#include "Item.h"
 #include "collision/CollisionObject.h"
 
 #include <time.h>
 //4000,3000
 #define serch 4000.0f * 4000.0f
-#define attackSerch 3000.0f * 3000.0f
+#define attackSerch 4000.0f * 4000.0f
 #define playerSerch 5000.0f * 5000.0f
 #define deleteSerch 5000.0f * 5000.0f
 //#define attacktime 5.0f
@@ -48,13 +48,13 @@ bool Enemy::Start()
 
 	m_modelRender.Init("Assets/modelData/goblin.tkm"
 	,m_animationClips,enEnemyClip_Num);
+	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
 	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
-
 	m_spriteRender.SetPosition(m_position);
 	m_spriteRender.Update();
 
@@ -71,7 +71,7 @@ bool Enemy::Start()
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 
-	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z,60.0f*m_scale.y);
+	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 250.0f * m_scale.y);
 	m_collisionObject->SetName("enemy");
 	m_collisionObject->SetPosition(m_position + corre1);
 
@@ -96,6 +96,7 @@ void Enemy::Update()
 	Dec();
 	Collision();
 	PlayAnimation();
+	ItemDrop();
 	
 	if (i == 1)
 	{
@@ -155,7 +156,7 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.6f;
+		m_attackBar.x = 1.0f;
 
 		SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
@@ -225,9 +226,12 @@ void Enemy::Collision()
 			HP -= 100;
 		}
 		if (HP <= 0) {
-			m_enemyState = 2;
+			m_downFlag = true;
 		}
-		
+	}
+	if (m_downFlag == true)
+	{
+		m_enemyState = 2;
 	}
 }
 
@@ -282,13 +286,14 @@ void Enemy::PlayAnimation()
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
 		m_enemyDownLag++;
-		if (m_enemyDownLag >= 20)
+		if (m_enemyDownLag >= 40)
 		{
-			SoundSource* se = NewGO<SoundSource>(0);
+			DeleteGO(this);
+			m_itemGet = rand() % 4;
+			player->m_score += 100;
+			SoundSource* se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
-
-			DeleteGO(this);
 		}
 		break;
 	}
@@ -297,15 +302,15 @@ void Enemy::PlayAnimation()
 void Enemy::EnemyAttackBar()
 {
 	Vector3 V0, V1;
-	float V2;
+	float  m_enemycamara;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
+	m_enemycamara = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z ;
 
-	if (V2 >= 0)
+	if (m_enemycamara >= 0)
 	{
 
 
@@ -325,12 +330,27 @@ void Enemy::EnemyAttackBar()
 		}
 		else if (m_attackBar.x <= 0)
 		{
-			m_attackBar.x = 1.36f;
+			m_attackBar.x = 1.0f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
 		m_spriteRender.SetScale(m_attackBar);
 		m_spriteRender.Update();
+	}
+}
+
+void Enemy::ItemDrop()
+{
+	switch (m_itemGet)
+	{
+	case 0:
+		break;
+	case 1:
+		item = NewGO<Item>(0, "item");
+		m_itemGet = 0;
+		break;
+	default:
+		break;
 	}
 }

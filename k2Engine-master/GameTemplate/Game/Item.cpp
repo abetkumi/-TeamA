@@ -3,12 +3,12 @@
 #include "Player.h"
 #include "Game.h"
 #include <random>
-#include "sound/SoundSource.h" 
+#include "sound/SoundEngine.h" 
 
 Item::Item()
 {
 	m_modelRender.Init("Assets/modelData/BlueBottle.tkm");
-	g_soundEngine->ResistWaveFileBank(4, "Assets/BGMÅESE/TitleBGM.wav");
+	g_soundEngine->ResistWaveFileBank(15, "Assets/BGMÅESE/ItemGet.wav");
 
 	player = FindGO<Player>("player");
 
@@ -39,37 +39,13 @@ Item::Item()
 	game = FindGO<Game>("game");
 	m_position = game->m_nextPosition1;
 	m_position.y += 50.0f;
+	m_firstPosition = m_position;
 	m_modelRender.SetPosition(m_position);
 }
 
 Item::~Item()
 {
 
-	if (i == 0) {
-		switch (r)
-		{
-		case 0:
-			//DEF-50%
-			break;
-		case 1:
-			//ATK+5
-			break;
-		case 2:
-			//Stamina*2
-			break;
-		case 3:
-			//Arrow+2
-			break;
-		case 4:
-			//HP+30
-			player->HP += 30;
-			break;
-		case 5:
-			//SPup
-			break;
-		}
-	}
-	DeleteGO(ItemGetSE);
 }
 
 void Item::Update()
@@ -80,11 +56,39 @@ void Item::Update()
 	m_modelRender.Update();
 
 	Vector3 diff = player->m_position - m_position;
-	if (diff.Length() <= 120.0f)
+	if (diff.Length() <= 300.0f)
 	{
-		ItemGetSE = NewGO<SoundSource>(4);
-		ItemGetSE->Init(4);
+		ItemGetSE = NewGO<SoundSource>(15);
+		ItemGetSE->Init(15);
 		ItemGetSE->Play(false);
+		if (i == 0) {
+			switch (r)
+			{
+			case 0:
+				//DEF-50%
+				break;
+			case 1:
+				//ATK+5
+				break;
+			case 2:
+				//Stamina*2
+				break;
+			case 3:
+				//Arrow+2
+				break;
+			case 4:
+				//HP+30
+				player->HP += 30;
+				if (player->HP > 100)
+				{
+					player->HP = 100;
+				}
+				break;
+			case 5:
+				//SPup
+				break;
+			}
+		}
 		DeleteGO(this);
 	}
 }
@@ -102,7 +106,9 @@ void Item::Rotation()
 
 void Item::Despawn()
 {
-	if (player->m_position.x/*âº*/ < m_position.z - 120.0f) {
+	Vector3 diff = player->m_position - m_position;
+	if (diff.Length() >= 3000.0f)
+	{
 		DeleteGO(this);
 		i = 1;
 	}

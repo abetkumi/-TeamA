@@ -21,7 +21,6 @@ public:
 	
 	Vector3 m_position;
 	Vector3 m_scale;
-	Vector3 m_shipGauge;
 	Vector3 m_shipposition;
 	Vector3 m_direction;	 // ‘DŽñ‚ÌŒü‚«
 	Player* player;
@@ -29,5 +28,7 @@ public:
 
 	int HP = 1;
 	int m_shipPoint = 0;
+	float m_shiptimer = 0.5f;
+	float m_shipswitch = 1.0f;
 };
 

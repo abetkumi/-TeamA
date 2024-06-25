@@ -3,7 +3,7 @@ class Player;
 class Arrow;
 class Assist;
 class GameCamera;
-
+class Item;
 #include "sound/SoundSource.h"
 
 class Enemy : public IGameObject
@@ -19,7 +19,7 @@ public:
 	void Collision();
 	void Seek();
 	void EnemyAttackBar();
-
+	void ItemDrop();
 	bool Start();
 
 	const bool Serch();
@@ -34,7 +34,7 @@ public:
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_toCameraPos;
 	Vector3 m_pePos;
-	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
+	Vector3 m_attackBar = { 0.9f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
 	//Vector3 m_cNPos = { 0.0f,0.0f,0.0f };
 
@@ -62,13 +62,15 @@ public:
 	Player* player;
 	Arrow* arrow;
 	Assist* assist;
+	Item* item;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 
+	bool m_downFlag = false;
 	float arrowtimer = 0.01f;
 	float arrowtime = 3.0f;
 	double m_Dec;
 	int HP = 1;
-
 	int i;
+	int m_itemGet = 0;
 };

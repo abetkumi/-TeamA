@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Arrow.h"
 #include "collision/CollisionObject.h"
+#include "sound/SoundEngine.h"
 #include "Enemy.h"
 #include "Enemy3.h"
 #include "Player.h"
@@ -41,15 +42,22 @@ bool Arrow::Start()
 
 	m_velocity = Vector3::AxisZ;
 	m_rotation.Apply(m_velocity);
+	g_soundEngine->ResistWaveFileBank(12, "Assets/BGMESE/player_shot.wav");
 
 
 	if (m_enArrow == enArrow_Player)
 	{
 		m_collisionObject->SetName("p_arrow");
+		arrowSE = NewGO<SoundSource>(12);
+		arrowSE->Init(12);
+		arrowSE->Play(false);
 	}
 	else if (m_enArrow == enArrow_Enemy)
 	{
 		m_collisionObject->SetName("e_arrow");
+		arrowSE = NewGO<SoundSource>(12);
+		arrowSE->Init(12);
+		arrowSE->Play(false);
 		m_Damage = 50;
 	}
 	else if (m_enArrow == enArrow_Goblin)
@@ -72,13 +80,19 @@ bool Arrow::Start()
 
 	m_position += m_velocity * 50.0f;
 	m_velocity *= 3000.0f;
-	m_rotation.AddRotationDegY(360.0f);
+	m_rotation.SetRotationDegX(90.0f);
+
+	/*Quaternion tmp;
+	tmp.SetRotationDegX(90.0f);
+
+	m_modelRender.SetRotation(tmp);*/
+	m_modelRender.Update();
 
 	switch (m_enArrow)
 	{
 	case Arrow::enArrow_Player:
 	case Arrow::enArrow_Skeleton:
-		m_modelRender.Init("Assets/modelData/amo.tkm");
+		m_modelRender.Init("Assets/modelData/Arrow.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		break;
 
@@ -114,7 +128,7 @@ bool Arrow::Start()
 		break;
 
 	case Arrow::enArrow_Enemy:
-		m_modelRender.Init("Assets/modelData/amo.tkm");
+		m_modelRender.Init("Assets/modelData/Arrow.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		break;
 
@@ -123,10 +137,6 @@ bool Arrow::Start()
 	}
 	
 	m_collisionObject->SetIsEnableAutoDelete(false);
-
-	//arrowSE = NewGO<SoundSource>(0);
-	//arrowSE->Init(0);
-	//arrowSE->Play(true);
 
 	return true;
 }
@@ -151,7 +161,7 @@ void Arrow::Rotation()
 {
 	float angle = atan2(-m_velocity.x, m_velocity.z);
 	m_rotation.SetRotationY(-angle);
-	m_modelRender.SetRotation(m_rotation);
+	//m_modelRender.SetRotation(m_rotation);
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 }

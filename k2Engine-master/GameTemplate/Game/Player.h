@@ -17,6 +17,7 @@ public:
 	void HPGauge();
 	void Collision();
 	void ArrowAnimation();
+	void Score();
 
 	Vector3 m_position;
 	//Vector3 m_scale = Vector3::One;
@@ -28,6 +29,7 @@ public:
 	SpriteRender m_spriteRender;
 	SpriteRender m_spriteRender_r;
 	SpriteRender m_spriteRender_HP;
+	FontRender m_fontRender;
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation;
@@ -73,6 +75,7 @@ public:
 	int m_lag = 0;
 	int m_arrowLag = 0;
 	int m_damageLag = 0;
+	float m_score = 0;
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
 	SoundSource* ArrowSE;
 

@@ -2,6 +2,8 @@
 
 class Player;
 class Arrow;
+class GameCamera;
+class EnemyTarget;
 class Enemy3 : public IGameObject
 {
 public:
@@ -13,6 +15,7 @@ public:
 	void AttackMove();
 	void Rotation();
 	void Attack();
+	void HomingDec();
 	void Calculation();
 	void EnemyAttackBar();
 	
@@ -22,6 +25,7 @@ public:
 	const bool MoveSerch();
 	const bool Distance();
 	const bool PosDistance();
+	const bool HomingSerch();
 
 	void Collision();
 
@@ -31,6 +35,8 @@ public:
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_cNPos;
+
+	Vector3 m_homingPos;
 
 	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
@@ -43,6 +49,7 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 
 	float arrowtimer = 0.0f;
@@ -54,10 +61,13 @@ public:
 	int moveStatus = 0;
 
 	//Move()“à‚Ì‚Ý
-	float x1,x2 = 0.0f;
+	float firstAng, Ang = 0.0f;
 	int y = 0;
 	
 	float Xt = 0.3f;
+	float m_Dir;
+
+	bool homing = false;
 };
 
 

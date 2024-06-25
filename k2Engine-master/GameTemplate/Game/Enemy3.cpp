@@ -2,6 +2,7 @@
 #include "Enemy3.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "GameCamera.h"
 
 #include "collision/CollisionObject.h"
 
@@ -10,6 +11,8 @@
 
 #define serch 1300.0f * 1300.0f
 #define moveSerch 5000.0f * 5000.0f
+
+#define homingSerch 6000.0f * 6000.0f
 
 #define distance 100.0f * 100.0f
 //#define attacktime 5.0f
@@ -34,8 +37,8 @@ bool Enemy3::Start()
 {
 	m_modelRender.Init("Assets/modelData/bat.tkm");
 
-
 	player = FindGO<Player>("player");
+	gameCamera = FindGO<GameCamera>("gameCamera");
 	arrowtimer = arrowtime;
 
 
@@ -71,6 +74,8 @@ void Enemy3::Update()
 	Collision();
 	Rotation();
 	Attack();
+	HomingSerch();
+	HomingDec();
 
 	switch (initialAng)
 	{
@@ -98,18 +103,24 @@ void Enemy3::Move()
 {
 	if (MoveSerch() == true) {
 		y = rand() % 100000;
-
 		if (y == 1)
 		{
 			Xt *= -1.0f;
 		}
 
+		if (Ang >= firstAng + 1) {
+			Xt *= -1.0f;
+		}
+		else if(Ang <= firstAng - 1) {
+			Xt *= -1.0f;
+		}
+
 		m_position = { 
-			player->m_position.x + cos(x1) * 1190.0f,
+			player->m_position.x + cos(Ang) * 1190.0f,
 			m_position.y,
-			player->m_position.z + sin(x1) * 1190.0f
+			player->m_position.z + sin(Ang) * 1190.0f
 		};
-		x1 += Xt * g_gameTime->GetFrameDeltaTime();
+		Ang += Xt * g_gameTime->GetFrameDeltaTime();
 
 		//m_position += player->m_moveSpeed * 3.0f * g_gameTime->GetFrameDeltaTime();
 	}
@@ -207,24 +218,52 @@ void Enemy3::Attack()
 	//arrowtimer = arrowtime;
 }
 
+void Enemy3::HomingDec()
+{
+	if (!HomingSerch())
+		homing = false;
+		return;
+
+	Vector3 pDir = player->m_position - gameCamera->m_toCameraPos;
+	pDir.Normalize();
+
+	Vector3 eDir = m_position - gameCamera->m_toCameraPos;
+	eDir.Normalize();
+
+	m_Dir = pDir.Dot(eDir);
+
+
+	if (player->SimilarAng < m_Dir)
+	{
+		player->SimilarAng = m_Dir;
+
+
+		if (initialPos == 0) {
+			m_homingPos = m_position;
+		}
+		else if (initialPos == 1)
+		{
+			m_homingPos = m_attackPos;
+		}
+		player->lock_ePos = m_homingPos;
+		homing = true;
+	}
+}
+
 void Enemy3::Calculation()
 {
-	Vector3 diff = player->m_position - m_position;
+	Vector3 diff = m_position - player->m_position;
 
 	diff.y = 0;
-	diff.Normalize();
 
-
-	x1 = diff.z / diff.x;
-	x1 = atan(x1);
-	x1 += 3.1f;
-	
+	firstAng = atan2(diff.z, diff.x);
+	Ang = firstAng;
 
 	initialAng = 1;
 }
 
 void Enemy3::EnemyAttackBar()
- {
+{
 	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
 
 	Vector3 V0, V1;
@@ -303,6 +342,16 @@ const bool Enemy3::PosDistance()
 {
 	Vector3 diff = m_position - m_attackPos;
 	if (diff.LengthSq() <= distance / 25.0f)
+	{
+		return true;
+	}
+	return false;
+}
+
+const bool Enemy3::HomingSerch()
+{
+	Vector3 diff = m_position - m_attackPos;
+	if (diff.LengthSq() <= homingSerch)
 	{
 		return true;
 	}

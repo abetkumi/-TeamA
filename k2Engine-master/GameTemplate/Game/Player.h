@@ -77,4 +77,7 @@ public:
 	SoundSource* ArrowSE;
 
 	SkyCube* m_skyCube = nullptr;
+
+	float SimilarAng = 0.0f;	//ˆê”ÔŒü‚¢‚Ä‚¢‚é“G
+	Vector3 lock_ePos;
 };

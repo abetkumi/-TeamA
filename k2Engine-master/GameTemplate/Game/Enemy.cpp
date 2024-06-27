@@ -52,6 +52,7 @@ bool Enemy::Start()
 
 	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
 	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
+	g_soundEngine->ResistWaveFileBank(18, "Assets/BGM・SE/goblin_voice.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -291,9 +292,15 @@ void Enemy::PlayAnimation()
 			DeleteGO(this);
 			m_itemGet = rand() % 4;
 			player->m_score += 100;
-			SoundSource* se = NewGO<SoundSource>(1);
+
+			se = NewGO<SoundSource>(1);
 			se->Init(1);
 			se->Play(false);
+
+			se = NewGO<SoundSource>(18);
+			se->Init(18);
+			se->Play(false);
+
 		}
 		break;
 	}

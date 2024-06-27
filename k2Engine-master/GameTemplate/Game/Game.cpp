@@ -184,9 +184,12 @@ bool Game::Start()
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
-	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
-	m_gameBGM = NewGO<SoundSource>(3);
-	m_gameBGM->Init(3);
+
+	g_soundEngine->ResistWaveFileBank(13, "Assets/BGMÅESE/GameBGM.wav");
+	g_soundEngine->ResistWaveFileBank(16, "Assets/BGMÅESE/player_deathvoice.wav");
+
+	m_gameBGM = NewGO<SoundSource>(13);
+	m_gameBGM->Init(13);
 	m_gameBGM->Play(true);
 
 	return true;
@@ -203,9 +206,18 @@ void Game::Update()
 	{
 		player->m_arrowState = 4;
 
-		if (player->m_arrowLag == 100)
+		if (player->m_arrowLag == 1)
 		{
 			DeleteGO(m_gameBGM);
+
+			m_gameBGM = NewGO<SoundSource>(16);
+			m_gameBGM->Init(16);
+			m_gameBGM->Play(false);
+		}
+		
+		if (player->m_arrowLag == 100)
+		{
+
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 				{

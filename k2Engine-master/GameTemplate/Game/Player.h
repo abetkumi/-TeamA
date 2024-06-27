@@ -77,7 +77,7 @@ public:
 	int m_damageLag = 0;
 	float m_score = 0;
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
-	SoundSource* ArrowSE;
+	SoundSource* se;
 
 	SkyCube* m_skyCube = nullptr;
 

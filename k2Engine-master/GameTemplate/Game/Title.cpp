@@ -11,7 +11,7 @@ Title::Title()
 	m_spriteRender_m.SetPosition({ 0.0f,-40.0f,0.0f });
 	m_spriteRender_m.SetMulColor(Vector4(1.0f,1.0f,1.0f,m_shade));
 	g_soundEngine->ResistWaveFileBank(0, "Assets/BGMÅESE/TitleBGM.wav");
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMÅESE/Select.wav");
+	g_soundEngine->ResistWaveFileBank(11, "Assets/BGMÅESE/Select.wav");
 
 	titleBGM = NewGO<SoundSource>(0);
 	titleBGM->Init(0);
@@ -30,8 +30,8 @@ void Title::Update()
 	{
 		m_timer *= 30.0f;
 		m_lagFlag = true;
-		titleSE = NewGO<SoundSource>(1);
-		titleSE->Init(1);
+		titleSE = NewGO<SoundSource>(11);
+		titleSE->Init(11);
 		titleSE->Play(false);
 	}
 	if (m_lagFlag == true)

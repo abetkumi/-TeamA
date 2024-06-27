@@ -1,6 +1,7 @@
 #pragma once
 
 class Enemy;
+class Enemy3;
 class Player;
 class GameCamera;
 class Assist;
@@ -52,6 +53,8 @@ public:
 	float m_peLen;
 	float m_velocityLen;
 
+	bool homing = false;
+
 	bool m_isDelete = false;
 	const float deletetimer = 1.0f;
 	int m_Damage;
@@ -69,8 +72,11 @@ public:
 	Vector3	m_scale = Vector3::One;
 	Vector3 m_CameraPos;
 
+	Vector3 lock_ePos;
+
 	Player* player;
 	Enemy* enemy;
+	Enemy3* enemy3;
 	GameCamera* gameCamera;
 	Assist* assist;
 	Gravity* gravity;

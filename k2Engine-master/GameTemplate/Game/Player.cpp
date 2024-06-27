@@ -9,7 +9,7 @@ namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
 	const Vector3 corre2 = { 0.0f,130.0f,10.0f };//??u?C???e???????u
-	const float firstPosition = 80.0f;
+	const float firstPosition = 60.0f;
 }
 
 Player::Player()
@@ -19,6 +19,7 @@ Player::Player()
 
 Player::~Player()
 {
+	DeleteGO(ArrowSE);
 	DeleteGO(m_skyCube);
 }
 
@@ -125,7 +126,7 @@ void Player::Move()
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
 	//川の3ライン間を移動するための計算
-	if (game->m_spriteStatus == 5)
+	 if (game->m_spriteStatus == 5)
 	{
 
 	Vector3 stickL;
@@ -250,19 +251,19 @@ void Player::Move()
 	}
 	else {
 		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 200.0f;
+		m_moveSpeed = diff * 300.0f;
 	}
 	 }
 	//�����܂�3���C���̈ړ���
 
-	//if (m_charaCon.IsOnGround())
-	//{
-	//	m_moveSpeed.y = 0.0f;
-	//}
-	//else
-	//{
-	//	m_moveSpeed.y -= 10.0f;
-	//}
+	if (m_charaCon.IsOnGround())
+	{
+		m_moveSpeed.y = 0.0f;
+	}
+	else
+	{
+		m_moveSpeed.y -= 10.0f;
+	}
 	
 	
 
@@ -281,8 +282,7 @@ void Player::Move()
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
-	m_position.y = firstPosition;
-
+	
 	m_modelRender.SetPosition(m_position);
 }
 
@@ -313,7 +313,7 @@ void Player::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			m_arrowState = 3;
-			HP -= 2;
+			HP -= 1;
 		}
 	}
 }
@@ -408,8 +408,15 @@ void Player::ArrowAnimation()
 			arrow->m_1stPosition = arrow->m_position;
 			arrow->m_rotation = m_rotation;
 
+			if (SimilarAng >= 0.98) {
+				arrow->homing = true;
+				arrow->lock_ePos = lock_ePos;
+			}
+
 			arrow->SetEnArrow(Arrow::enArrow_Player);
-			m_arrowState = 0;
+			m_arrowState = 5;
+
+			SimilarAng = 0.0f;
 		}
 		
 		break;

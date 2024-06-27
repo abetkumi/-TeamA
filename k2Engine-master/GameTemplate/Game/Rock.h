@@ -1,4 +1,6 @@
 #pragma once
+#include "sound/SoundSource.h"
+
 class Player;
 class Game;
 
@@ -23,6 +25,7 @@ public:
 
 	Game* game;
 	Player* player;
+	SoundSource* se;
 	Vector3 r_position;
 	Quaternion r_rotation = g_quatIdentity;// = g_identity;
 	Quaternion r_rot;
@@ -32,5 +35,6 @@ public:
 	bool r_rockFlag = false;
 	Vector3 r_damagePosition;
 	float r_damageLag = 0.0f;
+	
 };
 

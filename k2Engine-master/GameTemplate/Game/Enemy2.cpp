@@ -50,8 +50,9 @@ bool Enemy2::Start()
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM�ESE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM�ESE/enemy_shot.wav");
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM・SE/enemy_shot.wav");
+	g_soundEngine->ResistWaveFileBank(19, "Assets/BGM・SE/goblin_archer_voice.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");
@@ -254,8 +255,12 @@ void Enemy2::PlayAnimation()
 			m_itemGet = rand() % 4;
 			player->m_score += 200;
 
-			SoundSource* se = NewGO<SoundSource>(1);
+			se = NewGO<SoundSource>(1);
 			se->Init(1);
+			se->Play(false);
+
+			se = NewGO<SoundSource>(19);
+			se->Init(19);
 			se->Play(false);
 
 			DeleteGO(this);

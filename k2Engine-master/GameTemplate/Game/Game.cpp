@@ -202,6 +202,7 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
+
 		if (player->m_arrowLag == 100)
 		{
 			DeleteGO(m_gameBGM);

@@ -65,7 +65,7 @@ public:
 	Vector3 position;
 	float spritetimer = 0.5f;
 	float spritetime = 3.0f;
-	float m_shade = 0.5f;
+	float m_shade = 1.0f;
 	int m_spriteStatus = 1;
 
 	std::vector<Vector3> path00_pointList;

@@ -233,15 +233,15 @@ void Enemy3::EnemyAttackBar()
 	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
 
 	Vector3 V0, V1;
-	float V2;
+	float m_enemy3camara;
 
 	V0 = g_camera3D->GetForward();
 	V1 = m_position - g_camera3D->GetPosition();
 	V1.Normalize();
 
-	V2 = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
+	m_enemy3camara = V0.x * V1.x + V0.y * V1.y + V0.z * V1.z;
 
-	if (V2 >= 0)
+	if (m_enemy3camara >= 0)
 	{
 
 		Vector3 position = m_position;

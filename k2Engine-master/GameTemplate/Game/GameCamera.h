@@ -2,6 +2,9 @@
 
 class Player;
 class Enemy;
+class Enemy2;
+class Enemy3;
+
 class GameCamera :public IGameObject
 {
 public:
@@ -9,10 +12,13 @@ public:
 	~GameCamera();
 	bool Start();
 	void Update();
+	void SpriteColor();
 	void Render(RenderContext& rc);
 
 	Player* m_player;
-	Enemy* enemy;
+	Enemy* m_enemy;
+	Enemy2* m_enemy2;
+	Enemy3* m_enemy3;
 
 	Vector3 m_toCameraPos;
 	Vector3 m_toPosDir;

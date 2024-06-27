@@ -34,7 +34,6 @@ public:
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_cNPos;
-
 	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
 

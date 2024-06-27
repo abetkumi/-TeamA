@@ -1,12 +1,12 @@
 #pragma once
+#include "sound/SoundSource.h"
+
 class Player;
 class Arrow;
 class Assist;
 class Item;
 class Game;
 class GameCamera;
-
-#include "sound/SoundSource.h"
 
 class Enemy2 : public IGameObject
 {
@@ -23,6 +23,7 @@ public:
 	void EnemyAttackBar();
 	void ItemDrop();
 	bool Start();
+	void CameraSyoujun();
 
 	const bool Serch();
 	const bool AttackSerch();

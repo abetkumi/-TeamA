@@ -171,6 +171,7 @@ void Enemy3::AttackMove()
 			moveStatus = 0;
 			arrowtimer = arrowtime;
 			initialPos = 0;
+			m_attackBar.x = 1.0f;
 		}
 	}
 
@@ -296,11 +297,6 @@ void Enemy3::EnemyAttackBar()
 		{
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
 			m_attackBar.x -= Decrease;
-		}
-		else if (m_attackBar.x <= 0)
-		{
-			//m_enemy2State = 2;
-			m_attackBar.x = 1.0f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

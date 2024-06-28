@@ -13,7 +13,7 @@
 
 namespace
 {
-	const Vector3 scale = { 1.0f,1.0f,1.0f };
+	const Vector3 scale = { 10.0f,10.0f,10.0f };
 	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
 	const float g = 2000.0f;
 }
@@ -70,6 +70,7 @@ bool Arrow::Start()
 	{
 		m_collisionObject->SetName("e_arrow");
 		m_Damage = 8;
+		pHoming = true;
 	}
 	/*else if (m_enArrow == enArrow_Boss)
 	{
@@ -94,6 +95,7 @@ bool Arrow::Start()
 	case Arrow::enArrow_Skeleton:
 		m_modelRender.Init("Assets/modelData/Arrow.tkm");
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+		m_modelRender.SetScale(scale);
 		break;
 
 	case Arrow::enArrow_Goblin: {
@@ -105,7 +107,7 @@ bool Arrow::Start()
 		bullettime = 7.0f;
 
 		// èâë¨ìxÇãÅÇﬂÇÈ
-		float initVel = sqrt((m_peLen * g * 0.95f) / 2.0f);
+		float initVel = sqrt((m_peLen * g * 1.0f) / 2.0f);
 		// XZïΩñ Ç≈ÇÃë¨ìxÇåvéZÇ∑ÇÈ
 		Vector3 velXZ = m_velocity;
 		velXZ.y = 0.0f;
@@ -180,15 +182,25 @@ void Arrow::Move()
 		m_velocity.y -= addSpeed;
 	}
 
+	if (eHoming == true) {
+		for (int i = 0; i < enemys3.empty(); i++) {
+			if (enemys3[i]->homing == true) {
+				Vector3 diff = enemys3[i]->m_homingPos - m_position;
+				diff.Normalize();
 
-	for (int i = 0; i < enemys3.empty(); i++) {
-		if (homing == true && enemys3[i]->homing == true) {
-			Vector3 diff = enemys3[i]->m_homingPos - m_position;
-			diff.Normalize();
-
-			m_position += diff * 1000.0f * g_gameTime->GetFrameDeltaTime();
+				m_position += diff * 1000.0f * g_gameTime->GetFrameDeltaTime();
+			}
 		}
 	}
+	
+	if (pHoming == true) {
+		Vector3 diff = player->m_position - m_position;
+		diff.y += 80.0f;
+		diff.Normalize();
+
+		m_position += diff * 2000.0f * g_gameTime->GetFrameDeltaTime();
+	}
+
 
 	m_modelRender.SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position);
@@ -212,17 +224,15 @@ void Arrow::Inpacttime()
 
 void Arrow::Inpacthit()
 {
-	/*const auto& collisions = g_collisionObjectManager->FindCollisionObjects("enemy");
+	const auto& collisions = g_collisionObjectManager->FindCollisionObjects("e_arrow");
 	for (auto collision : collisions)
 	{
-		if (collision->IsHit(m_collisionObject))
+		if (collision->IsHit(player->m_charaCon))
 		{
-			if (m_isDelete == false) {
-				m_isDelete = true;
-				m_deleteTimer = deletetimer;
-			}
+			DeleteGO(m_collisionObject);
+			DeleteGO(this);
 		}
-	}*/
+	}
 }
 
 void Arrow::deletebullet()

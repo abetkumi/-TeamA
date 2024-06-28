@@ -156,8 +156,6 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.0f;
-
 		SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
 		se->Play(false);
@@ -180,7 +178,7 @@ void Enemy::Attack()
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
-
+		m_attackBar.x = 1.0f;
 	}
 }
 
@@ -301,6 +299,8 @@ void Enemy::PlayAnimation()
 
 void Enemy::EnemyAttackBar()
 {
+	float Decrease = (1.0f / 4.3f) * g_gameTime->GetFrameDeltaTime();
+
 	Vector3 V0, V1;
 	float  m_enemycamara;
 
@@ -321,12 +321,12 @@ void Enemy::EnemyAttackBar()
 		if (m_attackBar.x >= 0.4f)
 		{
 			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-			m_attackBar.x -= 0.009f;
+			m_attackBar.x -= Decrease;
 		}
 		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
 		{
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-			m_attackBar.x -= 0.009f;
+			m_attackBar.x -= Decrease;
 		}
 		else if (m_attackBar.x <= 0)
 		{

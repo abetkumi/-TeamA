@@ -305,12 +305,13 @@ void Player::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_charaCon))
 		{
+			m_arrowState = 3;
+			HP -= 20;
+			
 			se = NewGO<SoundSource>(17);
 			se->Init(17);
 			se->Play(false);
 
-			m_arrowState = 3;
-			HP -= 20;
 		}
 	}
 
@@ -318,12 +319,13 @@ void Player::Collision()
 	for (auto collision : collisions2) {
 		if (collision->IsHit(m_charaCon))
 		{
+			m_arrowState = 3;
+			HP -= 2;
+
 			se = NewGO<SoundSource>(17);
 			se->Init(17);
 			se->Play(false);
 
-			m_arrowState = 3;
-			HP -= 2;
 		}
 	}
 }

@@ -59,13 +59,15 @@ public:
 	SpriteRender m_spriteRender_LB;
 	SpriteRender m_spriteRender_UI;
 	SpriteRender m_spriteRender_B;
+	SpriteRender m_spriteRender_Re;
+	SpriteRender m_spriteRender_Go;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
 
 	Vector3 position;
 	float spritetimer = 0.5f;
-	float spritetime = 3.0f;
-	float m_shade = 0.5f;
+	float spritetime = 0.0f;
+	float m_shade = 1.0f;
 	int m_spriteStatus = 1;
 
 	std::vector<Vector3> path00_pointList;

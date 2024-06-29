@@ -1,10 +1,11 @@
 #pragma once
+#include "sound/SoundSource.h"
+
 class Player;
 class Arrow;
 class Assist;
 class GameCamera;
 class Item;
-#include "sound/SoundSource.h"
 
 class Enemy : public IGameObject
 {

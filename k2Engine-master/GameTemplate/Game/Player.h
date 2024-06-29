@@ -78,6 +78,11 @@ public:
 	float m_score = 0;
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
 	SoundSource* se;
+	SoundSource* se2;
+	SoundSource* se3;
 
 	SkyCube* m_skyCube = nullptr;
+
+	float SimilarAng = 0.0f;	//ˆê”ÔŒü‚¢‚Ä‚¢‚é“G
+	Vector3 lock_ePos;
 };

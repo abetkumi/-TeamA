@@ -19,7 +19,6 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(se);
 	DeleteGO(m_skyCube);
 }
 
@@ -67,7 +66,7 @@ bool Player::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	m_skyCube = NewGO<SkyCube>(0, "skycube");
-	m_skyCube->SetScale({ 2000.0f,2000.0f,2000.0f });
+	m_skyCube->SetScale({ 8000.0f,8000.0f,8000.0f });
 	m_skyCube->SetPosition(m_position);
 	m_skyCube->SetType(enSkyCubeType_Day);
 	m_skyCube->SetLuminance(0.5f);
@@ -128,7 +127,7 @@ void Player::Move()
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
 	//川の3ライン間を移動するための計算
-	 if (game->m_spriteStatus == 5)
+	 if (game->m_spriteStatus == 7)
 	{
 
 	Vector3 stickL;
@@ -305,13 +304,12 @@ void Player::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_charaCon))
 		{
-			m_arrowState = 3;
-			HP -= 20;
-			
 			se = NewGO<SoundSource>(17);
 			se->Init(17);
 			se->Play(false);
 
+			m_arrowState = 3;
+			HP -= 20;
 		}
 	}
 
@@ -319,13 +317,12 @@ void Player::Collision()
 	for (auto collision : collisions2) {
 		if (collision->IsHit(m_charaCon))
 		{
-			m_arrowState = 3;
-			HP -= 2;
-
 			se = NewGO<SoundSource>(17);
 			se->Init(17);
 			se->Play(false);
 
+			m_arrowState = 3;
+			HP -= 1;
 		}
 	}
 }
@@ -384,9 +381,9 @@ void Player::ArrowAnimation()
 		//弓を構える
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			se = NewGO<SoundSource>(5);
-			se->Init(5);
-			se->Play(false);
+			se2 = NewGO<SoundSource>(5);
+			se2->Init(5);
+			se2->Play(false);
 
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
@@ -409,9 +406,9 @@ void Player::ArrowAnimation()
 		{
 			arrow = NewGO<Arrow>(0);
 
-			se = NewGO<SoundSource>(9);
-			se->Init(9);
-			se->Play(false);
+			se3 = NewGO<SoundSource>(9);
+			se3->Init(9);
+			se3->Play(false);
 
 			Vector3 arrowPos = corre2;
 			m_rotation.Apply(arrowPos);
@@ -420,8 +417,15 @@ void Player::ArrowAnimation()
 			arrow->m_1stPosition = arrow->m_position;
 			arrow->m_rotation = m_rotation;
 
+			if (SimilarAng >= 0.98) {
+				arrow->homing = true;
+				arrow->lock_ePos = lock_ePos;
+			}
+
 			arrow->SetEnArrow(Arrow::enArrow_Player);
 			m_arrowState = 5;
+
+			SimilarAng = 0.0f;
 		}
 		
 		break;

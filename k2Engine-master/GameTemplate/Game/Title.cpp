@@ -21,12 +21,11 @@ Title::Title()
 Title::~Title()
 {
 	DeleteGO(titleBGM);
-	DeleteGO(titleSE);
 }
 
 void Title::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonA))
+	if (g_pad[0]->IsTrigger(enButtonA) && m_lagFlag == false)
 	{
 		m_timer *= 30.0f;
 		m_lagFlag = true;

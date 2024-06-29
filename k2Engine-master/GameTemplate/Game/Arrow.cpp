@@ -206,7 +206,7 @@ void Arrow::Inpacttime()
 	{
 		return;
 	}
-	DeleteGO(m_collisionObject);
+	//DeleteGO(m_collisionObject);
 	DeleteGO(this);
 }
 
@@ -230,7 +230,7 @@ void Arrow::deletebullet()
 	if (m_isDelete) {
 		m_deleteTimer -= g_gameTime->GetFrameDeltaTime();
 		if (m_deleteTimer <= 0.0f) {
-			DeleteGO(m_collisionObject);
+			//DeleteGO(m_collisionObject);
 			DeleteGO(this);
 		}
 	}

@@ -34,7 +34,6 @@ Game::~Game()
 			return true;
 		});
 	DeleteGO(player);
-	DeleteGO(ghost);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
@@ -65,7 +64,7 @@ Game::~Game()
 
 bool Game::Start()
 {
-
+	g_renderingEngine->SetCascadeNearAreaRates(0.03f, 0.1f, 0.15f);
 	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 	{
 		if (objData.EqualObjectName(L"a_player") == true)
@@ -170,7 +169,7 @@ bool Game::Start()
 	});
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
-	status = FindGO<Status>("status");
+	//status = FindGO<Status>("status");
 	//ghost = NewGO<Ghost>(0, "ghost");
 	//assist = NewGO<Assist>(0,"assist");
 
@@ -180,6 +179,8 @@ bool Game::Start()
 	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
 	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
 	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Re.Init("Assets/sprite/GameReady.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Go.Init("Assets/sprite/GameGO.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
@@ -267,25 +268,41 @@ void Game::Update()
 void Game::SpriteFlag()
 {
 	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
-	if (m_shade >= 0.7f)
+	if (m_spriteStatus <= 4) 
 	{
-		if (m_shade >= 1.0f)
+		if (m_shade >= 0.7f)
 		{
-			m_shade = 1.0f;
+			if (m_shade >= 1.0f)
+			{
+				m_shade = 1.0f;
+			}
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				spritetimer *= -1.0f;
+			}
 		}
-		if (g_pad[0]->IsTrigger(enButtonA))
+		if (m_shade <= 0.2f)
 		{
 			spritetimer *= -1.0f;
+			m_spriteStatus++;
+		}
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			m_spriteStatus = 5;
 		}
 	}
-	if (m_shade <= 0.2f)
+	if (m_spriteStatus >= 5)
 	{
-		spritetimer *= -1.0f;
-		m_spriteStatus++;
+		spritetime += g_gameTime->GetFrameDeltaTime();
+		if (spritetime >= 2.5)
+		{
+			spritetime = 1.0f;
+			m_spriteStatus++;
+		}
 	}
-	if (m_spriteStatus >= 5||g_pad[0]->IsTrigger(enButtonB))
+	if (m_spriteStatus >= 7)
 	{
-		m_spriteStatus = 5;
+		m_spriteStatus = 7;
 	}
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_L.Update();
@@ -319,5 +336,13 @@ void Game::Render(RenderContext& rc)
 	{
 		m_spriteRender_UI.Draw(rc);
 		m_spriteRender_B.Draw(rc);
+	}
+	if (m_spriteStatus == 5)
+	{
+		m_spriteRender_Re.Draw(rc);
+	}
+	if (m_spriteStatus == 6)
+	{
+		m_spriteRender_Go.Draw(rc);
 	}
 }

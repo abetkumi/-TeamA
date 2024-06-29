@@ -332,9 +332,9 @@ void Enemy3::Collision()
 				se->Init(1);
 				se->Play(false);
 
-				se = NewGO<SoundSource>(20);
-				se->Init(20);
-				se->Play(false);
+				se2 = NewGO<SoundSource>(20);
+				se2->Init(20);
+				se2->Play(false);
 
 			}
 		}

@@ -259,9 +259,9 @@ void Enemy2::PlayAnimation()
 			se->Init(1);
 			se->Play(false);
 
-			se = NewGO<SoundSource>(19);
-			se->Init(19);
-			se->Play(false);
+			se2 = NewGO<SoundSource>(19);
+			se2->Init(19);
+			se2->Play(false);
 
 			DeleteGO(this);
 		}

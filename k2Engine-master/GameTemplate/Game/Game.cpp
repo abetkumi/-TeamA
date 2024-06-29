@@ -290,15 +290,27 @@ void Game::SpriteFlag()
 		}
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
-			m_spriteStatus = 5;
-
 			m_gameBGM = NewGO<SoundSource>(21);
 			m_gameBGM->Init(21);
 			m_gameBGM->Play(false);
+
+			m_spriteStatus = 5;
+		}
+		if (m_spriteStatus == 4)
+		{
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				m_gameBGM = NewGO<SoundSource>(21);
+				m_gameBGM->Init(21);
+				m_gameBGM->Play(false);
+
+				m_spriteStatus = 5;
+			}
 		}
 	}
 	if (m_spriteStatus == 5)
 	{
+
 		spritetime += g_gameTime->GetFrameDeltaTime();
 		if (spritetime >= 2.5)
 		{

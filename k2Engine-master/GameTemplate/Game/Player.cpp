@@ -387,7 +387,7 @@ void Player::ArrowAnimation()
 
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
-			if (m_arrowLag >=25)
+			if (m_arrowLag >= 25)
 			{
 				m_arrowState++;
 				m_arrowLag = 0;

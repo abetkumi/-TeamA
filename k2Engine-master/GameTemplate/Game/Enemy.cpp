@@ -19,7 +19,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//�ʒu�C���{�̓����蔻��
+	const Vector3 corre1 = { 0.0f,80.0f,0.0f };//�ʒu�C���{�̓����蔻��
 	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//�ʒu�C���e�۔����ʒu
 }
 

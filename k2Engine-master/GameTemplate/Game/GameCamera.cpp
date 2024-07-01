@@ -31,7 +31,7 @@ bool GameCamera::Start()
 	m_player = FindGO<Player>("player");
 
 	g_camera3D->SetNear(1.0f);
-	g_camera3D->SetFar(80000.0f);
+	g_camera3D->SetFar(81000.0f);
 
 	m_spriteRender.Init("Assets/sprite/syoujun.dds", 350.0f, 250.0f);
 	m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
@@ -132,64 +132,64 @@ void GameCamera::Update()
 //	m_Dec = v.Dot(ePos);
 //}
 
-void GameCamera::SpriteColor()
-{
-	Vector3 diff1, diff2, diff3;
-	diff1 = m_enemy->m_position - pos;
-	diff2 = m_enemy2->m_position - pos;
-	diff3 = m_enemy3->m_position - pos;
-	if (diff1.Length() <= 5000)
-	{
-		diff1.Normalize();
-		Vector3 m_cameraFor;
-		m_cameraFor = g_camera3D->GetForward();
-		float v1 = diff1.x * m_cameraFor.x + diff1.y * m_cameraFor.y + diff1.z * m_cameraFor.z;
-	
-		if (v1 >= 0.99f)
-		{
-			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-		}
-		else
-		{
-			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		}
-	}
-	else if (diff2.Length() <= 5000)
-	{
-		diff2.Normalize();
-		Vector3 m_cameraFor;
-		m_cameraFor = g_camera3D->GetForward();
-		float v2 = diff2.x * m_cameraFor.x + diff2.y * m_cameraFor.y + diff2.z * m_cameraFor.z;
-		if (v2 >= 0.99f)
-		{
-			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-		}
-		else
-		{
-			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		}
-	}
-	else if (diff3.Length() <= 5000)
-	{
-		Vector3 m_cameraFor;
-		m_cameraFor = g_camera3D->GetForward();
-		diff3.Normalize();
-		float v3 = diff3.x * m_cameraFor.x + diff3.y * m_cameraFor.y + diff3.z * m_cameraFor.z;
-		if (v3 >= 0.99)
-		{
-			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-		}
-		else
-		{
-			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-		}
-	}
-	else
-	{
-		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-	}
-	m_spriteRender.Update();
-}
+//void GameCamera::SpriteColor()
+//{
+//	Vector3 diff1, diff2, diff3;
+//	diff1 = m_enemy->m_position - pos;
+//	diff2 = m_enemy2->m_position - pos;
+//	diff3 = m_enemy3->m_position - pos;
+//	if (diff1.Length() <= 5000)
+//	{
+//		diff1.Normalize();
+//		Vector3 m_cameraFor;
+//		m_cameraFor = g_camera3D->GetForward();
+//		float v1 = diff1.x * m_cameraFor.x + diff1.y * m_cameraFor.y + diff1.z * m_cameraFor.z;
+//	
+//		if (v1 >= 0.99f)
+//		{
+//			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+//		}
+//		else
+//		{
+//			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+//		}
+//	}
+//	else if (diff2.Length() <= 5000)
+//	{
+//		diff2.Normalize();
+//		Vector3 m_cameraFor;
+//		m_cameraFor = g_camera3D->GetForward();
+//		float v2 = diff2.x * m_cameraFor.x + diff2.y * m_cameraFor.y + diff2.z * m_cameraFor.z;
+//		if (v2 >= 0.99f)
+//		{
+//			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+//		}
+//		else
+//		{
+//			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+//		}
+//	}
+//	else if (diff3.Length() <= 5000)
+//	{
+//		Vector3 m_cameraFor;
+//		m_cameraFor = g_camera3D->GetForward();
+//		diff3.Normalize();
+//		float v3 = diff3.x * m_cameraFor.x + diff3.y * m_cameraFor.y + diff3.z * m_cameraFor.z;
+//		if (v3 >= 0.99)
+//		{
+//			m_spriteRender.SetMulColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+//		}
+//		else
+//		{
+//			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+//		}
+//	}
+//	else
+//	{
+//		m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
+//	}
+//	m_spriteRender.Update();
+//}
 
 void GameCamera::Render(RenderContext& rc)
 {

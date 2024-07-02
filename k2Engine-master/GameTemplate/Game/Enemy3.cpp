@@ -2,8 +2,8 @@
 #include "Enemy3.h"
 #include "Player.h"
 #include "Arrow.h"
-#include "sound/SoundEngine.h"
-#include "sound/SoundSource.h"
+//#include "sound/SoundEngine.h"
+//#include "sound/SoundSource.h"
 #include "Item.h"
 #include "GameCamera.h"
 
@@ -39,8 +39,8 @@ bool Enemy3::Start()
 {
 	m_modelRender.Init("Assets/modelData/bat.tkm");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(20, "Assets/BGM・SE/bat_voice.wav");
+	//g_soundEngine->ResistWaveFileBank(1, "Assets/BGM_SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(20, "Assets/BGM_SE/bat_voice.wav");
 
 	player = FindGO<Player>("player");
 	gameCamera = FindGO<GameCamera>("gameCamera");
@@ -377,7 +377,7 @@ void Enemy3::Collision()
 			if (HP <= 0) {
 				m_downFlag = true;
 
-				se = NewGO<SoundSource>(1);
+				se = NewGO<SoundSource>(0);
 				se->Init(1);
 				se->Play(false);
 

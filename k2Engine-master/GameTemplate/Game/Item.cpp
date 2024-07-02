@@ -8,7 +8,7 @@
 Item::Item()
 {
 	m_modelRender.Init("Assets/modelData/BlueBottle.tkm");
-	g_soundEngine->ResistWaveFileBank(15, "Assets/BGMESE/ItemGet.wav");
+	g_soundEngine->ResistWaveFileBank(15, "Assets/BGM_SE/ItemGet.wav");
 
 	player = FindGO<Player>("player");
 

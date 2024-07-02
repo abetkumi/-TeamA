@@ -10,8 +10,8 @@ Title::Title()
 	m_spriteRender_m.Init("Assets/sprite/TitleMOZI.dds", 1920.0f, 1080.0f, m_alphaBlendMode);
 	m_spriteRender_m.SetPosition({ 0.0f,-40.0f,0.0f });
 	m_spriteRender_m.SetMulColor(Vector4(1.0f,1.0f,1.0f,m_shade));
-	g_soundEngine->ResistWaveFileBank(0, "Assets/BGMESE/TitleBGM.wav");
-	g_soundEngine->ResistWaveFileBank(11, "Assets/BGMESE/Select.wav");
+	g_soundEngine->ResistWaveFileBank(0, "Assets/BGM_SE/TitleBGM.wav");
+	g_soundEngine->ResistWaveFileBank(11, "Assets/BGM_SE/Select.wav");
 
 	titleBGM = NewGO<SoundSource>(0);
 	titleBGM->Init(0);

@@ -8,7 +8,7 @@
 GameClear::GameClear()
 {
 	spriteRender.Init("Assets/modelData/GameClear.dds", 1920.0f, 1080.0f);
-	g_soundEngine->ResistWaveFileBank(4, "Assets/BGMESE/GameClear.wav");
+	g_soundEngine->ResistWaveFileBank(4, "Assets/BGM_SE/GameClear.wav");
 
 	gameClearBGM = NewGO<SoundSource>(4);
 	gameClearBGM->Init(4);

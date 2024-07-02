@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Assist.h"
-#include "sound/SoundEngine.h"
-#include "sound/SoundSource.h"
+//#include "sound/SoundEngine.h"
+//#include "sound/SoundSource.h"
 #include "GameCamera.h"
 #include "Item.h"
 #include "collision/CollisionObject.h"
@@ -50,9 +50,9 @@ bool Enemy::Start()
 	,m_animationClips,enEnemyClip_Num);
 	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM・SE/goblin_throw.wav");
-	g_soundEngine->ResistWaveFileBank(18, "Assets/BGM・SE/goblin_voice.wav");
+	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM_SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(7, "Assets/BGM_SE/goblin_throw.wav");
+	g_soundEngine->ResistWaveFileBank(18, "Assets/BGM_SE/goblin_voice.wav");
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
@@ -293,13 +293,13 @@ void Enemy::PlayAnimation()
 			m_itemGet = rand() % 4;
 			player->m_score += 100;
 
-			se = NewGO<SoundSource>(1);
+			se = NewGO<SoundSource>(0);
 			se->Init(1);
 			se->Play(false);
 
-			se2 = NewGO<SoundSource>(18);
+			/*se2 = NewGO<SoundSource>(18);
 			se2->Init(18);
-			se2->Play(false);
+			se2->Play(false);*/
 
 		}
 		break;

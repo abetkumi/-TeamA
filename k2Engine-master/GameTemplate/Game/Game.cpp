@@ -18,7 +18,7 @@
 #include "Rock.h"
 #include "Wood.h"
 #include "Ghost.h"
-#include "sound/SoundSource.h" 
+//#include "sound/SoundSource.h" 
 
 Game::Game()
 {
@@ -186,10 +186,10 @@ bool Game::Start()
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 
-	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM・SE/GameBGM.wav");
-	g_soundEngine->ResistWaveFileBank(16, "Assets/BGM・SE/player_deathvoice.wav");
-	g_soundEngine->ResistWaveFileBank(21, "Assets/BGM・SE/ready.wav");
-	g_soundEngine->ResistWaveFileBank(22, "Assets/BGM・SE/go.wav");
+	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM_SE/GameBGM.wav");
+	g_soundEngine->ResistWaveFileBank(16, "Assets/BGM_SE/player_deathvoice.wav");
+	g_soundEngine->ResistWaveFileBank(21, "Assets/BGM_SE/ready.wav");
+	g_soundEngine->ResistWaveFileBank(22, "Assets/BGM_SE/go.wav");
 
 	m_gameBGM = NewGO<SoundSource>(13);
 	m_gameBGM->Init(13);

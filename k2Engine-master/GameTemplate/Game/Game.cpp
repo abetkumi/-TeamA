@@ -197,6 +197,8 @@ bool Game::Start()
 }
 void Game::Update()
 {
+	SpriteFlag();
+
 	position.x = -650.0f;
 	position.y = 500.0f;
 	m_spriteRender.SetPosition(position);
@@ -239,10 +241,11 @@ void Game::Update()
 		}
 	}
 	//クリアのポイント判定
-	if (player->m_point == 102)
+	if (player->m_point == 10)
 	{
 		DeleteGO(m_gameBGM);
 		gameClear = NewGO<GameClear>(0, "gameClear");
+		ScoreRank();
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 			{
 				DeleteGO(enemy);
@@ -258,11 +261,36 @@ void Game::Update()
 				DeleteGO(enemy3);
 				return true;
 			});
-		player->m_arrowState=6;
-		player->m_point = 11;
+		player->m_arrowState = 6;
+		player->m_point = 103;
 		//DeleteGO(this);
 	}
-	SpriteFlag();
+}
+
+void Game::ScoreRank()
+{
+	if (player->m_score < 4000)
+	{
+		m_fontRender.SetText(L"C Rank");
+		m_fontRender.SetColor({ 0.0f,1.0f,0.0f,1.0f });
+	}
+	else if (player->m_score >= 3000 && player->m_score < 4500)
+	{
+		m_fontRender.SetText(L"B Rank");
+		m_fontRender.SetColor({ 0.0f,0.0f,1.0f,1.0f });
+	}
+	else if (player->m_score >= 4500 && player->m_score < 5600)
+	{
+		m_fontRender.SetText(L"A Rank");
+		m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	}
+	else if (player->m_score >= 5500)
+	{
+		m_fontRender.SetText(L"S Rank");
+		m_fontRender.SetColor({ 1.0f,1.0f,0.0f,1.0f });
+	}
+	m_fontRender.SetPosition({ -100.0f,0.0f,1.0f });
+	m_fontRender.SetScale(4.0f);
 }
 
 void Game::SpriteFlag()
@@ -344,5 +372,9 @@ void Game::Render(RenderContext& rc)
 	if (m_spriteStatus == 6)
 	{
 		m_spriteRender_Go.Draw(rc);
+	}
+	if (player->m_arrowState == 6)
+	{
+		m_fontRender.Draw(rc);
 	}
 }

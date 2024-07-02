@@ -3,13 +3,13 @@
 #include "Arrow.h"
 #include "Game.h"
 #include "GameCamera.h"
-#include "sound/SoundSource.h" 
+//#include "sound/SoundSource.h" 
 
 namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
 	const Vector3 corre2 = { 0.0f,130.0f,10.0f };//??u?C???e???????u
-	const float firstPosition = 60.0f;
+	const float firstPosition = 80.0f;
 }
 
 Player::Player()
@@ -127,134 +127,134 @@ void Player::Move()
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
 	//川の3ライン間を移動するための計算
-	 if (game->m_spriteStatus == 7)
+	if (game->m_spriteStatus == 7)
 	{
 
-	Vector3 stickL;
-	stickL.x = g_pad[0]->GetLStickXF();
+		Vector3 stickL;
+		stickL.x = g_pad[0]->GetLStickXF();
 
-	switch (m_moveState) {
-	case MoveState_Normal:
-		// ���E�ɓ�������
-		//�E�X�e�B�b�N�őD�̈ړ�
-		if (stickL.x <= -0.8f&&m_lag == 0)
-		{
-			m_moveState = MoveState_Left;
+		switch (m_moveState) {
+		case MoveState_Normal:
+			// ���E�ɓ�������
+			//�E�X�e�B�b�N�őD�̈ړ�
+			if (stickL.x <= -0.8f && m_lag == 0)
+			{
+				m_moveState = MoveState_Left;
+			}
+			else if (stickL.x >= 0.8f && m_lag == 0)
+			{
+				m_moveState = MoveState_Right;
+			}
+
+			break;
+		case MoveState_Left:
+
+			m_moveFlag--;
+			m_lag++;
+			m_moveState = MoveState_Normal;
+			break;
+		case MoveState_Right:
+
+			m_moveFlag++;
+			m_lag++;
+			m_moveState = MoveState_Normal;
+			break;
 		}
-		else if (stickL.x >= 0.8f && m_lag == 0)
+
+		if (m_lag >= 1)
 		{
-			m_moveState = MoveState_Right;
+			m_lag++;
+			if (m_lag == 10)
+			{
+
+				m_lag = 0;
+			}
 		}
 
-		break;
-	case MoveState_Left:
 
-		m_moveFlag--;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	case MoveState_Right:
-
-		m_moveFlag++;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	}
-	
-	if (m_lag >= 1)
-	{
-		m_lag++;
-		if (m_lag == 10)
+		//��̃��C���̏�������̐ݒ�
+		if (m_moveFlag < 0)
 		{
+			m_moveFlag = 0;
+		}
+		if (m_moveFlag > 2)
+		{
+			m_moveFlag = 2;
+		}
 
-			m_lag = 0;
+		if (m_moveFlag == 0)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+			Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+			diff = game->m_pointPosition - m_position;
+
+		}
+
+		if (m_moveFlag == 1)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
+			Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+			diff = game->m_pointPosition1 - m_position;
+		}
+
+		if (m_moveFlag == 2)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+			Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+			diff = game->m_pointPosition2 - m_position;
+
+		}
+
+		//���̈ړ��|�C���g�֌�������
+		float disToPlayer = diff.Length();
+		if (disToPlayer <= 200.0f)
+		{
+			m_point++;
+		}
+
+
+		diff.Normalize();
+
+		static bool hoge = false;
+
+		if (hoge) {
+			//�ړ��X�s�[�h
+			m_moveSpeed = diff * 0.0f;
+		}
+		else {
+			//�ړ��X�s�[�h
+			m_moveSpeed = diff * 300.0f;
 		}
 	}
-
-
-	//��̃��C���̏�������̐ݒ�
-	if (m_moveFlag < 0)
-	{
-		m_moveFlag = 0;
-	}
-	if (m_moveFlag > 2)
-	{
-		m_moveFlag = 2;
-	}
-
-	if (m_moveFlag == 0)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
-		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-		diff = game->m_pointPosition - m_position;
-
-	}
-
-	if (m_moveFlag == 1)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
-		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-		diff = game->m_pointPosition1 - m_position;
-	}
-
-	if (m_moveFlag == 2)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
-		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-		diff = game->m_pointPosition2 - m_position;
-
-	}
-
-	//���̈ړ��|�C���g�֌�������
-	float disToPlayer = diff.Length();
-	if (disToPlayer <= 200.0f)
-	{
-		m_point++;
-	}
-
-
-	diff.Normalize();
-
-	static bool hoge = false;
-	
-	if (hoge) {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 0.0f;
-	}
-	else {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 300.0f;
-	}
-	 }
 	//�����܂�3���C���̈ړ���
 
 	if (m_charaCon.IsOnGround())
@@ -309,7 +309,7 @@ void Player::Collision()
 			se->Play(false);
 
 			m_arrowState = 3;
-			HP -= 20;
+			HP -= 10;
 		}
 	}
 
@@ -378,7 +378,7 @@ void Player::ArrowAnimation()
 		
 		break;
 	case 1:
-		//弓を構える
+		//弓を構える。
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
 			se2 = NewGO<SoundSource>(5);
@@ -464,7 +464,7 @@ void Player::Score()
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf);
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(500.0f, 500.0f, 0.0f));
+	m_fontRender.SetPosition(m_fontPosition);
 	//フォントの大きさを設定。
 	m_fontRender.SetScale(2.0f);
 	//フォントの色を設定。

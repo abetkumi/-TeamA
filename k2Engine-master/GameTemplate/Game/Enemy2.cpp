@@ -196,8 +196,6 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
-
-
 		}
 
 	}
@@ -259,7 +257,7 @@ void Enemy2::PlayAnimation()
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
 		if (m_enemy2DownLag >= 20)
 		{
-			m_itemGet = rand() % 4;
+			m_itemGet = rand() % 3;
 			player->m_score += 200;
 			DeleteGO(this);
 		}

@@ -81,6 +81,7 @@ void Item::Update()
 				player->HP += 30;
 				if (player->HP > 100)
 				{
+					player->m_score += 100;
 					player->HP = 100;
 				}
 				break;

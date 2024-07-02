@@ -68,15 +68,16 @@ public:
 	AnimationClip m_animationClips[enArrowClip_Num];
 
 	float HP,ST,ATK = 1;
-	Vector3 diff;
-	Vector3 m_HPBar_r = { 1.0f,1.0f,1.0f };
 	int m_point = 0;
 	int m_moveFlag = 1;
 	int m_lag = 0;
 	int m_arrowLag = 0;
 	int m_damageLag = 0;
 	float m_score = 0;
+	Vector3 diff;
+	Vector3 m_HPBar_r = { 1.0f,1.0f,1.0f };
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
+	Vector3 m_fontPosition = { 500.0f, 500.0f, 0.0f };
 	SoundSource* se;
 	SoundSource* se2;
 	SoundSource* se3;

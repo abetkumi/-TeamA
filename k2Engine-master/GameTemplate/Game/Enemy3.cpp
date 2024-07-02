@@ -391,7 +391,7 @@ void Enemy3::Collision()
 		if (m_enemy3DownLag >= 1)
 		{
 	
-			m_itemGet = rand() % 3;
+			m_itemGet = rand() % 2;
 			player->m_score += 300;
 			DeleteGO(this);
 		}

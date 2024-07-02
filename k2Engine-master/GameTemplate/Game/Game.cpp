@@ -213,9 +213,9 @@ void Game::Update()
 		{
 			DeleteGO(m_gameBGM);
 
-			m_gameBGM = NewGO<SoundSource>(16);
-			m_gameBGM->Init(16);
-			m_gameBGM->Play(false);
+			se = NewGO<SoundSource>(16);
+			se->Init(16);
+			se->Play(false);
 		}
 		
 		if (player->m_arrowLag == 100)
@@ -290,19 +290,19 @@ void Game::SpriteFlag()
 		}
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
-			m_gameBGM = NewGO<SoundSource>(21);
-			m_gameBGM->Init(21);
-			m_gameBGM->Play(false);
-
+			se = NewGO<SoundSource>(21);
+			se->Init(21);
+			se->Play(false);
+			
 			m_spriteStatus = 5;
 		}
 		if (m_spriteStatus == 4)
 		{
 			if (g_pad[0]->IsTrigger(enButtonA))
 			{
-				m_gameBGM = NewGO<SoundSource>(21);
-				m_gameBGM->Init(21);
-				m_gameBGM->Play(false);
+				se = NewGO<SoundSource>(21);
+				se->Init(21);
+				se->Play(false);
 
 				m_spriteStatus = 5;
 			}
@@ -320,11 +320,16 @@ void Game::SpriteFlag()
 	}
 	if (m_spriteStatus == 6)
 	{
-		m_gameBGM = NewGO<SoundSource>(22);
-		m_gameBGM->Init(22);
-		m_gameBGM->Play(false);
+		spritetime += g_gameTime->GetFrameDeltaTime();
+		if (spritetime == 1.0) {
+			se = NewGO<SoundSource>(22);
+			se->Init(22);
+			se->Play(false);
+		}
+		if (spritetime >= 2.5) {
 
-		m_spriteStatus++;
+			m_spriteStatus++;
+		}
 	}
 	if (m_spriteStatus >= 7)
 	{

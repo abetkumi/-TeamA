@@ -34,7 +34,7 @@ bool Rock::Start()
 
 	//r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
 
-	g_soundEngine->ResistWaveFileBank(14, "Assets/BGMESE/rock_hit.wav");
+	g_soundEngine->ResistWaveFileBank(14, "Assets/BGM_SE/rock_hit.wav");
 
 	player = FindGO<Player>("player");
 	game = FindGO<Game>("game");

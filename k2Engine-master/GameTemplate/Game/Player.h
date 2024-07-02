@@ -86,4 +86,6 @@ public:
 
 	float SimilarAng = 0.0f;	//ˆê”ÔŒü‚¢‚Ä‚¢‚é“G
 	Vector3 lock_ePos;
+
+	bool m_bowPullSeFlag = true;	//‹|‚ğˆø‚«i‚éSE‚ğ§Œä‚·‚éƒtƒ‰ƒO
 };

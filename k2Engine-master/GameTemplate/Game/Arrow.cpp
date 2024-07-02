@@ -42,7 +42,7 @@ bool Arrow::Start()
 
 	m_velocity = Vector3::AxisZ;
 	m_rotation.Apply(m_velocity);
-	g_soundEngine->ResistWaveFileBank(12, "Assets/BGMESE/player_shot.wav");
+	g_soundEngine->ResistWaveFileBank(12, "Assets/BGM_SE/player_shot.wav");
 
 
 	if (m_enArrow == enArrow_Player)

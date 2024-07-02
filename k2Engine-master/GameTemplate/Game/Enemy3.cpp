@@ -2,8 +2,8 @@
 #include "Enemy3.h"
 #include "Player.h"
 #include "Arrow.h"
-#include "sound/SoundEngine.h"
-#include "sound/SoundSource.h"
+//#include "sound/SoundEngine.h"
+//#include "sound/SoundSource.h"
 #include "Item.h"
 #include "GameCamera.h"
 
@@ -43,8 +43,8 @@ bool Enemy3::Start()
 	m_modelRender.Init("Assets/modelData/bat.tkm"
 		, m_animation3Clips, enEnemy3Clip_Num);
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(20, "Assets/BGM・SE/bat_voice.wav");
+	//g_soundEngine->ResistWaveFileBank(1, "Assets/BGM_SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(20, "Assets/BGM_SE/bat_voice.wav");
 
 	m_rotation.Apply(m_forward);
 	m_modelRender.SetPosition(m_position);

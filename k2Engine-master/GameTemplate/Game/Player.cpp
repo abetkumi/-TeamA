@@ -38,9 +38,9 @@ bool Player::Start()
 	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
 
-	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
-	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM・SE/player_shot.wav");
-	g_soundEngine->ResistWaveFileBank(17, "Assets/BGM・SE/player_damagevoice.wav");
+	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM_SE/Arrow.wav");
+	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM_SE/player_shot.wav");
+	g_soundEngine->ResistWaveFileBank(17, "Assets/BGM_SE/player_hit.wav");
 	
 
 	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
@@ -381,9 +381,15 @@ void Player::ArrowAnimation()
 		//弓を構える。
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			se2 = NewGO<SoundSource>(5);
-			se2->Init(5);
-			se2->Play(false);
+			if (m_bowPullSeFlag)
+			{
+				se2 = NewGO<SoundSource>(5);
+				se2->Init(5);
+				se2->Play(false);
+
+				m_bowPullSeFlag = false;
+			}
+			
 
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
@@ -397,6 +403,8 @@ void Player::ArrowAnimation()
 		{
 			m_arrowLag = 0;
 			m_arrowState = 0;
+
+			m_bowPullSeFlag = true;
 		}
 		break;
 	case 2:
@@ -426,6 +434,8 @@ void Player::ArrowAnimation()
 			m_arrowState = 5;
 
 			SimilarAng = 0.0f;
+
+			m_bowPullSeFlag = true;
 		}
 		
 		break;

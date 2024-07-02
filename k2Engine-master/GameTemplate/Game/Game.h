@@ -64,7 +64,6 @@ public:
 	FontRender m_fontRender;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
-	SoundSource* se;
 
 	Vector3 position;
 	float spritetimer = 0.5f;

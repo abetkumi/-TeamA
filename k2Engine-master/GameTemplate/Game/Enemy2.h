@@ -65,8 +65,6 @@ public:
 	Item* item;
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
-	SoundSource* se;
-	SoundSource* se2;
 
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;

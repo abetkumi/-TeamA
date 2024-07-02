@@ -188,6 +188,8 @@ bool Game::Start()
 
 	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM・SE/GameBGM.wav");
 	g_soundEngine->ResistWaveFileBank(16, "Assets/BGM・SE/player_deathvoice.wav");
+	g_soundEngine->ResistWaveFileBank(21, "Assets/BGM・SE/ready.wav");
+	g_soundEngine->ResistWaveFileBank(22, "Assets/BGM・SE/go.wav");
 
 	m_gameBGM = NewGO<SoundSource>(13);
 	m_gameBGM->Init(13);
@@ -213,9 +215,9 @@ void Game::Update()
 		{
 			DeleteGO(m_gameBGM);
 
-			m_gameBGM = NewGO<SoundSource>(16);
-			m_gameBGM->Init(16);
-			m_gameBGM->Play(false);
+			se = NewGO<SoundSource>(16);
+			se->Init(16);
+			se->Play(false);
 		}
 		
 		if (player->m_arrowLag == 100)
@@ -316,11 +318,27 @@ void Game::SpriteFlag()
 		}
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
+			se = NewGO<SoundSource>(21);
+			se->Init(21);
+			se->Play(false);
+			
 			m_spriteStatus = 5;
 		}
+		if (m_spriteStatus == 4)
+		{
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				se = NewGO<SoundSource>(21);
+				se->Init(21);
+				se->Play(false);
+
+				m_spriteStatus = 5;
+			}
+		}
 	}
-	if (m_spriteStatus >= 5)
+	if (m_spriteStatus == 5)
 	{
+
 		spritetime += g_gameTime->GetFrameDeltaTime();
 		if (spritetime >= 2.5)
 		{
@@ -328,10 +346,27 @@ void Game::SpriteFlag()
 			m_spriteStatus++;
 		}
 	}
+	if (m_spriteStatus == 6)
+	{
+	
+
+		if (spritetime == 1.0) {
+
+			se = NewGO<SoundSource>(22);
+			se->Init(22);
+			se->Play(false);
+		}
+		if (spritetime >= 2.5) {
+
+			m_spriteStatus++;
+		}
+		spritetime += g_gameTime->GetFrameDeltaTime();
+	}
 	if (m_spriteStatus >= 7)
 	{
 		m_spriteStatus = 7;
 	}
+
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_L.Update();
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));

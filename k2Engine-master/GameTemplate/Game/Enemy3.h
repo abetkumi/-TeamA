@@ -54,6 +54,7 @@ public:
 	GameCamera* gameCamera;
 	CollisionObject* m_collisionObject;
 	SoundSource* se;
+	SoundSource* se2;
 
 	enum EnEnemy3Clip
 	{

@@ -309,7 +309,7 @@ void Player::Collision()
 			se->Play(false);
 
 			m_arrowState = 3;
-			HP -= 10;
+			HP -= 20;
 		}
 	}
 

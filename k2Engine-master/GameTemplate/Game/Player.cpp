@@ -418,7 +418,7 @@ void Player::ArrowAnimation()
 			arrow->m_rotation = m_rotation;
 
 			if (SimilarAng >= 0.98) {
-				arrow->homing = true;
+				arrow->eHoming = true;
 				arrow->lock_ePos = lock_ePos;
 			}
 

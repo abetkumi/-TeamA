@@ -53,7 +53,8 @@ public:
 	float m_peLen;
 	float m_velocityLen;
 
-	bool homing = false;
+	bool eHoming = false;	//エネミーをホーミング
+	bool pHoming = false;	//プレイヤーをホーミング
 
 	bool m_isDelete = false;
 	const float deletetimer = 1.0f;

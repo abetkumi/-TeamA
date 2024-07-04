@@ -40,8 +40,8 @@ public:
 
 	enum MoveState {
 		MoveState_Normal,
-		MoveState_Left,	// ¶‚ÉˆÚ“®’†
-		MoveState_Right, // ‰E‚ÉˆÚ“®’†
+		MoveState_Left,	// å·¦ã«ç§»å‹•ä¸­
+		MoveState_Right, // å³ã«ç§»å‹•ä¸­
 	};
 	MoveState m_moveState = MoveState_Normal;
 
@@ -84,8 +84,8 @@ public:
 
 	SkyCube* m_skyCube = nullptr;
 
-	float SimilarAng = 0.0f;	//ˆê”ÔŒü‚¢‚Ä‚¢‚é“G
+	float SimilarAng = 0.0f;	//ä¸€ç•ªå‘ã„ã¦ã„ã‚‹æ•µ
 	Vector3 lock_ePos;
 
-	bool m_bowPullSeFlag = true;	//‹|‚ğˆø‚«i‚éSE‚ğ§Œä‚·‚éƒtƒ‰ƒO
+	bool m_bowPullSeFlag = true;	//å¼“ã‚’å¼•ãçµã‚‹SEã‚’åˆ¶å¾¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 };

@@ -61,7 +61,10 @@ public:
 	SpriteRender m_spriteRender_B;
 	SpriteRender m_spriteRender_Re;
 	SpriteRender m_spriteRender_Go;
-	FontRender m_fontRender;
+	SpriteRender m_spriteRender_C_Rank;
+	SpriteRender m_spriteRender_B_Rank;
+	SpriteRender m_spriteRender_A_Rank;
+	SpriteRender m_spriteRender_S_Rank;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
 
@@ -70,6 +73,7 @@ public:
 	float spritetime = 0.0f;
 	float m_shade = 1.0f;
 	int m_spriteStatus = 1;
+	int m_rankStatus = 0;
 	
 	std::vector<Vector3> path00_pointList;
 	std::vector<Vector3> path01_pointList;

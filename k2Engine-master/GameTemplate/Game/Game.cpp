@@ -174,13 +174,17 @@ bool Game::Start()
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	m_spriteRender_C_Rank.Init("Assets/sprite/C_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B_Rank.Init("Assets/sprite/B_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_A_Rank.Init("Assets/sprite/A_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_S_Rank.Init("Assets/sprite/S_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Re.Init("Assets/sprite/GameReady.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Go.Init("Assets/sprite/GameGO.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
 	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
 	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
 	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
-	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
-	m_spriteRender_Re.Init("Assets/sprite/GameReady.dds", 1920.0f, 1080.0f);
-	m_spriteRender_Go.Init("Assets/sprite/GameGO.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
@@ -210,7 +214,7 @@ void Game::Update()
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
-
+		player->m_position.y = 80.0f;
 		if (player->m_arrowLag == 1)
 		{
 			DeleteGO(m_gameBGM);
@@ -243,9 +247,10 @@ void Game::Update()
 		}
 	}
 	//�N���A�̃|�C���g����
-	if (player->m_point == 10)
+	if (player->m_point == 102)
 	{
 		DeleteGO(m_gameBGM);
+		player->m_position.y = 60.0f;
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		ScoreRank();
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
@@ -271,28 +276,26 @@ void Game::Update()
 
 void Game::ScoreRank()
 {
-	if (player->m_score < 4000)
+	if (player->m_score < 3000)
 	{
-		m_fontRender.SetText(L"C Rank");
-		m_fontRender.SetColor({ 0.0f,1.0f,0.0f,1.0f });
+		m_rankStatus = 0;
 	}
 	else if (player->m_score >= 3000 && player->m_score < 4500)
 	{
-		m_fontRender.SetText(L"B Rank");
-		m_fontRender.SetColor({ 0.0f,0.0f,1.0f,1.0f });
+		m_rankStatus = 1;
 	}
 	else if (player->m_score >= 4500 && player->m_score < 5600)
 	{
-		m_fontRender.SetText(L"A Rank");
-		m_fontRender.SetColor({ 1.0f,0.0f,0.0f,1.0f });
+		m_rankStatus = 2;
 	}
-	else if (player->m_score >= 5500)
+	else if (player->m_score >= 5600)
 	{
-		m_fontRender.SetText(L"S Rank");
-		m_fontRender.SetColor({ 1.0f,1.0f,0.0f,1.0f });
+		m_rankStatus = 3;
 	}
-	m_fontRender.SetPosition({ -100.0f,0.0f,1.0f });
-	m_fontRender.SetScale(4.0f);
+	m_spriteRender_C_Rank.Update();
+	m_spriteRender_B_Rank.Update();
+	m_spriteRender_A_Rank.Update();
+	m_spriteRender_S_Rank.Update();
 }
 
 void Game::SpriteFlag()
@@ -347,36 +350,49 @@ void Game::SpriteFlag()
 void Game::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
-	if (m_spriteStatus == 1)
+	switch (m_spriteStatus)
 	{
+	case 1:
 		m_spriteRender_L.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 2)
-	{
+		break;
+	case 2:
 		m_spriteRender_R.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 3)
-	{
+		break;
+	case 3:
 		m_spriteRender_LB.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 4)
-	{
+		break;
+	case 4:
 		m_spriteRender_UI.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 5)
-	{
+		break;
+	case 5:
 		m_spriteRender_Re.Draw(rc);
-	}
-	if (m_spriteStatus == 6)
-	{
+		break;
+	case 6:
 		m_spriteRender_Go.Draw(rc);
+		break;
+	default:
+		break;
 	}
 	if (player->m_arrowState == 6)
 	{
-		m_fontRender.Draw(rc);
+		switch (m_rankStatus)
+		{
+		case 0:
+			m_spriteRender_C_Rank.Draw(rc);
+			break;
+		case 1:
+			m_spriteRender_B_Rank.Draw(rc);
+			break;
+		case 2:
+			m_spriteRender_A_Rank.Draw(rc);
+			break;
+		case 3:
+			m_spriteRender_S_Rank.Draw(rc);
+			break;
+		}
 	}
 }

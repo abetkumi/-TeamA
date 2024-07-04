@@ -9,7 +9,7 @@ namespace
 {
 	const Vector3 corre1 = { 0.0f,100.0f,0.0f };//??u?C???{?????????
 	const Vector3 corre2 = { 0.0f,130.0f,10.0f };//??u?C???e???????u
-	const float firstPosition = 80.0f;
+	const float firstPosition = 60.0f;
 }
 
 Player::Player()
@@ -283,7 +283,6 @@ void Player::Move()
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
-	
 	m_modelRender.SetPosition(m_position);
 }
 
@@ -469,7 +468,7 @@ void Player::ArrowAnimation()
 void Player::Score()
 {
 	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%dpoint", int(m_score));
+	swprintf_s(wcsbuf, 256, L"%dPoint", int(m_score));
 
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf);

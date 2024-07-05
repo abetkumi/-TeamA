@@ -32,7 +32,7 @@ bool Rock::Start()
 
 	Vector3 hoge = { 0.0f,0.0f,0.0f };
 
-	r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
+	//r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
 
 	g_soundEngine->ResistWaveFileBank(14, "Assets/BGM_SE/rock_hit.wav");
 

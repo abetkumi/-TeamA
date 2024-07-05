@@ -21,7 +21,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//�ʒu�C���{�̓����蔻��
+	const Vector3 corre1 = { 0.0f,80.0f,0.0f };//�ʒu�C���{�̓����蔻��
 	//const Vector3 corre2 = { 0.0f,80.0f,10.0f };//�ʒu�C���e�۔����ʒu
 }
 
@@ -37,10 +37,18 @@ Enemy3::~Enemy3()
 
 bool Enemy3::Start()
 {
-	m_modelRender.Init("Assets/modelData/bat.tkm");
+	m_animation3Clips[enEnemy3Clip_Idle].Load("Assets/animData/bat_FLY.tka");
+	m_animation3Clips[enEnemy3Clip_Idle].SetLoopFlag(true);
+
+	m_modelRender.Init("Assets/modelData/bat.tkm"
+		, m_animation3Clips, enEnemy3Clip_Num);
 
 	//g_soundEngine->ResistWaveFileBank(1, "Assets/BGM_SE/hit.wav");
 	g_soundEngine->ResistWaveFileBank(20, "Assets/BGM_SE/bat_voice.wav");
+
+	m_rotation.Apply(m_forward);
+	m_modelRender.SetPosition(m_position);
+	m_modelRender.SetScale({ 3.5f,3.5f,3.5f });
 
 	player = FindGO<Player>("player");
 	gameCamera = FindGO<GameCamera>("gameCamera");
@@ -48,26 +56,18 @@ bool Enemy3::Start()
 
 
 	m_collisionObject = NewGO<CollisionObject>(0);
-
 	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 60.0f * m_scale.z);
 	m_collisionObject->SetName("bat_enemy_col");
-	
-	m_modelRender.SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position + corre1);
-
 	m_collisionObject->SetIsEnableAutoDelete(false);
-
-
 
 	m_spriteRender.Init("Assets/sprite/HPWhite.dds", 200.0f, 200.0f);
 	m_spriteRender.SetPivot({ 0.0f,0.5f });
-
 	m_spriteRender.SetPosition(m_position);
 	m_spriteRender.Update();
 
 
 	m_forward = Vector3::AxisZ;
-	m_rotation.Apply(m_forward);
 
 	return true;
 }
@@ -82,6 +82,7 @@ void Enemy3::Update()
 	ItemDrop();
 	HomingSerch();
 	HomingDec();
+	PlayAnimation();
 
 	switch (initialAng)
 	{
@@ -133,7 +134,7 @@ void Enemy3::Move()
 	
 	if (arrowtimer > 0.0f) {
 		m_modelRender.SetPosition(m_position);
-		m_collisionObject->SetPosition(m_position);
+		m_collisionObject->SetPosition(m_position + corre1);
 	}
 	else {
 		
@@ -172,11 +173,12 @@ void Enemy3::AttackMove()
 			moveStatus = 0;
 			arrowtimer = arrowtime;
 			initialPos = 0;
+			m_attackBar.x = 1.0f;
 		}
 	}
 
 	m_modelRender.SetPosition(m_attackPos);
-	m_collisionObject->SetPosition(m_attackPos);
+	m_collisionObject->SetPosition(m_attackPos + corre1);
 }
 
 void Enemy3::Rotation()
@@ -298,11 +300,6 @@ void Enemy3::EnemyAttackBar()
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
 			m_attackBar.x -= Decrease;
 		}
-		else if (m_attackBar.x <= 0)
-		{
-			//m_enemy2State = 2;
-			m_attackBar.x = 1.0f;
-		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));
@@ -381,9 +378,9 @@ void Enemy3::Collision()
 				se->Init(1);
 				se->Play(false);
 
-				se2 = NewGO<SoundSource>(20);
-				se2->Init(20);
-				se2->Play(false);
+				se = NewGO<SoundSource>(0);
+				se->Init(20);
+				se->Play(false);
 
 			}
 		}
@@ -391,9 +388,10 @@ void Enemy3::Collision()
 	if (m_downFlag == true)
 	{
 		m_enemy3DownLag++;
-		if (m_enemy3DownLag >= 20)
+		if (m_enemy3DownLag >= 1)
 		{
-			m_itemGet = rand() % 4;
+	
+			m_itemGet = rand() % 2;
 			player->m_score += 300;
 			DeleteGO(this);
 		}
@@ -411,6 +409,20 @@ void Enemy3::ItemDrop()
 		m_itemGet = 0;
 		break;
 	default:
+		break;
+	}
+}
+
+void Enemy3::PlayAnimation()
+{
+	switch (m_enemy3Status)
+	{
+	case 0:
+		m_modelRender.PlayAnimation(enEnemy3Clip_Idle);
+		break;
+	case 1:
+		break;
+	case 2:
 		break;
 	}
 }

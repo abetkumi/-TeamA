@@ -30,6 +30,9 @@ Enemy2::Enemy2()
 Enemy2::~Enemy2()
 {
 	DeleteGO(m_collisionObject);
+	SoundSource* se = NewGO<SoundSource>(0);
+	se->Init(1);
+	se->Play(false);
 }
 
 bool Enemy2::Start()
@@ -149,7 +152,7 @@ void Enemy2::Attack()
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
-	arrow->SetEnArrow(Arrow::enArrow_Enemy);
+	arrow->SetEnArrow(Arrow::enArrow_Skeleton);
 
 	arrowtimer = arrowtime;
 }
@@ -193,16 +196,18 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
-
-
 		}
-		if (HP <= 0) {
-			m_enemy2State = 3;
-			m_downFlag = true;
-		}
+
+	}
+	if (HP <= 0) {
+		m_enemy2State = 3;
+		m_downFlag = true;
 	}
 	if (m_downFlag == true)
 	{
+	/*	se = NewGO<SoundSource>(0);
+		se->Init(19);
+		se->Play(false);*/
 		m_enemy2DownLag++;
 	}
 }
@@ -250,9 +255,9 @@ void Enemy2::PlayAnimation()
 		break;
 	case 3:
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		if (m_enemy2DownLag >= 30)
+		if (m_enemy2DownLag >= 20)
 		{
-			m_itemGet = rand() % 4;
+			m_itemGet = rand() % 3;
 			player->m_score += 200;
 
 			se = NewGO<SoundSource>(0);

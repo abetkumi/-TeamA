@@ -211,14 +211,14 @@ void Arrow::Move()
 	}
 
 	if (eHoming == true) {
-		for (int i = 0; i < enemys3.empty(); i++) {
+		/*for (int i = 0; i < enemys3.empty(); i++) {
 			if (enemys3[i]->homing == true) {
 				Vector3 diff = enemys3[i]->m_homingPos - m_position;
 				diff.Normalize();
 
 				m_position += diff * 1000.0f * g_gameTime->GetFrameDeltaTime();
 			}
-		}
+		}*/
 	}
 	
 	if (pHoming == true) {

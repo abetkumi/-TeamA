@@ -297,9 +297,9 @@ void Enemy::PlayAnimation()
 			se->Init(1);
 			se->Play(false);
 
-			/*se2 = NewGO<SoundSource>(18);
+			se2 = NewGO<SoundSource>(18);
 			se2->Init(18);
-			se2->Play(false);*/
+			se2->Play(false);
 
 		}
 		break;

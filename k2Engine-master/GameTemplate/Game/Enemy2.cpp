@@ -141,14 +141,26 @@ void Enemy2::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();
 		return;
 	}
+
+	QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
+		if (a->m_Activate == false)
+		{
+			// 未使用の弓矢が見つかった
+			arrow = a;
+			// みつかったのでfalseを返してクエリ終了
+			return false;
+		}
+		return true;
+		});
+
 	m_enemy2State = 1;
-	arrow = NewGO<Arrow>(0, "arrow");
 
 	arrow->m_position = (m_position + corre2);
 	arrow->m_1stPosition = arrow->m_position;
 	arrow->m_rotation = m_rotation;
 
 	arrow->SetEnArrow(Arrow::enArrow_Skeleton);
+	arrow->m_Activate = true;
 
 	arrowtimer = arrowtime;
 }

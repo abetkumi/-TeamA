@@ -61,6 +61,10 @@ Game::~Game()
 			DeleteGO(rock);
 			return true;
 		});
+	QueryGOs<Arrow>("Arrow", [&](Arrow* go) {
+		DeleteGO(go);
+		return true;
+		});
 }
 
 bool Game::Start()
@@ -168,6 +172,12 @@ bool Game::Start()
 		}
 		return true;
 	});
+
+
+	for (int i = 0; i < 10; i++) {
+		arrow = NewGO<Arrow>(0, "Arrow");
+	}
+
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	status = FindGO<Status>("status");

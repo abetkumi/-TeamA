@@ -30,7 +30,6 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-	DeleteGO(arrow);
 	DeleteGO(m_collisionObject);
 
 	//assist->
@@ -38,7 +37,6 @@ Enemy::~Enemy()
 }
 bool Enemy::Start()
 {
-
 	m_animationClips[enEnemyClip_Idle].Load("Assets/animData/goblin_idle.tka");
 	m_animationClips[enEnemyClip_Idle].SetLoopFlag(true);
 	m_animationClips[enEnemyClip_Attack].Load("Assets/animData/goblin_attack.tka");
@@ -160,7 +158,45 @@ void Enemy::Attack()
 		se->Init(7);
 		se->Play(false);
 
-		arrow = NewGO<Arrow>(0);
+		QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
+			if (a->m_Activate == false)
+			{
+				// 未使用の弓矢が見つかった
+				arrow = a;
+				// みつかったのでfalseを返してクエリ終了
+				return false;
+			}
+			return true;
+			});
+		/*if (arrow != nullptr) {
+			arrow->Initialize();
+		}
+		else {
+
+		}*/
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
+		arrow->m_Activate = true;
+
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
+
+		diff.y = 0.0f;
+		arrow->m_velocity = diff;
+		arrow->m_velocity.y = 0.0f;
+		arrow->m_velocity.Normalize();
+		arrow->m_velocity *= sqrt(2) / 2;
+		arrow->m_velocity.y = sqrt(2) / 2;
+
+		arrow->m_peLen = diff.Length();
+
+		m_enemyState = 1;
+
+		arrowtimer = arrowtime;
+		m_attackBar.x = 1.0f;
+
+
+		/*arrow = NewGO<Arrow>(0);
 
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
@@ -178,7 +214,7 @@ void Enemy::Attack()
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
-		m_attackBar.x = 1.0f;
+		m_attackBar.x = 1.0f;*/
 	}
 }
 

@@ -13,8 +13,8 @@
 
 namespace
 {
-	const Vector3 scale = { 10.0f,10.0f,10.0f };
-	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
+	const Vector3 scale = { 1.0f,1.0f,1.0f };
+	const Vector3 scale2 = { 0.2f,0.2f,0.2f };
 	const float g = 2000.0f;
 }
 
@@ -25,86 +25,141 @@ Arrow::Arrow()
 
 Arrow::~Arrow()
 {
-	DeleteGO(m_collisionObject);
+	
 }
 
 bool Arrow::Start()
 {
 	gameCamera = FindGO<GameCamera>("gameCamera");
-	//assist = FindGO<Assist>("assist");
 	player = FindGO<Player>("player");
 
 	m_collisionObject = NewGO<CollisionObject>(0);
+	m_collisionObject->SetName("arrow");
 
-	m_modelRender.SetPosition(m_1stPosition);
-	m_modelRender.SetScale(scale);
-	m_modelRender.SetRotation(m_rotation);
 
-	m_velocity = Vector3::AxisZ;
-	m_rotation.Apply(m_velocity);
+	m_modelRender[0].Init("Assets/modelData/Arrow.tkm");
+	m_modelRender[0].SetScale(scale);
+
+	m_modelRender[1].Init("Assets/modelData/test.tkm");
+	m_modelRender[1].SetScale(scale2);
+	
+
 	g_soundEngine->ResistWaveFileBank(12, "Assets/BGM・SE/player_shot.wav");
+	
+	m_collisionObject->SetIsEnableAutoDelete(false);
 
+	return true;
+}
 
-	if (m_enArrow == enArrow_Player)
+void Arrow::Update()
+{
+	if (m_Activate == true) {
+		switch (m_Status)
+		{
+		case 0:
+			Standby();
+			break;
+
+		case 1:
+			Firstly();
+			break;
+
+		case 2:
+			Move();
+			Rotation();
+			Inpacttime();
+			Inpacthit();
+			deletebullet();
+
+			if (enemy->Dec() == true)
+			{
+				Dec();
+			}
+
+			m_modelRender[m_model].Update();
+			break;
+
+		case 3:
+			Release();
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+
+	
+}
+
+void Arrow::Standby()
+{
+	switch (m_enArrow)
 	{
+		//アロー
+	case Arrow::enArrow_Player:
+	case Arrow::enArrow_Skeleton:
+		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+		
+		break;
+
+		//岩
+	case Arrow::enArrow_Goblin:
+		m_model++;
+		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
+		
+		break;
+
+	default:
+		break;
+	}
+
+
+	//ダメージ,名前,SEなど分岐
+	switch (m_enArrow)
+	{
+	case Arrow::enArrow_Player:
 		m_collisionObject->SetName("p_arrow");
 		arrowSE = NewGO<SoundSource>(12);
-		arrowSE->Init(12);
-		arrowSE->Play(false);
-	}
-	else if (m_enArrow == enArrow_Enemy)
-	{
+
+		break;
+
+	case Arrow::enArrow_Goblin:
+		bullettime = 7.0f;
 		m_collisionObject->SetName("e_arrow");
-		arrowSE = NewGO<SoundSource>(12);
-		arrowSE->Init(12);
-		arrowSE->Play(false);
-		m_Damage = 50;
-	}
-	else if (m_enArrow == enArrow_Goblin)
-	{
-		m_collisionObject->SetName("e_arrow");
-		//m_velocity.y -= i;
 		m_Damage = 5;
-	}
-	else if (m_enArrow == enArrow_Skeleton)
-	{
+		break;
+
+	case Arrow::enArrow_Skeleton:
 		m_collisionObject->SetName("e_arrow");
 		m_Damage = 8;
 		pHoming = true;
-	}
-	/*else if (m_enArrow == enArrow_Boss)
-	{
-		m_collisionObject->SetName("e_arrow");
-		m_Damage = 10;
-	}*/
+		break;
 
+	default:
+		break;
+	}
+
+	m_Status++;
+}
+
+void Arrow::Firstly()
+{
+	m_velocity = Vector3::AxisZ;
+	m_rotation.Apply(m_velocity);
 
 	m_position += m_velocity * 50.0f;
 	m_velocity *= 3000.0f;
 	m_rotation.SetRotationDegX(90.0f);
 
-	/*Quaternion tmp;
-	tmp.SetRotationDegX(90.0f);
 
-	m_modelRender.SetRotation(tmp);*/
-	m_modelRender.Update();
+	if (m_enArrow == enArrow_Player) {
+		arrowSE->Init(12);
+		arrowSE->Play(false);
+	}
 
-	switch (m_enArrow)
-	{
-	case Arrow::enArrow_Player:
-	case Arrow::enArrow_Skeleton:
-		m_modelRender.Init("Assets/modelData/Arrow.tkm");
-		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-		m_modelRender.SetScale(scale);
-		break;
-
-	case Arrow::enArrow_Goblin: {
-		m_modelRender.Init("Assets/modelData/rock1.tkm");
-		//m_modelRender.Init("Assets/modelData/amo.tkm");
-		m_modelRender.SetScale(scale);
-		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-
-		bullettime = 7.0f;
+	if (m_enArrow == enArrow_Goblin) {
+		
 
 		// 初速度を求める
 		float initVel = sqrt((m_peLen * g * 1.0f) / 2.0f);
@@ -117,53 +172,26 @@ bool Arrow::Start()
 
 		// Y方向の速度を求める
 		m_velocity.y = initVel;
-
-		m_modelRender.SetScale(scale2);
-
-	}break;
-
-	case Arrow::enArrow_Boss:
-		//m_modelRnder.Init("Assts/modelData/");
-		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-		m_collisionObject->SetName("e_arrow");
-		m_Damage = 10;
-		break;
-
-	case Arrow::enArrow_Enemy:
-		m_modelRender.Init("Assets/modelData/Arrow.tkm");
-		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-		break;
-
-	default:
-		break;
 	}
-	
-	m_collisionObject->SetIsEnableAutoDelete(false);
 
-	return true;
+	m_modelRender[m_model].SetPosition(m_1stPosition);
+	m_modelRender[m_model].SetScale(scale);
+	m_modelRender[m_model].SetRotation(m_rotation);
+
+	m_modelRender[m_model].Update();
+
+	m_Status++;
 }
 
-void Arrow::Update()
+void Arrow::Release()
 {
-	Move();
-	Rotation();
-	Inpacttime();
-	Inpacthit();
-	deletebullet();
-
-	if (enemy->Dec() == true)
-	{
-		Dec();
-	}
-
-	m_modelRender.Update();
+	Reset();
 }
 
 void Arrow::Rotation()
 {
 	float angle = atan2(-m_velocity.x, m_velocity.z);
 	m_rotation.SetRotationY(-angle);
-	//m_modelRender.SetRotation(m_rotation);
 	m_forward = Vector3::AxisZ;
 	m_rotation.Apply(m_forward);
 }
@@ -202,14 +230,17 @@ void Arrow::Move()
 	}
 
 
-	m_modelRender.SetPosition(m_position);
+	m_modelRender[m_model].SetPosition(m_position);
 	m_collisionObject->SetPosition(m_position);
 	bullettime -= g_gameTime->GetFrameDeltaTime();
 }
 
 void Arrow::Render(RenderContext& rc)
 {
-	m_modelRender.Draw(rc);
+	if (m_Status == 1 || m_Status == 2) {
+		m_modelRender[m_model].Draw(rc);
+	}
+	
 }
 
 void Arrow::Inpacttime()
@@ -218,8 +249,7 @@ void Arrow::Inpacttime()
 	{
 		return;
 	}
-	DeleteGO(m_collisionObject);
-	DeleteGO(this);
+	m_Status++;
 }
 
 void Arrow::Inpacthit()
@@ -229,21 +259,22 @@ void Arrow::Inpacthit()
 	{
 		if (collision->IsHit(player->m_charaCon))
 		{
-			DeleteGO(m_collisionObject);
-			DeleteGO(this);
+			player->HP -= m_Damage;
+
+			m_Status++;
 		}
 	}
 }
 
 void Arrow::deletebullet()
 {
-	if (m_isDelete) {
+	/*if (m_isDelete) {
 		m_deleteTimer -= g_gameTime->GetFrameDeltaTime();
 		if (m_deleteTimer <= 0.0f) {
 			DeleteGO(m_collisionObject);
 			DeleteGO(this);
 		}
-	}
+	}*/
 }
 
 void Arrow::Dec()

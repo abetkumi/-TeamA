@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Player.h"
 #include "Arrow.h"
 #include "Game.h"
@@ -26,6 +26,8 @@ Player::~Player()
 
 bool Player::Start()
 {
+	
+
 	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_idle.tka");
 	m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
 	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload.tka");
@@ -304,7 +306,6 @@ void Player::Collision()
 		if (collision->IsHit(m_charaCon))
 		{
 			m_arrowState = 3;
-			HP -= 20;
 		}
 	}
 
@@ -385,18 +386,37 @@ void Player::ArrowAnimation()
 			}
 		}
 
-		if (m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
+		else if(m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
 		{
 			m_arrowLag = 0;
 			m_arrowState = 0;
 		}
 		break;
 	case 2:
+		//arrow->SetEnArrow(Arrow::enArrow_Player);
+
 		m_modelRender.PlayAnimation(enArrowClip_Aim);
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
-			arrow = NewGO<Arrow>(0);
+			QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
+				if (a->m_Activate == false)
+				{
+					// 未使用の弓矢が見つかった
+					arrow = a;
+					// みつかったのでfalseを返してクエリ終了
+					return false;
+				}
+				return true;
+				});
+			/*if (arrow != nullptr) {
+				arrow->Initialize();
+			}
+			else {
+
+			}*/
+			arrow->SetEnArrow(Arrow::enArrow_Player);
+			arrow->m_Activate = true;
 
 			ArrowSE = NewGO<SoundSource>(9);
 			ArrowSE->Init(9);
@@ -414,10 +434,45 @@ void Player::ArrowAnimation()
 				arrow->lock_ePos = lock_ePos;
 			}
 
-			arrow->SetEnArrow(Arrow::enArrow_Player);
+			
 			m_arrowState = 5;
 
 			SimilarAng = 0.0f;
+
+
+
+			/*QueryGOs<Arrow>("PlayerArrow", [&](Arrow* go) {
+				for (int i = 0; i < 3; i++) {
+					if (arrow->m_Activate == false) {
+						SetArrow++;
+					}
+					arrow->m_Activate = true;
+				}
+				return true;
+			});
+			arrow[3] = arrow[SetArrow];
+			
+
+			ArrowSE = NewGO<SoundSource>(9);
+			ArrowSE->Init(9);
+			ArrowSE->Play(false);
+
+			Vector3 arrowPos = corre2;
+			m_rotation.Apply(arrowPos);
+
+			arrow[3]->m_position = (m_position + arrowPos);
+			arrow[3]->m_1stPosition = arrow[3]->m_position;
+			arrow[3]->m_rotation = m_rotation;
+
+			if (SimilarAng >= 0.98) {
+				arrow[3]->eHoming = true;
+				arrow[3]->lock_ePos = lock_ePos;
+			}
+
+
+			m_arrowState = 5;
+
+			SimilarAng = 0.0f;*/
 		}
 		
 		break;

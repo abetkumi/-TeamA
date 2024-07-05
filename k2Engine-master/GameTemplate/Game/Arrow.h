@@ -20,9 +20,13 @@ public:
 
 public:
 	Arrow();
+
 	~Arrow();
 	bool Start();
 	void Update();
+	void Standby();
+	void Firstly();
+	void Release();
 	void Rotation();
 	void Move();
 	void Render(RenderContext& rc);
@@ -48,6 +52,15 @@ public:
 		m_enArrow = enArrow;
 	}
 
+	void Reset()
+	{
+		bullettime = 1.5f;
+
+		m_Activate = false;
+		m_Status = 0;
+		m_model = 0;
+	}
+
 	float bullettime = 1.5f;
 	float m_deleteTimer,m_xBulletTime = 0.0f;
 	float m_peLen;
@@ -60,7 +73,7 @@ public:
 	const float deletetimer = 1.0f;
 	int m_Damage;
 
-	ModelRender m_modelRender;
+	ModelRender m_modelRender[2];
 	CollisionObject* m_collisionObject;
 
 	Quaternion m_rotation;
@@ -87,5 +100,9 @@ public:
 	Vector3 test;
 	float jo;
 	SoundSource* arrowSE;
+
+	int m_Status = 0;
+	int m_model = 0;
+	bool m_Activate = false;
 };
 

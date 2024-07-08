@@ -45,6 +45,7 @@ public:
 	SpriteRender m_spriteRender;
 	Quaternion m_rotation;
 	SoundSource* se;
+	SoundSource* se2;
 
 
 	enum EnEnemyClip

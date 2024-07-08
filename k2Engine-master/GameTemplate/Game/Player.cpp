@@ -276,9 +276,10 @@ void Player::Move()
 		HP -= 10;
 	}
 
-	if (m_arrowState == 4 || m_arrowState == 6)
+	if (m_arrowState == 4 || m_arrowState == 7)
 	{
 		m_position = m_position;
+		m_position.y = firstPosition;
 	}
 	else
 	{
@@ -375,7 +376,6 @@ void Player::ArrowAnimation()
 		{
 			m_arrowState++;
 		}
-		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
 		break;
 	case 1:
 		//弓を構える。
@@ -389,7 +389,6 @@ void Player::ArrowAnimation()
 
 				m_bowPullSeFlag = false;
 			}
-			
 
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
@@ -406,10 +405,9 @@ void Player::ArrowAnimation()
 
 			m_bowPullSeFlag = true;
 		}
-		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
+		
 		break;
 	case 2:
-		
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
@@ -439,7 +437,6 @@ void Player::ArrowAnimation()
 
 			m_bowPullSeFlag = true;
 		}
-		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 		break;
 	case 3:
 		//ダメージを受けたステート
@@ -450,13 +447,11 @@ void Player::ArrowAnimation()
 			m_damageLag = 0;
 			m_arrowState = 0;
 		}
-		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
 		break;
 	case 4:
 		//ゲームオーバーステート
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
-		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 		break;
 	case 5:
 		//初期ステートに戻る
@@ -465,10 +460,11 @@ void Player::ArrowAnimation()
 	case 6:
 		//ゲームクリアステート
 		m_modelRender.PlayAnimation(enArrowClip_Clear);
-		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
+		m_arrowState = 7;
+		break;
+	case 7:
 		break;
 	}
-	m_modelRender.Update();
 }
 
 void Player::Score()

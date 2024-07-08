@@ -46,12 +46,11 @@ void GameCamera::Update()
 	//未完成
 	//SpriteColor();
 
-	target = m_player->m_position;
-	target.y += 200.0f;
+	
 
 
 	
-	if (m_player->m_arrowState == 4 || m_player->m_arrowState == 6)
+	if (m_player->m_arrowState == 4 || m_player->m_arrowState == 7)
 	{
 		Vector3 toCameraPosOld = m_toCameraPos;
 
@@ -70,19 +69,19 @@ void GameCamera::Update()
 
 		Vector3 toPosDir = m_toCameraPos;
 		toPosDir.Normalize();
-		if (m_player->m_arrowState == 6)
+		if (m_player->m_arrowState == 7)
 		{
 			target = pos + m_toCameraPos;
 			pos = target - m_toCameraPos;
-	
 		}
 		else if (m_player->m_arrowState == 4)
 		{
 			if (m_gameOverFlag == true)
 			{
 				target.y = target.y + 900.0f;
-				target.z = target.z + 100.0f;
-				pos.y = pos.y - 300.0f;
+				target.z = target.z + 500.0f;
+				pos.y = pos.y - 100.0f;
+				pos.z = pos.z + 200.0f;
 				m_gameOverFlag = false;
 			}
 		}
@@ -91,6 +90,8 @@ void GameCamera::Update()
 	}
 	else
 	{
+		target = m_player->m_position;
+		target.y += 200.0f;
 		Vector3 toCameraPosOld = m_toCameraPos;
 
 		float x = g_pad[0]->GetRStickXF();

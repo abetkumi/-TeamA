@@ -251,7 +251,7 @@ void Game::Update()
 	if (player->m_point == 102)
 	{
 		DeleteGO(m_gameBGM);
-		player->m_position.y = 60.0f;
+	
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		ScoreRank();
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
@@ -416,7 +416,7 @@ void Game::Render(RenderContext& rc)
 	default:
 		break;
 	}
-	if (player->m_arrowState == 6)
+	if (player->m_arrowState == 7)
 	{
 		switch (m_rankStatus)
 		{

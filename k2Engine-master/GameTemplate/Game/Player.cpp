@@ -25,17 +25,17 @@ Player::~Player()
 
 bool Player::Start()
 {
-	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_idle.tka");
+	m_animationClips[enArrowClip_Idle].Load("Assets/animData/Player_Idle2.tka");
 	m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
-	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload.tka");
+	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload2.tka");
 	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw.tka");
+	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw2.tka");
 	m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Damage].Load("Assets/animData/player_damage.tka");
+	m_animationClips[enArrowClip_Damage].Load("Assets/animData/player_damage2.tka");
 	m_animationClips[enArrowClip_Damage].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death.tka");
+	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death2.tka");
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
+	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory2.tka");
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
 
 	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM_SE/Arrow.wav");
@@ -43,8 +43,9 @@ bool Player::Start()
 	g_soundEngine->ResistWaveFileBank(17, "Assets/BGM_SE/player_hit.wav");
 	
 
-	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
+	m_modelRender.Init("Assets/modelData/Player_w2.tkm", m_animationClips,
 		enArrowClip_Num);
+	
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 	
 	//HPバーの表示
@@ -374,7 +375,7 @@ void Player::ArrowAnimation()
 		{
 			m_arrowState++;
 		}
-		
+		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
 		break;
 	case 1:
 		//弓を構える。
@@ -405,12 +406,14 @@ void Player::ArrowAnimation()
 
 			m_bowPullSeFlag = true;
 		}
+		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 		break;
 	case 2:
-		m_modelRender.PlayAnimation(enArrowClip_Aim);
+		
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
+			m_modelRender.PlayAnimation(enArrowClip_Aim);
 			arrow = NewGO<Arrow>(0);
 
 			se3 = NewGO<SoundSource>(9);
@@ -436,7 +439,7 @@ void Player::ArrowAnimation()
 
 			m_bowPullSeFlag = true;
 		}
-		
+		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 		break;
 	case 3:
 		//ダメージを受けたステート
@@ -447,12 +450,13 @@ void Player::ArrowAnimation()
 			m_damageLag = 0;
 			m_arrowState = 0;
 		}
+		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
 		break;
 	case 4:
 		//ゲームオーバーステート
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
-
+		m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 		break;
 	case 5:
 		//初期ステートに戻る
@@ -461,8 +465,10 @@ void Player::ArrowAnimation()
 	case 6:
 		//ゲームクリアステート
 		m_modelRender.PlayAnimation(enArrowClip_Clear);
+		m_modelRender.SetScale(2.5f, 2.5f, 2.5f);
 		break;
 	}
+	m_modelRender.Update();
 }
 
 void Player::Score()

@@ -352,17 +352,19 @@ void Game::SpriteFlag()
 	if (m_spriteStatus == 5)
 	{
 		spritetime += g_gameTime->GetFrameDeltaTime();
-		if (spritetime >= 2.5)
+		if (spritetime >= 2.5f)
 		{
 			m_gameBGM = NewGO<SoundSource>(22);
 			m_gameBGM->Init(22);
 			m_gameBGM->Play(false);
+			spritetime = 0.0f;
+			m_spriteStatus++;
 		}
-		m_spriteStatus++;
+		
 	}
 	if (m_spriteStatus == 6)
 	{
-		if (spritetime == 1.0)
+		if (spritetime >= 3.0f)
 		{
 			m_gameBGM = NewGO<SoundSource>(22);
 			m_gameBGM->Init(22);

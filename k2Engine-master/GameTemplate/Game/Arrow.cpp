@@ -99,7 +99,7 @@ bool Arrow::Start()
 		break;
 
 	case Arrow::enArrow_Goblin: {
-		m_modelRender.Init("Assets/modelData/rock1.tkm");
+		m_modelRender.Init("Assets/modelData/rock_4.tkm");
 		//m_modelRender.Init("Assets/modelData/amo.tkm");
 		m_modelRender.SetScale(scale);
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));

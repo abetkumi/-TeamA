@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "collision/CollisionObject.h"
+#include "sound/SoundSource.h"
 
 #define kyori 500.0f * 500.0f
 
@@ -31,7 +32,9 @@ bool Rock::Start()
 
 	Vector3 hoge = { 0.0f,0.0f,0.0f };
 
-	r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
+	//r_physicsStaticObject.CreateFromModel(r_modelRender.GetModel(), r_modelRender.GetModel().GetWorldMatrix());
+
+	g_soundEngine->ResistWaveFileBank(14, "Assets/BGM_SE/rock_hit.wav");
 
 	player = FindGO<Player>("player");
 	game = FindGO<Game>("game");
@@ -60,6 +63,11 @@ void Rock::RockDamage()
 	if (distToPlayer < 400)
 	{
 		r_rockFlag = true;
+
+		se = NewGO<SoundSource>(14);
+		se->Init(14);
+		se->Play(false);
+
 		player->HP -= 5;
 		player->m_arrowState = 3;
 		player->m_position = game->path01_pointList[player->m_point - 2];

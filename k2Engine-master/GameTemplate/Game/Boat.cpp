@@ -82,7 +82,7 @@ void Boat::Move()
 
 void Boat::Rotation()
 {
-	if (game->m_spriteStatus == 5 && player->m_moveSpeed.z != 0.0f)
+	if (game->m_spriteStatus == 7 && player->m_moveSpeed.z != 0.0f)
 	{
 		auto moveDir = player->m_moveSpeed;
 		moveDir.Normalize();

@@ -3,7 +3,7 @@
 #include "Arrow.h"
 #include "Game.h"
 #include "GameCamera.h"
-#include "sound/SoundSource.h" 
+//#include "sound/SoundSource.h" 
 
 namespace
 {
@@ -19,33 +19,33 @@ Player::Player()
 
 Player::~Player()
 {
-	DeleteGO(ArrowSE);
 	DeleteGO(m_skyCube);
 }
 
 
 bool Player::Start()
 {
-	
-
-	m_animationClips[enArrowClip_Idle].Load("Assets/animData/player_idle.tka");
+	m_animationClips[enArrowClip_Idle].Load("Assets/animData/Player_Idle2.tka");
 	m_animationClips[enArrowClip_Idle].SetLoopFlag(true);
-	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload.tka");
+	m_animationClips[enArrowClip_Draw].Load("Assets/animData/player_reload2.tka");
 	m_animationClips[enArrowClip_Draw].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw.tka");
+	m_animationClips[enArrowClip_Aim].Load("Assets/animData/player_draw2.tka");
 	m_animationClips[enArrowClip_Aim].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Damage].Load("Assets/animData/player_damage.tka");
+	m_animationClips[enArrowClip_Damage].Load("Assets/animData/player_damage2.tka");
 	m_animationClips[enArrowClip_Damage].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death.tka");
+	m_animationClips[enArrowClip_Dead].Load("Assets/animData/player_death2.tka");
 	m_animationClips[enArrowClip_Dead].SetLoopFlag(false);
-	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory.tka");
+	m_animationClips[enArrowClip_Clear].Load("Assets/animData/player_victory2.tka");
 	m_animationClips[enArrowClip_Clear].SetLoopFlag(false);
 
-	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM・SE/Arrow.wav");
-	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM・SE/player_shot.wav");
+	g_soundEngine->ResistWaveFileBank(5, "Assets/BGM_SE/Arrow.wav");
+	g_soundEngine->ResistWaveFileBank(9, "Assets/BGM_SE/player_shot.wav");
+	g_soundEngine->ResistWaveFileBank(17, "Assets/BGM_SE/player_hit.wav");
+	
 
-	m_modelRender.Init("Assets/modelData/Player_S.tkm", m_animationClips,
+	m_modelRender.Init("Assets/modelData/Player_w2.tkm", m_animationClips,
 		enArrowClip_Num);
+	
 	m_charaCon.Init(25.0f, 75.0f, m_position);
 	
 	//HPバーの表示
@@ -67,7 +67,7 @@ bool Player::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 
 	m_skyCube = NewGO<SkyCube>(0, "skycube");
-	m_skyCube->SetScale({ 2000.0f,2000.0f,2000.0f });
+	m_skyCube->SetScale({ 8000.0f,8000.0f,8000.0f });
 	m_skyCube->SetPosition(m_position);
 	m_skyCube->SetType(enSkyCubeType_Day);
 	m_skyCube->SetLuminance(0.5f);
@@ -128,134 +128,134 @@ void Player::Move()
 	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
 	//川の3ライン間を移動するための計算
-	 if (game->m_spriteStatus == 5)
+	if (game->m_spriteStatus == 7)
 	{
 
-	Vector3 stickL;
-	stickL.x = g_pad[0]->GetLStickXF();
+		Vector3 stickL;
+		stickL.x = g_pad[0]->GetLStickXF();
 
-	switch (m_moveState) {
-	case MoveState_Normal:
-		// ���E�ɓ�������
-		//�E�X�e�B�b�N�őD�̈ړ�
-		if (stickL.x <= -0.8f&&m_lag == 0)
-		{
-			m_moveState = MoveState_Left;
+		switch (m_moveState) {
+		case MoveState_Normal:
+			// ���E�ɓ�������
+			//�E�X�e�B�b�N�őD�̈ړ�
+			if (stickL.x <= -0.8f && m_lag == 0)
+			{
+				m_moveState = MoveState_Left;
+			}
+			else if (stickL.x >= 0.8f && m_lag == 0)
+			{
+				m_moveState = MoveState_Right;
+			}
+
+			break;
+		case MoveState_Left:
+
+			m_moveFlag--;
+			m_lag++;
+			m_moveState = MoveState_Normal;
+			break;
+		case MoveState_Right:
+
+			m_moveFlag++;
+			m_lag++;
+			m_moveState = MoveState_Normal;
+			break;
 		}
-		else if (stickL.x >= 0.8f && m_lag == 0)
+
+		if (m_lag >= 1)
 		{
-			m_moveState = MoveState_Right;
+			m_lag++;
+			if (m_lag == 10)
+			{
+
+				m_lag = 0;
+			}
 		}
 
-		break;
-	case MoveState_Left:
 
-		m_moveFlag--;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	case MoveState_Right:
-
-		m_moveFlag++;
-		m_lag++;
-		m_moveState = MoveState_Normal;
-		break;
-	}
-	
-	if (m_lag >= 1)
-	{
-		m_lag++;
-		if (m_lag == 10)
+		//��̃��C���̏�������̐ݒ�
+		if (m_moveFlag < 0)
 		{
+			m_moveFlag = 0;
+		}
+		if (m_moveFlag > 2)
+		{
+			m_moveFlag = 2;
+		}
 
-			m_lag = 0;
+		if (m_moveFlag == 0)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
+			Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+			diff = game->m_pointPosition - m_position;
+
+		}
+
+		if (m_moveFlag == 1)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
+			Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+			diff = game->m_pointPosition1 - m_position;
+		}
+
+		if (m_moveFlag == 2)
+		{
+			Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
+			Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
+			m_moveLineV1.Normalize();
+			float V2 = m_moveLineV0.x * m_moveLineV1.x +
+				m_moveLineV0.y * m_moveLineV1.y +
+				m_moveLineV0.z * m_moveLineV1.z;
+			Vector3 m_moveLineV3 = m_moveLineV1 * V2;
+			//���E�Ɉړ����鋗��
+			Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
+
+			m_moveSpeed.x += m_moveLine.x * 10.0f;
+
+			diff = game->m_pointPosition2 - m_position;
+
+		}
+
+		//���̈ړ��|�C���g�֌�������
+		float disToPlayer = diff.Length();
+		if (disToPlayer <= 200.0f)
+		{
+			m_point++;
+		}
+
+
+		diff.Normalize();
+
+		static bool hoge = false;
+
+		if (hoge) {
+			//�ړ��X�s�[�h
+			m_moveSpeed = diff * 0.0f;
+		}
+		else {
+			//�ړ��X�s�[�h
+			m_moveSpeed = diff * 300.0f;
 		}
 	}
-
-
-	//��̃��C���̏�������̐ݒ�
-	if (m_moveFlag < 0)
-	{
-		m_moveFlag = 0;
-	}
-	if (m_moveFlag > 2)
-	{
-		m_moveFlag = 2;
-	}
-
-	if (m_moveFlag == 0)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition;
-		Vector3 m_moveLineV1 = game->m_nextPosition - game->m_pointPosition;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-		diff = game->m_pointPosition - m_position;
-
-	}
-
-	if (m_moveFlag == 1)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition1;
-		Vector3 m_moveLineV1 = game->m_nextPosition1 - game->m_pointPosition1;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-		diff = game->m_pointPosition1 - m_position;
-	}
-
-	if (m_moveFlag == 2)
-	{
-		Vector3 m_moveLineV0 = m_position - game->m_pointPosition2;
-		Vector3 m_moveLineV1 = game->m_nextPosition2 - game->m_pointPosition2;
-		m_moveLineV1.Normalize();
-		float V2 = m_moveLineV0.x * m_moveLineV1.x +
-			m_moveLineV0.y * m_moveLineV1.y +
-			m_moveLineV0.z * m_moveLineV1.z;
-		Vector3 m_moveLineV3 = m_moveLineV1 * V2;
-		//���E�Ɉړ����鋗��
-		Vector3 m_moveLine = m_moveLineV0 - m_moveLineV3;
-
-		m_moveSpeed.x += m_moveLine.x * 10.0f;
-
-		diff = game->m_pointPosition2 - m_position;
-
-	}
-
-	//���̈ړ��|�C���g�֌�������
-	float disToPlayer = diff.Length();
-	if (disToPlayer <= 200.0f)
-	{
-		m_point++;
-	}
-
-
-	diff.Normalize();
-
-	static bool hoge = false;
-	
-	if (hoge) {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 0.0f;
-	}
-	else {
-		//�ړ��X�s�[�h
-		m_moveSpeed = diff * 300.0f;
-	}
-	 }
 	//�����܂�3���C���̈ړ���
 
 	if (m_charaCon.IsOnGround())
@@ -276,15 +276,15 @@ void Player::Move()
 		HP -= 10;
 	}
 
-	if (m_arrowState == 4 || m_arrowState == 6)
+	if (m_arrowState == 4 || m_arrowState == 7)
 	{
 		m_position = m_position;
+		m_position.y = firstPosition;
 	}
 	else
 	{
 		m_position = m_charaCon.Execute(m_moveSpeed, 1.0f / 20.0f);//��܂��Ȉړ����x
 	}
-	
 	m_modelRender.SetPosition(m_position);
 }
 
@@ -305,7 +305,12 @@ void Player::Collision()
 	for (auto collision : collisions) {
 		if (collision->IsHit(m_charaCon))
 		{
+			se = NewGO<SoundSource>(17);
+			se->Init(17);
+			se->Play(false);
+
 			m_arrowState = 3;
+			HP -= 10;
 		}
 	}
 
@@ -313,6 +318,10 @@ void Player::Collision()
 	for (auto collision : collisions2) {
 		if (collision->IsHit(m_charaCon))
 		{
+			se = NewGO<SoundSource>(17);
+			se->Init(17);
+			se->Play(false);
+
 			m_arrowState = 3;
 			HP -= 1;
 		}
@@ -367,15 +376,19 @@ void Player::ArrowAnimation()
 		{
 			m_arrowState++;
 		}
-		
 		break;
 	case 1:
-		//弓を構える
+		//弓を構える。
 		if (g_pad[0]->IsPress(enButtonRB1))
 		{
-			ArrowSE = NewGO<SoundSource>(5);
-			ArrowSE->Init(5);
-			ArrowSE->Play(false);
+			if (m_bowPullSeFlag)
+			{
+				se2 = NewGO<SoundSource>(5);
+				se2->Init(5);
+				se2->Play(false);
+
+				m_bowPullSeFlag = false;
+			}
 
 			m_modelRender.PlayAnimation(enArrowClip_Draw);
 			m_arrowLag++;
@@ -385,17 +398,18 @@ void Player::ArrowAnimation()
 				m_arrowLag = 0;
 			}
 		}
-
-		else if(m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
+		else if (m_arrowLag < 25 && !g_pad[0]->IsPress(enButtonRB1))
 		{
 			m_arrowLag = 0;
 			m_arrowState = 0;
+
+			m_bowPullSeFlag = true;
 		}
+		
 		break;
 	case 2:
-		//arrow->SetEnArrow(Arrow::enArrow_Player);
-
-		m_modelRender.PlayAnimation(enArrowClip_Aim);
+		//弓発射
+			m_modelRender.PlayAnimation(enArrowClip_Aim);
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
@@ -418,9 +432,9 @@ void Player::ArrowAnimation()
 			arrow->SetEnArrow(Arrow::enArrow_Player);
 			arrow->m_Activate = true;
 
-			ArrowSE = NewGO<SoundSource>(9);
-			ArrowSE->Init(9);
-			ArrowSE->Play(false);
+			se3 = NewGO<SoundSource>(9);
+			se3->Init(9);
+			se3->Play(false);
 
 			Vector3 arrowPos = corre2;
 			m_rotation.Apply(arrowPos);
@@ -439,42 +453,8 @@ void Player::ArrowAnimation()
 
 			SimilarAng = 0.0f;
 
-
-
-			/*QueryGOs<Arrow>("PlayerArrow", [&](Arrow* go) {
-				for (int i = 0; i < 3; i++) {
-					if (arrow->m_Activate == false) {
-						SetArrow++;
-					}
-					arrow->m_Activate = true;
-				}
-				return true;
-			});
-			arrow[3] = arrow[SetArrow];
-			
-
-			ArrowSE = NewGO<SoundSource>(9);
-			ArrowSE->Init(9);
-			ArrowSE->Play(false);
-
-			Vector3 arrowPos = corre2;
-			m_rotation.Apply(arrowPos);
-
-			arrow[3]->m_position = (m_position + arrowPos);
-			arrow[3]->m_1stPosition = arrow[3]->m_position;
-			arrow[3]->m_rotation = m_rotation;
-
-			if (SimilarAng >= 0.98) {
-				arrow[3]->eHoming = true;
-				arrow[3]->lock_ePos = lock_ePos;
-			}
-
-
-			m_arrowState = 5;
-
-			SimilarAng = 0.0f;*/
+			m_bowPullSeFlag = true;
 		}
-		
 		break;
 	case 3:
 		//ダメージを受けたステート
@@ -490,7 +470,6 @@ void Player::ArrowAnimation()
 		//ゲームオーバーステート
 		m_modelRender.PlayAnimation(enArrowClip_Dead);
 		m_arrowLag++;
-
 		break;
 	case 5:
 		//初期ステートに戻る
@@ -499,6 +478,9 @@ void Player::ArrowAnimation()
 	case 6:
 		//ゲームクリアステート
 		m_modelRender.PlayAnimation(enArrowClip_Clear);
+		m_arrowState = 7;
+		break;
+	case 7:
 		break;
 	}
 }
@@ -506,12 +488,12 @@ void Player::ArrowAnimation()
 void Player::Score()
 {
 	wchar_t wcsbuf[256];
-	swprintf_s(wcsbuf, 256, L"%dpoint", int(m_score));
+	swprintf_s(wcsbuf, 256, L"%dPoint", int(m_score));
 
 	//表示するテキストを設定。
 	m_fontRender.SetText(wcsbuf);
 	//フォントの位置を設定。
-	m_fontRender.SetPosition(Vector3(500.0f, 500.0f, 0.0f));
+	m_fontRender.SetPosition(m_fontPosition);
 	//フォントの大きさを設定。
 	m_fontRender.SetScale(2.0f);
 	//フォントの色を設定。

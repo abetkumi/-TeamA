@@ -40,8 +40,8 @@ public:
 
 	enum MoveState {
 		MoveState_Normal,
-		MoveState_Left,	// ¶‚ÉˆÚ“®’†
-		MoveState_Right, // ‰E‚ÉˆÚ“®’†
+		MoveState_Left,	// å·¦ã«ç§»å‹•ä¸­
+		MoveState_Right, // å³ã«ç§»å‹•ä¸­
 	};
 	MoveState m_moveState = MoveState_Normal;
 
@@ -68,21 +68,24 @@ public:
 	AnimationClip m_animationClips[enArrowClip_Num];
 
 	float HP,ST,ATK = 1;
-	Vector3 diff;
-	Vector3 m_HPBar_r = { 1.0f,1.0f,1.0f };
 	int m_point = 0;
 	int m_moveFlag = 1;
 	int m_lag = 0;
 	int m_arrowLag = 0;
 	int m_damageLag = 0;
 	float m_score = 0;
+	Vector3 diff;
+	Vector3 m_HPBar_r = { 1.0f,1.0f,1.0f };
 	Vector3 m_HPGauge = { 1.0f,1.0f,1.0f };
-	SoundSource* ArrowSE;
+	Vector3 m_fontPosition = { 500.0f, 500.0f, 0.0f };
+	SoundSource* se;
+	SoundSource* se2;
+	SoundSource* se3;
 
 	SkyCube* m_skyCube = nullptr;
 
-	float SimilarAng = 0.0f;	//ˆê”ÔŒü‚¢‚Ä‚¢‚é“G
+	float SimilarAng = 0.0f;	//ä¸€ç•ªå‘ã„ã¦ã„ã‚‹æ•µ
 	Vector3 lock_ePos;
 
-	int SetArrow = -1;
+	bool m_bowPullSeFlag = true;	//å¼“ã‚’å¼•ãçµã‚‹SEã‚’åˆ¶å¾¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 };

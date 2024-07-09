@@ -18,7 +18,7 @@
 #include "Rock.h"
 #include "Wood.h"
 #include "Ghost.h"
-#include "sound/SoundSource.h" 
+//#include "sound/SoundSource.h" 
 
 Game::Game()
 {
@@ -34,7 +34,6 @@ Game::~Game()
 			return true;
 		});
 	DeleteGO(player);
-	DeleteGO(ghost);
 	DeleteGO(gameCamera);
 	DeleteGO(backGround);
 	DeleteGO(boat);
@@ -69,7 +68,7 @@ Game::~Game()
 
 bool Game::Start()
 {
-
+	g_renderingEngine->SetCascadeNearAreaRates(0.03f, 0.1f, 0.15f);
 	m_levelRender.Init("Assets/Level/stage_trueA.tkl", [&](LevelObjectData& objData)
 	{
 		if (objData.EqualObjectName(L"a_player") == true)
@@ -157,7 +156,7 @@ bool Game::Start()
 			return true;
 		}
 		else if(objData.ForwardMatchName(L"rock") == true) {
-			//ä‚
+			//ÔøΩÔøΩ
 			rock = NewGO<Rock>(0, "rock");
 			rock->r_position = objData.position;
 			rock->r_rotation = objData.rotation;
@@ -180,41 +179,64 @@ bool Game::Start()
 
 
 	gameCamera = NewGO<GameCamera>(0, "gameCamera");
-	status = FindGO<Status>("status");
+	//status = FindGO<Status>("status");
 	//ghost = NewGO<Ghost>(0, "ghost");
 	//assist = NewGO<Assist>(0,"assist");
 
 	m_spriteRender.Init("Assets/sprite/stage_gauge.dds", 512.0f, 512.0f);
+	m_spriteRender_C_Rank.Init("Assets/sprite/C_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B_Rank.Init("Assets/sprite/B_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_A_Rank.Init("Assets/sprite/A_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_S_Rank.Init("Assets/sprite/S_Rank.dds", 1920.0f, 1080.0f);
+	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Re.Init("Assets/sprite/GameReady.dds", 1920.0f, 1080.0f);
+	m_spriteRender_Go.Init("Assets/sprite/GameGO.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.Init("Assets/sprite/Game_Move.dds", 1920.0f, 1080.0f);
 	m_spriteRender_R.Init("Assets/sprite/Game_Lock.dds", 1920.0f, 1080.0f);
 	m_spriteRender_LB.Init("Assets/sprite/Game_Arrow.dds", 1920.0f, 1080.0f);
 	m_spriteRender_UI.Init("Assets/sprite/UI_name.dds", 1920.0f, 1080.0f);
-	m_spriteRender_B.Init("Assets/sprite/Game_BSkip.dds", 1920.0f, 1080.0f);
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_R.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_LB.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_UI.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
-	g_soundEngine->ResistWaveFileBank(3, "Assets/BGMÅESE/GameBGM.wav");
-	m_gameBGM = NewGO<SoundSource>(3);
-	m_gameBGM->Init(3);
+
+	g_soundEngine->ResistWaveFileBank(13, "Assets/BGM_SE/GameBGM.wav");
+	g_soundEngine->ResistWaveFileBank(16, "Assets/BGM_SE/player_deathvoice.wav");
+	g_soundEngine->ResistWaveFileBank(21, "Assets/BGM_SE/ready.wav");
+	g_soundEngine->ResistWaveFileBank(22, "Assets/BGM_SE/go.wav");
+
+	m_gameBGM = NewGO<SoundSource>(13);
+	m_gameBGM->Init(13);
 	m_gameBGM->Play(true);
 
 	return true;
 }
 void Game::Update()
 {
+	SpriteFlag();
+
 	position.x = -650.0f;
 	position.y = 500.0f;
 	m_spriteRender.SetPosition(position);
 	m_spriteRender.Update();
 
-	//ÉQÅ[ÉÄÉIÅ[ÉoÅ[îªíË
+	//ÔøΩQÔøΩ[ÔøΩÔøΩÔøΩIÔøΩ[ÔøΩoÔøΩ[ÔøΩÔøΩÔøΩÔøΩ
 	if (player->HP <= 0 || boat->HP <= 0)
 	{
 		player->m_arrowState = 4;
-		if (player->m_arrowLag == 100)
+		player->m_position.y = 80.0f;
+		if (player->m_arrowLag == 1)
 		{
 			DeleteGO(m_gameBGM);
+
+			m_gameBGM = NewGO<SoundSource>(16);
+			m_gameBGM->Init(16);
+			m_gameBGM->Play(false);
+		}
+		
+		if (player->m_arrowLag == 100)
+		{
+
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 				{
@@ -234,11 +256,13 @@ void Game::Update()
 			//DeleteGO(this);
 		}
 	}
-	//ÉNÉäÉAÇÃÉ|ÉCÉìÉgîªíË
-	if (player->m_point == 200)
+	//ÔøΩNÔøΩÔøΩÔøΩAÔøΩÃÉ|ÔøΩCÔøΩÔøΩÔøΩgÔøΩÔøΩÔøΩÔøΩ
+	if (player->m_point == 102)
 	{
 		DeleteGO(m_gameBGM);
+	
 		gameClear = NewGO<GameClear>(0, "gameClear");
+		ScoreRank();
 		QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
 			{
 				DeleteGO(enemy);
@@ -254,35 +278,74 @@ void Game::Update()
 				DeleteGO(enemy3);
 				return true;
 			});
-		player->m_arrowState=6;
-		player->m_point = 11;
+		player->m_arrowState = 6;
+		player->m_point = 103;
 		//DeleteGO(this);
 	}
-	SpriteFlag();
+}
+
+void Game::ScoreRank()
+{
+	if (player->m_score < 3000)
+	{
+		m_rankStatus = 0;
+	}
+	else if (player->m_score >= 3000 && player->m_score < 4500)
+	{
+		m_rankStatus = 1;
+	}
+	else if (player->m_score >= 4500 && player->m_score < 5600)
+	{
+		m_rankStatus = 2;
+	}
+	else if (player->m_score >= 5600)
+	{
+		m_rankStatus = 3;
+	}
+	m_spriteRender_C_Rank.Update();
+	m_spriteRender_B_Rank.Update();
+	m_spriteRender_A_Rank.Update();
+	m_spriteRender_S_Rank.Update();
 }
 
 void Game::SpriteFlag()
 {
 	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
-	if (m_shade >= 0.7f)
+	if (m_spriteStatus <= 4) 
 	{
-		if (m_shade >= 1.0f)
+		if (m_shade >= 0.7f)
 		{
-			m_shade = 1.0f;
+			if (m_shade >= 1.0f)
+			{
+				m_shade = 1.0f;
+			}
+			if (g_pad[0]->IsTrigger(enButtonA))
+			{
+				spritetimer *= -1.0f;
+			}
 		}
-		if (g_pad[0]->IsTrigger(enButtonA))
+		if (m_shade <= 0.2f)
 		{
 			spritetimer *= -1.0f;
+			m_spriteStatus++;
+		}
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			m_spriteStatus = 5;
 		}
 	}
-	if (m_shade <= 0.2f)
+	if (m_spriteStatus >= 5)
 	{
-		spritetimer *= -1.0f;
-		m_spriteStatus++;
+		spritetime += g_gameTime->GetFrameDeltaTime();
+		if (spritetime >= 2.5)
+		{
+			spritetime = 1.0f;
+			m_spriteStatus++;
+		}
 	}
-	if (m_spriteStatus >= 5||g_pad[0]->IsTrigger(enButtonB))
+	if (m_spriteStatus >= 7)
 	{
-		m_spriteStatus = 5;
+		m_spriteStatus = 7;
 	}
 	m_spriteRender_L.SetMulColor(Vector4(1.0f, 1.0f, 1.0f, m_shade));
 	m_spriteRender_L.Update();
@@ -297,24 +360,49 @@ void Game::SpriteFlag()
 void Game::Render(RenderContext& rc)
 {
 	m_spriteRender.Draw(rc);
-	if (m_spriteStatus == 1)
+	switch (m_spriteStatus)
 	{
+	case 1:
 		m_spriteRender_L.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 2)
-	{
+		break;
+	case 2:
 		m_spriteRender_R.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 3)
-	{
+		break;
+	case 3:
 		m_spriteRender_LB.Draw(rc);
 		m_spriteRender_B.Draw(rc);
-	}
-	if (m_spriteStatus == 4)
-	{
+		break;
+	case 4:
 		m_spriteRender_UI.Draw(rc);
 		m_spriteRender_B.Draw(rc);
+		break;
+	case 5:
+		m_spriteRender_Re.Draw(rc);
+		break;
+	case 6:
+		m_spriteRender_Go.Draw(rc);
+		break;
+	default:
+		break;
+	}
+	if (player->m_arrowState == 7)
+	{
+		switch (m_rankStatus)
+		{
+		case 0:
+			m_spriteRender_C_Rank.Draw(rc);
+			break;
+		case 1:
+			m_spriteRender_B_Rank.Draw(rc);
+			break;
+		case 2:
+			m_spriteRender_A_Rank.Draw(rc);
+			break;
+		case 3:
+			m_spriteRender_S_Rank.Draw(rc);
+			break;
+		}
 	}
 }

@@ -126,6 +126,7 @@ namespace nsK2Engine {
 		const bool IsHit(CollisionObject* collisionObject) const
 		{
 			bool isCollision = false;
+
 			PhysicsWorld::GetInstance()->ContactTest(&collisionObject->GetbtCollisionObject(), [&](const btCollisionObject& contactObject) {
 				if (m_physicsGhostObject.IsSelf(contactObject) == true) {
 					isCollision = true;

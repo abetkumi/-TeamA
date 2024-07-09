@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Assist.h"
-#include "sound/SoundEngine.h"
-#include "sound/SoundSource.h"
+//#include "sound/SoundEngine.h"
+//#include "sound/SoundSource.h"
 #include "GameCamera.h"
 #include "collision/CollisionObject.h"
 #include "Item.h"
@@ -30,6 +30,9 @@ Enemy2::Enemy2()
 Enemy2::~Enemy2()
 {
 	DeleteGO(m_collisionObject);
+	SoundSource* se = NewGO<SoundSource>(0);
+	se->Init(1);
+	se->Play(false);
 }
 
 bool Enemy2::Start()
@@ -50,8 +53,9 @@ bool Enemy2::Start()
 
 	//m_modelRender.Init("Assets/modelData/goblin_Archer.tkm");
 
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGM�ESE/hit.wav");
-	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM�ESE/enemy_shot.wav");
+	//g_soundEngine->ResistWaveFileBank(1, "Assets/BGM・SE/hit.wav");
+	g_soundEngine->ResistWaveFileBank(10, "Assets/BGM_SE/enemy_shot.wav");
+	g_soundEngine->ResistWaveFileBank(19, "Assets/BGM_SE/goblin_archer_voice.wav");
 
 	player = FindGO<Player>("player");
 	//assist = FindGO<Assist>("assist");
@@ -205,16 +209,18 @@ void Enemy2::Collision()
 		if (collision->IsHit(m_collisionObject))
 		{
 			HP -= player->ATK;
-
-
 		}
-		if (HP <= 0) {
-			m_enemy2State = 3;
-			m_downFlag = true;
-		}
+
+	}
+	if (HP <= 0) {
+		m_enemy2State = 3;
+		m_downFlag = true;
 	}
 	if (m_downFlag == true)
 	{
+	/*	se = NewGO<SoundSource>(0);
+		se->Init(19);
+		se->Play(false);*/
 		m_enemy2DownLag++;
 	}
 }
@@ -262,14 +268,18 @@ void Enemy2::PlayAnimation()
 		break;
 	case 3:
 		m_modelRender.PlayAnimation(enEnemy2Clip_Down);
-		if (m_enemy2DownLag >= 30)
+		if (m_enemy2DownLag >= 20)
 		{
-			m_itemGet = rand() % 4;
+			m_itemGet = rand() % 3;
 			player->m_score += 200;
 
-			SoundSource* se = NewGO<SoundSource>(1);
+			se = NewGO<SoundSource>(0);
 			se->Init(1);
 			se->Play(false);
+
+			se2 = NewGO<SoundSource>(19);
+			se2->Init(19);
+			se2->Play(false);
 
 			DeleteGO(this);
 		}

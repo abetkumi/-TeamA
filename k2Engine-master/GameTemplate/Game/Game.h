@@ -24,15 +24,15 @@ class Ghost;
 class Game : public IGameObject
 {
 public:
-	bool Start();
 	Game();
 	~Game();
+	bool Start();	
 	void Update();
-	void Score();
 	void Render(RenderContext& rc);
+	void ScoreRank();
 	void SpriteFlag();
 
-	Player* player;
+	Player* player = nullptr;
 	GameCamera* gameCamera;
 	GameOver* gameOver;
 	GameClear* gameClear;
@@ -59,15 +59,22 @@ public:
 	SpriteRender m_spriteRender_LB;
 	SpriteRender m_spriteRender_UI;
 	SpriteRender m_spriteRender_B;
+	SpriteRender m_spriteRender_Re;
+	SpriteRender m_spriteRender_Go;
+	SpriteRender m_spriteRender_C_Rank;
+	SpriteRender m_spriteRender_B_Rank;
+	SpriteRender m_spriteRender_A_Rank;
+	SpriteRender m_spriteRender_S_Rank;
 	LevelRender m_levelRender;
 	SoundSource* m_gameBGM;
 
 	Vector3 position;
 	float spritetimer = 0.5f;
-	float spritetime = 3.0f;
-	float m_shade = 0.5f;
+	float spritetime = 0.0f;
+	float m_shade = 1.0f;
 	int m_spriteStatus = 1;
-
+	int m_rankStatus = 0;
+	
 	std::vector<Vector3> path00_pointList;
 	std::vector<Vector3> path01_pointList;
 	std::vector<Vector3> path02_pointList;

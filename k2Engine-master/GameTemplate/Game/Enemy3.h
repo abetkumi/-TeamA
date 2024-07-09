@@ -1,5 +1,5 @@
 #pragma once
-#include "sound/SoundSource.h"
+//#include "sound/SoundSource.h"
 
 class Player;
 class Arrow;
@@ -21,6 +21,7 @@ public:
 	void Calculation();
 	void EnemyAttackBar();
 	void ItemDrop();
+	void PlayAnimation();
 	bool Start();
 
 	const bool Serch();
@@ -37,9 +38,7 @@ public:
 	Vector3 m_moveSpeed;
 	Vector3	m_forward = Vector3::AxisZ;
 	Vector3 m_cNPos;
-
 	Vector3 m_homingPos;
-
 	Vector3 m_attackBar = { 1.0f,1.0f,1.0f };
 	Vector2 m_spritePosition = Vector2::Zero;
 
@@ -56,6 +55,14 @@ public:
 	CollisionObject* m_collisionObject;
 	SoundSource* se;
 
+	enum EnEnemy3Clip
+	{
+		enEnemy3Clip_Idle,
+		enEnemy3Clip_Down,
+		enEnemy3Clip_Num,
+	};
+	AnimationClip m_animation3Clips[enEnemy3Clip_Num];
+
 	float arrowtimer = 0.0f;
 	float arrowtime = 3.0f;
 
@@ -64,8 +71,10 @@ public:
 	int initialAng = 0;			//Move�����p�x�ݒ�p
 	int initialPos = 0;			//AttackMove�����ʒu�ݒ�p
 	int moveStatus = 0;
+	int m_enemy3Status = 0;
 	int m_enemy3DownLag = 0;
 	int m_itemGet = 0;
+	
 
 	//Move()��̂�
 	float firstAng, Ang = 0.0f;

@@ -41,9 +41,8 @@ bool Arrow::Start()
 	m_modelRender[1].SetScale(scale2);
 	
 
-	g_soundEngine->ResistWaveFileBank(12, "Assets/BGMESE/player_shot.wav");
-	
-	
+	g_soundEngine->ResistWaveFileBank(12, "Assets/BGMï¿½ESE/player_shot.wav");
+	g_soundEngine->ResistWaveFileBank(12, "Assets/BGM_SE/player_shot.wav");
 
 	return true;
 }
@@ -95,14 +94,14 @@ void Arrow::Standby()
 
 	switch (m_enArrow)
 	{
-		//ƒAƒ[
+		//ï¿½Aï¿½ï¿½ï¿½[
 	case Arrow::enArrow_Player:
 	case Arrow::enArrow_Skeleton:
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 		
 		break;
 
-		//Šâ
+		//ï¿½ï¿½
 	case Arrow::enArrow_Goblin:
 		m_model++;
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
@@ -113,7 +112,7 @@ void Arrow::Standby()
 	}
 
 
-	//ƒ_ƒ[ƒW,–¼‘O,SE‚È‚Ç•ªŠò
+	//ï¿½_ï¿½ï¿½ï¿½[ï¿½W,ï¿½ï¿½ï¿½O,SEï¿½È‚Ç•ï¿½ï¿½ï¿½
 	switch (m_enArrow)
 	{
 	case Arrow::enArrow_Player:
@@ -162,16 +161,16 @@ void Arrow::Firstly()
 	if (m_enArrow == enArrow_Goblin) {
 		
 
-		// ‰‘¬“x‚ð‹‚ß‚é
+		// ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 		float initVel = sqrt((m_peLen * g * 1.0f) / 2.0f);
-		// XZ•½–Ê‚Å‚Ì‘¬“x‚ðŒvŽZ‚·‚é
+		// XZï¿½ï¿½ï¿½Ê‚Å‚Ì‘ï¿½ï¿½xï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
 		Vector3 velXZ = m_velocity;
 		velXZ.y = 0.0f;
 		velXZ.Normalize();
 		velXZ *= initVel;
 		m_velocity = velXZ;
 
-		// Y•ûŒü‚Ì‘¬“x‚ð‹‚ß‚é
+		// Yï¿½ï¿½ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 		m_velocity.y = initVel;
 	}
 
@@ -227,8 +226,8 @@ void Arrow::Move()
 			diff.y = 0.0f;
 			diff.Normalize();
 
-			// ‘¬“x‚É‘Î‚µ‚Äd—Í‰Á‘¬“x‚ð‰Á‚¦‚é
-		// ‚±‚ÌƒtƒŒ[ƒ€‚Å‰Á‘¬‚·‚é‘¬“x‚·‚é
+			// ï¿½ï¿½ï¿½xï¿½É‘Î‚ï¿½ï¿½Ädï¿½Í‰ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½Ìƒtï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Å‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‘¬ï¿½xï¿½ï¿½ï¿½ï¿½
 			
 			m_velocity.y -= addSpeed;
 
@@ -276,6 +275,7 @@ void Arrow::Inpacttime()
 		return;
 	}
 	m_Status++;
+	//DeleteGO(m_collisionObject);
 }
 
 void Arrow::Inpacthit()
@@ -297,7 +297,7 @@ void Arrow::deletebullet()
 	/*if (m_isDelete) {
 		m_deleteTimer -= g_gameTime->GetFrameDeltaTime();
 		if (m_deleteTimer <= 0.0f) {
-			DeleteGO(m_collisionObject);
+			//DeleteGO(m_collisionObject);
 			DeleteGO(this);
 		}
 	}*/

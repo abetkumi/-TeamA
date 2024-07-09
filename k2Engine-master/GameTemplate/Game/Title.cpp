@@ -10,8 +10,8 @@ Title::Title()
 	m_spriteRender_m.Init("Assets/sprite/TitleMOZI.dds", 1920.0f, 1080.0f, m_alphaBlendMode);
 	m_spriteRender_m.SetPosition({ 0.0f,-40.0f,0.0f });
 	m_spriteRender_m.SetMulColor(Vector4(1.0f,1.0f,1.0f,m_shade));
-	g_soundEngine->ResistWaveFileBank(0, "Assets/BGMESE/TitleBGM.wav");
-	g_soundEngine->ResistWaveFileBank(1, "Assets/BGMESE/Select.wav");
+	g_soundEngine->ResistWaveFileBank(0, "Assets/BGM_SE/TitleBGM.wav");
+	g_soundEngine->ResistWaveFileBank(11, "Assets/BGM_SE/Select.wav");
 
 	titleBGM = NewGO<SoundSource>(0);
 	titleBGM->Init(0);
@@ -21,17 +21,16 @@ Title::Title()
 Title::~Title()
 {
 	DeleteGO(titleBGM);
-	DeleteGO(titleSE);
 }
 
 void Title::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonA))
+	if (g_pad[0]->IsTrigger(enButtonA) && m_lagFlag == false)
 	{
 		m_timer *= 30.0f;
 		m_lagFlag = true;
-		titleSE = NewGO<SoundSource>(1);
-		titleSE->Init(1);
+		titleSE = NewGO<SoundSource>(11);
+		titleSE->Init(11);
 		titleSE->Play(false);
 	}
 	if (m_lagFlag == true)

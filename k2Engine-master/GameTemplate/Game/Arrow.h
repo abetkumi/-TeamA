@@ -80,6 +80,7 @@ public:
 	Vector3 m_position;
 	Vector3 m_1stPosition;
 	Vector3 m_ePos;
+	Vector3 m_targetPos;
 	Vector3 m_forward = Vector3::AxisZ;
 	Vector3 m_velocity;
 	Vector3 m_velocity2;
@@ -103,6 +104,7 @@ public:
 
 	int m_Status = 0;
 	int m_model = 0;
+	int m_moveLock = 0;
 	bool m_Activate = false;
 };
 

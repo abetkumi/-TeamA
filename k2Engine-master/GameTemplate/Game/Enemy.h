@@ -68,9 +68,11 @@ public:
 
 	bool m_downFlag = false;
 	float arrowtimer = 0.01f;
-	float arrowtime = 3.0f;
+	float arrowtime = 3.6f;
 	double m_Dec;
 	int HP = 1;
 	int i;
 	int m_itemGet = 0;
+
+	float m_Dir;
 };

@@ -163,6 +163,7 @@ void Enemy2::Attack()
 	arrow->m_Activate = true;
 
 	arrowtimer = arrowtime;
+	m_attackBar.x = 1.0f;
 }
 
 const bool Enemy2::Serch()
@@ -279,6 +280,8 @@ void Enemy2::PlayAnimation()
 
 void Enemy2::EnemyAttackBar()
 {
+	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
+
 	Vector3 V0, V1;
 	float m_enemy2camera;
 
@@ -308,7 +311,6 @@ void Enemy2::EnemyAttackBar()
 		else if (m_attackBar.x <= 0)
 		{
 			m_enemy2State = 2;
-			m_attackBar.x = 1.36f;
 		}
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);

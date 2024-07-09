@@ -313,10 +313,12 @@ void Enemy::PlayAnimation()
 	case 0:
 		m_modelRender.PlayAnimation(enEnemyClip_Idle);
 		break;
+
 	case 1:
 		EnemyAttackBar();
 		m_modelRender.PlayAnimation(enEnemyClip_Attack);
 		break;
+
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);
 		m_enemyDownLag++;
@@ -335,7 +337,7 @@ void Enemy::PlayAnimation()
 
 void Enemy::EnemyAttackBar()
 {
-	float Decrease = (1.0f / 4.3f) * g_gameTime->GetFrameDeltaTime();
+	float Decrease = (1.0f / arrowtime) * g_gameTime->GetFrameDeltaTime();
 
 	Vector3 V0, V1;
 	float  m_enemycamara;
@@ -364,10 +366,10 @@ void Enemy::EnemyAttackBar()
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
 			m_attackBar.x -= Decrease;
 		}
-		else if (m_attackBar.x <= 0)
+		/*else if (m_attackBar.x <= 0)
 		{
 			m_attackBar.x = 1.0f;
-		}
+		}*/
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));

@@ -65,16 +65,16 @@ void Arrow::Update()
 			break;
 
 		case 2:
+			if (eHoming == true)
+			{
+				//Dec();
+			}
+
 			Move();
 			Rotation();
 			Inpacttime();
 			Inpacthit();
 			deletebullet();
-
-			if (enemy->Dec() == true)
-			{
-				Dec();
-			}
 
 			m_modelRender[m_model].Update();
 			break;
@@ -128,6 +128,7 @@ void Arrow::Standby()
 		bullettime = 7.0f;
 		m_collisionObject->SetName("e_arrow");
 		m_Damage = 5;
+		pHoming = true;
 		break;
 
 	case Arrow::enArrow_Skeleton:
@@ -198,35 +199,58 @@ void Arrow::Rotation()
 
 void Arrow::Move()
 {
-	const std::vector<Enemy3*>& enemys3 = FindGOs<Enemy3>("enemy3");
-	
-	m_position += m_velocity * g_gameTime->GetFrameDeltaTime();
-
-
-	if (m_enArrow == enArrow_Goblin){
-		// 速度に対して重力加速度を加える
-		// このフレームで加速する速度する
-		float addSpeed = g * g_gameTime->GetFrameDeltaTime();
-		m_velocity.y -= addSpeed;
-	}
-
-	if (eHoming == true) {
-		/*for (int i = 0; i < enemys3.empty(); i++) {
-			if (enemys3[i]->homing == true) {
-				Vector3 diff = enemys3[i]->m_homingPos - m_position;
-				diff.Normalize();
-
-				m_position += diff * 1000.0f * g_gameTime->GetFrameDeltaTime();
-			}
-		}*/
+	if (m_enArrow == enArrow_Player) {
+		m_position += m_velocity * g_gameTime->GetFrameDeltaTime();
 	}
 	
-	if (pHoming == true) {
-		Vector3 diff = player->m_position - m_position;
-		diff.y += 80.0f;
+	
+
+	
+	/*if (eHoming == true) {
+		Vector3 diff = player->m_position - m_targetPos;
 		diff.Normalize();
 
 		m_position += diff * 2000.0f * g_gameTime->GetFrameDeltaTime();
+	}*/
+	
+	if (pHoming == true) {
+		Vector3 diff = player->m_position - m_position;
+		Vector3 moveSpeed;
+		float addSpeed = g * g_gameTime->GetFrameDeltaTime();
+
+		switch (m_enArrow)
+		{
+		case Arrow::enArrow_Goblin:			
+			//diff += m_velocity;
+			diff.y = 0.0f;
+			diff.Normalize();
+
+			// 速度に対して重力加速度を加える
+		// このフレームで加速する速度する
+			
+			m_velocity.y -= addSpeed;
+
+			moveSpeed = m_velocity;
+			moveSpeed.y = 0;
+
+			m_position.y += m_velocity.y * g_gameTime->GetFrameDeltaTime();
+			m_position.x += diff.x * moveSpeed.Length() * 1.3f * g_gameTime->GetFrameDeltaTime();
+			m_position.z += diff.z * moveSpeed.Length() * 1.3f * g_gameTime->GetFrameDeltaTime();
+			break;
+
+		case Arrow::enArrow_Skeleton:
+			diff.y += 80.0f;
+			diff.Normalize();
+
+			m_position += diff * 2000.0f * g_gameTime->GetFrameDeltaTime();
+			break;
+
+		default:
+			break;
+		}
+		
+		//m_moveLock = 1;
+		
 	}
 
 
@@ -279,6 +303,37 @@ void Arrow::deletebullet()
 
 void Arrow::Dec()
 {
+	//QueryGOs<Enemy>("Enemy", [&](Enemy* a) {
+	//	if (a->homing == false)
+	//	{
+	//		enemy = a;
+	//		return false;
+	//	}
+	//	return true;
+	//	});
 
+	//QueryGOs<Enemy2>("Enemy2", [&](Enemy2* a) {
+	//	if (a->homing == false)
+	//	{
+	//		enemy2 = a;
+	//		return false;
+	//	}
+	//	return true;
+	//	});
 
+	QueryGOs<Enemy3>("Enemy3", [&](Enemy3* a) {
+		if (a->homing == false)
+		{
+			enemy3 = a;
+			return false;
+		}
+		return true;
+	});
+	if (enemy != nullptr) {
+			m_targetPos = enemy3->m_homingPos;
+	}
+	else {
+		
+	}
+	
 }

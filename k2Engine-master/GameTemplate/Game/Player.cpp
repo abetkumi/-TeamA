@@ -120,14 +120,14 @@ if (g_pad[0]->IsPress(enButtonA))
 //// 
 
 	//ここから3ラインの移動式
-	//game->m_pointPosition = game->path00_pointList[m_point];
-	//game->m_nextPosition = game->path00_pointList[m_point + 1];
-	//game->m_pointPosition1 = game->path01_pointList[m_point];
-	//game->m_nextPosition1 = game->path01_pointList[m_point + 1];
-	//game->m_pointPosition2 = game->path02_pointList[m_point];
-	//game->m_nextPosition2 = game->path02_pointList[m_point + 1];
+	game->m_pointPosition = game->path00_pointList[m_point];
+	game->m_nextPosition = game->path00_pointList[m_point + 1];
+	game->m_pointPosition1 = game->path01_pointList[m_point];
+	game->m_nextPosition1 = game->path01_pointList[m_point + 1];
+	game->m_pointPosition2 = game->path02_pointList[m_point];
+	game->m_nextPosition2 = game->path02_pointList[m_point + 1];
 
-	////川の3ライン間を移動するための計算
+	//川の3ライン間を移動するための計算
 	// if (game->m_spriteStatus == 5)
 	//{
 
@@ -431,7 +431,7 @@ void Player::ArrowAnimation()
 
 			if (SimilarAng >= 0.98) {
 				arrow->eHoming = true;
-				arrow->lock_ePos = lock_ePos;
+				//arrow->lock_ePos = lock_ePos;
 			}
 
 			

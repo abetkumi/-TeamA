@@ -33,9 +33,6 @@ bool Arrow::Start()
 	gameCamera = FindGO<GameCamera>("gameCamera");
 	player = FindGO<Player>("player");
 
-	m_collisionObject = NewGO<CollisionObject>(0);
-	m_collisionObject->SetName("arrow");
-
 
 	m_modelRender[0].Init("Assets/modelData/Arrow.tkm");
 	m_modelRender[0].SetScale(scale);
@@ -46,7 +43,7 @@ bool Arrow::Start()
 
 	g_soundEngine->ResistWaveFileBank(12, "Assets/BGMESE/player_shot.wav");
 	
-	m_collisionObject->SetIsEnableAutoDelete(false);
+	
 
 	return true;
 }
@@ -94,6 +91,8 @@ void Arrow::Update()
 
 void Arrow::Standby()
 {
+	m_collisionObject = NewGO<CollisionObject>(0);
+
 	switch (m_enArrow)
 	{
 		//ƒAƒ[
@@ -107,7 +106,6 @@ void Arrow::Standby()
 	case Arrow::enArrow_Goblin:
 		m_model++;
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
-		
 		break;
 
 	default:
@@ -141,6 +139,8 @@ void Arrow::Standby()
 		break;
 	}
 
+	m_collisionObject->SetIsEnableAutoDelete(false);
+
 	m_Status++;
 }
 
@@ -151,7 +151,7 @@ void Arrow::Firstly()
 
 	m_position += m_velocity * 50.0f;
 	m_velocity *= 3000.0f;
-	m_rotation.SetRotationDegX(90.0f);
+	//m_rotation.SetRotationDegX(90.0f);
 
 
 	if (m_enArrow == enArrow_Player) {
@@ -178,6 +178,7 @@ void Arrow::Firstly()
 	m_modelRender[m_model].SetPosition(m_1stPosition);
 	m_modelRender[m_model].SetScale(scale);
 	m_modelRender[m_model].SetRotation(m_rotation);
+	m_collisionObject->SetPosition(m_position);
 
 	m_modelRender[m_model].Update();
 
@@ -201,6 +202,7 @@ void Arrow::Move()
 {
 	if (m_enArrow == enArrow_Player) {
 		m_position += m_velocity * g_gameTime->GetFrameDeltaTime();
+		m_position.y += 80.0f * g_gameTime->GetFrameDeltaTime();
 	}
 	
 	
@@ -283,8 +285,8 @@ void Arrow::Inpacthit()
 	{
 		if (collision->IsHit(player->m_charaCon))
 		{
+			DeleteGO(m_collisionObject);
 			player->HP -= m_Damage;
-
 			m_Status++;
 		}
 	}
@@ -336,4 +338,18 @@ void Arrow::Dec()
 		
 	}
 	
+}
+
+void Arrow::Collision()
+{
+	/*const auto& collisions = g_collisionObjectManager->FindCollisionObjects("e_arrow");
+
+	for (auto collision : collisions) {
+		if (collision->IsHit(player->m_charaCon))
+		{
+			player->HP -= m_Damage;
+			DeleteGO(m_collisionObject);
+			m_Status++;
+		}
+	}*/
 }

@@ -34,6 +34,7 @@ public:
 	void Inpacthit();
 	void deletebullet();
 	void Dec();
+	void Collision();
 
 	void SetVelocity(const Vector3& velocity)
 	{
@@ -59,6 +60,8 @@ public:
 		m_Activate = false;
 		m_Status = 0;
 		m_model = 0;
+
+		m_position = { 0.0f,0.0f,0.0f };
 	}
 
 	float bullettime = 1.5f;

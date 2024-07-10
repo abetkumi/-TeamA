@@ -275,7 +275,6 @@ void Arrow::Inpacttime()
 		return;
 	}
 	m_Status++;
-	//DeleteGO(m_collisionObject);
 }
 
 void Arrow::Inpacthit()
@@ -285,7 +284,6 @@ void Arrow::Inpacthit()
 	{
 		if (collision->IsHit(player->m_charaCon))
 		{
-			DeleteGO(m_collisionObject);
 			player->HP -= m_Damage;
 			m_Status++;
 		}

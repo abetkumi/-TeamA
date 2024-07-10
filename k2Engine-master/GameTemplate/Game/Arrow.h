@@ -61,6 +61,8 @@ public:
 		m_Status = 0;
 		m_model = 0;
 
+		DeleteGO(m_collisionObject);
+
 		m_position = { 0.0f,0.0f,0.0f };
 	}
 

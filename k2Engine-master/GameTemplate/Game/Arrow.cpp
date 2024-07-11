@@ -34,7 +34,7 @@ bool Arrow::Start()
 	player = FindGO<Player>("player");
 
 
-	m_modelRender[0].Init("Assets/modelData/rock_4.tkm");
+	m_modelRender[0].Init("Assets/modelData/Arrow.tkm");
 	m_modelRender[0].SetScale(scale);
 
 	m_modelRender[1].Init("Assets/modelData/rock_4.tkm");

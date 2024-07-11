@@ -236,6 +236,7 @@ void Game::Update()
 		
 		if (player->m_arrowLag == 100)
 		{
+			DeleteGO(m_gameBGM);
 
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
@@ -311,7 +312,7 @@ void Game::ScoreRank()
 void Game::SpriteFlag()
 {
 	m_shade += g_gameTime->GetFrameDeltaTime() * spritetimer;
-	if (m_spriteStatus <= 4) 
+	if (m_spriteStatus <= 4)
 	{
 		if (m_shade >= 0.7f)
 		{
@@ -331,6 +332,10 @@ void Game::SpriteFlag()
 		}
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
+			m_gameBGM = NewGO<SoundSource>(21);
+			m_gameBGM->Init(21);
+			m_gameBGM->Play(false);
+
 			m_spriteStatus = 5;
 		}
 	}
@@ -342,6 +347,42 @@ void Game::SpriteFlag()
 			spritetime = 1.0f;
 			m_spriteStatus++;
 		}
+	}
+	if (m_spriteStatus == 4)
+	{
+		if (g_pad[0]->IsTrigger(enButtonA))
+		{
+			m_gameBGM = NewGO<SoundSource>(21);
+			m_gameBGM->Init(21);
+			m_gameBGM->Play(false);
+
+			m_spriteStatus = 5;
+		}
+	}
+	if (m_spriteStatus == 5)
+	{
+		spritetime += g_gameTime->GetFrameDeltaTime();
+		if (spritetime >= 2.5f)
+		{
+			m_gameBGM = NewGO<SoundSource>(22);
+			m_gameBGM->Init(22);
+			m_gameBGM->Play(false);
+			spritetime = 0.0f;
+			m_spriteStatus++;
+		}
+		
+	}
+	if (m_spriteStatus == 6)
+	{
+		if (spritetime >= 3.0f)
+		{
+			m_gameBGM = NewGO<SoundSource>(22);
+			m_gameBGM->Init(22);
+			m_gameBGM->Play(false);
+
+			m_spriteStatus++;
+		}
+		spritetime += g_gameTime->GetFrameDeltaTime();
 	}
 	if (m_spriteStatus >= 7)
 	{

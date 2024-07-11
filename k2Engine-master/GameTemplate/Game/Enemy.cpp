@@ -19,7 +19,7 @@
 
 namespace
 {
-	const Vector3 corre1 = { 0.0f,80.0f,0.0f };//�ʒu�C���{�̓����蔻��
+	const Vector3 corre1 = { 0.0f,0.0f,0.0f };//�ʒu�C���{�̓����蔻��
 	const Vector3 corre2 = { 0.0f,0.0f,10.0f };//�ʒu�C���e�۔����ʒu
 }
 
@@ -155,6 +155,8 @@ void Enemy::Attack()
 	m_enemyState = 1;
 	if (m_attackBar.x <= 0)
 	{
+		m_attackBar.x = 1.0f;
+
 		SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
 		se->Play(false);
@@ -333,9 +335,9 @@ void Enemy::PlayAnimation()
 			se->Init(1);
 			se->Play(false);
 
-			se = NewGO<SoundSource>(18);
-			se->Init(18);
-			se->Play(false);
+			se2 = NewGO<SoundSource>(18);
+			se2->Init(18);
+			se2->Play(false);
 
 		}
 		break;
@@ -366,12 +368,12 @@ void Enemy::EnemyAttackBar()
 		if (m_attackBar.x >= 0.4f)
 		{
 			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-			m_attackBar.x -= Decrease;
+			m_attackBar.x -= 0.009f;
 		}
 		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
 		{
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-			m_attackBar.x -= Decrease;
+			m_attackBar.x -= 0.009f;
 		}
 		/*else if (m_attackBar.x <= 0)
 		{

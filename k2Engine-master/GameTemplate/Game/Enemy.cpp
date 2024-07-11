@@ -172,13 +172,15 @@ void Enemy::Attack()
 			return true;
 			});
 		/*if (arrow != nullptr) {
-			arrow->Initialize();
+			
 		}
 		else {
 
 		}*/
-		arrow->SetEnArrow(Arrow::enArrow_Goblin);
-		arrow->m_Activate = true;
+		
+
+
+		arrow = NewGO<Arrow>(0);
 
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
@@ -193,31 +195,10 @@ void Enemy::Attack()
 
 		arrow->m_peLen = diff.Length();
 
-		m_enemyState = 1;
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
 		arrowtimer = arrowtime;
 		m_attackBar.x = 1.0f;
-
-
-		/*arrow = NewGO<Arrow>(0);
-
-		arrow->m_position = (m_position + corre2);
-		arrow->m_1stPosition = arrow->m_position;
-		arrow->m_rotation = m_rotation;
-
-		diff.y = 0.0f;
-		arrow->m_velocity = diff;
-		arrow->m_velocity.y = 0.0f;
-		arrow->m_velocity.Normalize();
-		arrow->m_velocity *= sqrt(2) / 2;
-		arrow->m_velocity.y = sqrt(2) / 2;
-
-		arrow->m_peLen = diff.Length();
-
-		arrow->SetEnArrow(Arrow::enArrow_Goblin);
-
-		arrowtimer = arrowtime;
-		m_attackBar.x = 1.0f;*/
 	}
 }
 

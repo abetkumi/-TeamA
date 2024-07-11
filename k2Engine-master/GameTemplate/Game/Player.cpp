@@ -409,10 +409,11 @@ void Player::ArrowAnimation()
 		break;
 	case 2:
 		//弓発射
-			m_modelRender.PlayAnimation(enArrowClip_Aim);
+			
 		//弓発射
 		if (!g_pad[0]->IsPress(enButtonRB1))
 		{
+			m_modelRender.PlayAnimation(enArrowClip_Aim);
 			QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
 				if (a->m_Activate == false)
 				{

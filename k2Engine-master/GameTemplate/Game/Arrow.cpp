@@ -14,6 +14,7 @@
 namespace
 {
 	const Vector3 scale = { 10.0f,10.0f,10.0f };
+	const Vector3 scale3 = { 1.0f,1.0f,1.0f };
 	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
 	const float g = 2000.0f;
 }
@@ -101,7 +102,7 @@ bool Arrow::Start()
 	case Arrow::enArrow_Goblin: {
 		m_modelRender.Init("Assets/modelData/rock_4.tkm");
 		//m_modelRender.Init("Assets/modelData/amo.tkm");
-		m_modelRender.SetScale(scale);
+		m_modelRender.SetScale(scale3);
 		m_collisionObject->CreateBox(m_position, Quaternion::Identity, Vector3(10.0f, 10.0f, 10.0f));
 
 		bullettime = 7.0f;
@@ -118,7 +119,7 @@ bool Arrow::Start()
 		// Y•ûŒü‚Ì‘¬“x‚ğ‹‚ß‚é
 		m_velocity.y = initVel;
 
-		m_modelRender.SetScale(scale2);
+		//m_modelRender.SetScale(scale2);
 
 	}break;
 

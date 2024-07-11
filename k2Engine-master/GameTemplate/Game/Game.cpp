@@ -195,9 +195,9 @@ bool Game::Start()
 	g_soundEngine->ResistWaveFileBank(21, "Assets/BGM_SE/ready.wav");
 	g_soundEngine->ResistWaveFileBank(22, "Assets/BGM_SE/go.wav");
 
-	m_gameBGM = NewGO<SoundSource>(13);
-	m_gameBGM->Init(13);
-	m_gameBGM->Play(true);
+	se = NewGO<SoundSource>(13);
+	se->Init(13);
+	se->Play(true);
 
 	return true;
 }
@@ -217,7 +217,7 @@ void Game::Update()
 		player->m_position.y = 80.0f;
 		if (player->m_arrowLag == 1)
 		{
-			DeleteGO(m_gameBGM);
+			DeleteGO(se);
 
 			m_gameBGM = NewGO<SoundSource>(16);
 			m_gameBGM->Init(16);
@@ -226,7 +226,7 @@ void Game::Update()
 		
 		if (player->m_arrowLag == 100)
 		{
-			DeleteGO(m_gameBGM);
+			DeleteGO(se);
 
 			gameOver = NewGO<GameOver>(0, "gameOver");
 			QueryGOs<Enemy>("enemy", [&](Enemy* enemy)
@@ -250,7 +250,7 @@ void Game::Update()
 	//�N���A�̃|�C���g����
 	if (player->m_point == 102)
 	{
-		DeleteGO(m_gameBGM);
+		DeleteGO(se);
 	
 		gameClear = NewGO<GameClear>(0, "gameClear");
 		ScoreRank();

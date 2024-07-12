@@ -69,6 +69,7 @@ bool Enemy::Start()
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
 	m_collisionObject = NewGO<CollisionObject>(0);
+	arrow2 = NewGO<Arrow>(0, "arrow");
 
 	m_collisionObject->CreateCapsule(m_position, Quaternion::Identity, 60.0f * m_scale.z, 250.0f * m_scale.y);
 	m_collisionObject->SetName("enemy");
@@ -151,36 +152,31 @@ void Enemy::Attack()
 		arrowtimer -= g_gameTime->GetFrameDeltaTime();		
 		return;
 	}
+
 	i = 1;
 	m_enemyState = 1;
+
 	if (m_attackBar.x <= 0)
 	{
-		m_attackBar.x = 1.0f;
-
 		SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
 		se->Play(false);
 
-		QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
-			if (a->m_Activate == false)
-			{
-				// 未使用の弓矢が見つかった
-				arrow = a;
-				// みつかったのでfalseを返してクエリ終了
-				return false;
-			}
-			return true;
-			});
-		/*if (arrow != nullptr) {
-			
-		}
-		else {
+		//QueryGOs<Arrow>("Arrow", [&](Arrow* a) {
+		//	if (a->m_Activate == false)
+		//	{
+		//		// 未使用の弓矢が見つかった
+		//		arrow = a;
+		//		// みつかったのでfalseを返してクエリ終了
+		//		return false;
+		//	}
+		//	return true;
+		//	});
+		//if (arrow != nullptr) {
+		//	arrow = arrow2;
+		//}
 
-		}*/
-		
-
-
-		arrow = NewGO<Arrow>(0);
+		arrow = arrow2;
 
 		arrow->m_position = (m_position + corre2);
 		arrow->m_1stPosition = arrow->m_position;
@@ -196,6 +192,7 @@ void Enemy::Attack()
 		arrow->m_peLen = diff.Length();
 
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
+		arrow->m_Activate = true;
 
 		arrowtimer = arrowtime;
 		m_attackBar.x = 1.0f;
@@ -349,17 +346,19 @@ void Enemy::EnemyAttackBar()
 		if (m_attackBar.x >= 0.4f)
 		{
 			m_spriteRender.SetMulColor({ 0.0f,1.0f,0.0f,1.0f });
-			m_attackBar.x -= 0.009f;
 		}
 		else if (m_attackBar.x < 0.4f && m_attackBar.x > 0.0f)
 		{
 			m_spriteRender.SetMulColor({ 1.0f,0.0f,0.0f,1.0f });
-			m_attackBar.x -= 0.009f;
 		}
 		/*else if (m_attackBar.x <= 0)
 		{
 			m_attackBar.x = 1.0f;
 		}*/
+		if (m_attackBar.x > 0) {
+			m_attackBar.x -= Decrease;
+		}
+		
 
 		g_camera3D->CalcScreenPositionFromWorldPosition(m_spritePosition, position);
 		m_spriteRender.SetPosition(Vector3(m_spritePosition.x, m_spritePosition.y, 0.0f));

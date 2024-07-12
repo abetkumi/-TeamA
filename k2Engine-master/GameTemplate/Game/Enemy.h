@@ -63,6 +63,7 @@ public:
 
 	Player* player;
 	Arrow* arrow;
+	Arrow* arrow2;
 	Assist* assist;
 	Item* item;
 	GameCamera* gameCamera;

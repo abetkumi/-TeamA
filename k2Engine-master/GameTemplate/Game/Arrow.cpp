@@ -14,7 +14,7 @@
 namespace
 {
 	const Vector3 scale = { 1.0f,1.0f,1.0f };
-	const Vector3 scale2 = { 0.2f,0.2f,0.2f };
+	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
 	const float g = 2000.0f;
 }
 

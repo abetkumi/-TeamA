@@ -270,11 +270,11 @@ void Player::Move()
 	
 
 	//�����Q�[���I�[�o�[�R�}���h
-	if (g_pad[0]->IsPress(enButtonY))
+	/*if (g_pad[0]->IsPress(enButtonY))
 	{
 		m_arrowState = 3;
 		HP -= 10;
-	}
+	}*/
 
 	if (m_arrowState == 4 || m_arrowState == 7)
 	{
@@ -310,7 +310,7 @@ void Player::Collision()
 			se->Play(false);
 
 			m_arrowState = 3;
-			HP -= 10;
+			//HP -= 10;
 		}
 	}
 
@@ -323,7 +323,7 @@ void Player::Collision()
 			se->Play(false);
 
 			m_arrowState = 3;
-			HP -= 1;
+			HP -= 2;
 		}
 	}
 }

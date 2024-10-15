@@ -34,7 +34,7 @@ namespace nsK2EngineLow {
 
 	void SoundSource::Init(const int number, bool is3DSound)
 	{
-		m_isAvailable = false;
+ 		m_isAvailable = false;
 		m_waveFile = g_soundEngine->GetWaveFileBank().FindWaveFile(number);
 		if (!m_waveFile) {
 			//TODO ここにエラーメッセージ。

@@ -124,13 +124,13 @@ void Arrow::Standby()
 	case Arrow::enArrow_Goblin:
 		bullettime = 7.0f;
 		m_collisionObject->SetName("e_arrow");
-		m_Damage = 5;
+		m_Damage = 3;
 		pHoming = true;
 		break;
 
 	case Arrow::enArrow_Skeleton:
 		m_collisionObject->SetName("e_arrow");
-		m_Damage = 8;
+		m_Damage = 5;
 		pHoming = true;
 		break;
 

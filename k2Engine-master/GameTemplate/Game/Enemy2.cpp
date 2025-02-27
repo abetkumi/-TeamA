@@ -24,7 +24,7 @@ namespace
 
 Enemy2::Enemy2()
 {
-	
+
 }
 
 Enemy2::~Enemy2()
@@ -47,7 +47,7 @@ bool Enemy2::Start()
 	m_animation2Clips[enEnemy2Clip_Pull].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/goblin_Archer3.tkm"
-		,m_animation2Clips, enEnemy2Clip_Num);
+		, m_animation2Clips, enEnemy2Clip_Num);
 
 	m_modelRender.SetScale(1.5f, 1.5f, 1.5f);
 
@@ -116,7 +116,7 @@ void Enemy2::Update()
 void Enemy2::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-	m_spriteRender.Draw(rc);
+	//m_spriteRender.Draw(rc);
 }
 
 void Enemy2::Rotation()
@@ -205,9 +205,9 @@ void Enemy2::Collision()
 	}
 	if (m_downFlag == true)
 	{
-	/*	se = NewGO<SoundSource>(0);
-		se->Init(19);
-		se->Play(false);*/
+		/*	se = NewGO<SoundSource>(0);
+			se->Init(19);
+			se->Play(false);*/
 		m_enemy2DownLag++;
 	}
 }

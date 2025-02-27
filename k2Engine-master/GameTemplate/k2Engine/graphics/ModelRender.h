@@ -425,6 +425,12 @@ namespace nsK2Engine {
 		void InitGeometryDatas(int maxInstance);
 	public:
 		static const int NUM_SHADOW_LIGHT = 1;
+
+		Skeleton& GetSkeleton()
+		{
+			return m_skeleton;
+		}
+
 	private:
 		AnimationClip* m_animationClips = nullptr;			// アニメーションクリップ。
 		int							m_numAnimationClips = 0;			// アニメーションクリップの数。

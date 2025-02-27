@@ -91,7 +91,7 @@ void Enemy3::Update()
 		Calculation();
 		break;
 	case 1:
-		Move();
+		//Move();
 		break;
 	default:
 		break;
@@ -103,7 +103,7 @@ void Enemy3::Update()
 void Enemy3::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-	m_spriteRender.Draw(rc);
+	//m_spriteRender.Draw(rc);
 }
 
 void Enemy3::Move()

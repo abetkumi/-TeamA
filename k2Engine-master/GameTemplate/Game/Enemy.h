@@ -22,6 +22,7 @@ public:
 	void EnemyAttackBar();
 	void ItemDrop();
 	bool Start();
+	void OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
 
 	const bool Serch();
 	const bool AttackSerch();
@@ -56,6 +57,7 @@ public:
 		enEnemyClip_Num,
 	};
 	AnimationClip m_animationClips[enEnemyClip_Num];
+	Animation m_animation;
 
 	int m_enemyState = 0;
 	int m_enemyDownLag = 0;

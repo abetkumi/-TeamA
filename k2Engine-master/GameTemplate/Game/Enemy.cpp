@@ -67,6 +67,16 @@ bool Enemy::Start()
 
 	m_modelRender.SetPosition(m_position);
 
+	m_animation.AddAnimationEventListener([&](const wchar_t* clipName, const wchar_t* eventName) {
+		OnAnimationEvent(clipName, eventName);
+		});
+
+	m_animation.Init(
+		m_modelRender.GetSkeleton(),
+		m_animationClips,
+		enEnemyClip_Num
+	);
+
 
 	//m_charaCon.Init(20.0f, 100.0f, m_position);
 
@@ -82,6 +92,36 @@ bool Enemy::Start()
 	m_rotation.Apply(m_forward);
 
 	return true;
+}
+
+void Enemy::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
+{
+	if (wcscmp(eventName, L"attack\r\n") == 0) {
+		Vector3 diff = player->m_position - m_position;
+
+		SoundSource* se = NewGO<SoundSource>(7);
+		se->Init(7);
+		se->Play(false);
+
+		arrow = NewGO<Arrow>(0);
+
+		arrow->m_position = (m_position + corre2);
+		arrow->m_1stPosition = arrow->m_position;
+		arrow->m_rotation = m_rotation;
+
+		diff.y = 0.0f;
+		arrow->m_velocity = diff;
+		arrow->m_velocity.y = 0.0f;
+		arrow->m_velocity.Normalize();
+		arrow->m_velocity *= sqrt(2) / 2;
+		arrow->m_velocity.y = sqrt(2) / 2;
+
+		arrow->m_peLen = diff.Length();
+
+		arrow->SetEnArrow(Arrow::enArrow_Goblin);
+
+		arrowtimer = arrowtime;
+	}
 }
 
 void Enemy::Update()
@@ -108,6 +148,7 @@ void Enemy::Update()
 		}
 	}
 
+	m_animation.Progress(g_gameTime->GetFrameDeltaTime());
 	m_modelRender.Update();
 	//m_spriteRender.Update();
 }
@@ -115,7 +156,7 @@ void Enemy::Update()
 void Enemy::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-	m_spriteRender.Draw(rc);
+	//m_spriteRender.Draw(rc);
 }
 
 void Enemy::Rotation()
@@ -159,7 +200,7 @@ void Enemy::Attack()
 	{
 		m_attackBar.x = 1.0f;
 
-		SoundSource* se = NewGO<SoundSource>(7);
+		/*SoundSource* se = NewGO<SoundSource>(7);
 		se->Init(7);
 		se->Play(false);
 
@@ -180,7 +221,7 @@ void Enemy::Attack()
 
 		arrow->SetEnArrow(Arrow::enArrow_Goblin);
 
-		arrowtimer = arrowtime;
+		arrowtimer = arrowtime;*/
 
 	}
 }
@@ -278,11 +319,13 @@ void Enemy::PlayAnimation()
 	switch (m_enemyState)
 	{
 	case 0:
-		m_modelRender.PlayAnimation(enEnemyClip_Idle);
+		m_animation.Play(enEnemyClip_Idle, 0.2f);
+		//m_modelRender.PlayAnimation(enEnemyClip_Idle);
 		break;
 	case 1:
 		EnemyAttackBar();
-		m_modelRender.PlayAnimation(enEnemyClip_Attack);
+		m_animation.Play(enEnemyClip_Attack, 0.2f);
+		//m_modelRender.PlayAnimation(enEnemyClip_Attack);
 		break;
 	case 2:
 		m_modelRender.PlayAnimation(enEnemyClip_Down);

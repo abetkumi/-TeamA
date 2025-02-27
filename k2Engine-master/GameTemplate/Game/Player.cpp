@@ -117,9 +117,9 @@ void Player::Move()
 //	{
 //		m_moveSpeed = (right + forward) * 7.5;
 //	}
-//// 
-
-	//ここから3ラインの移動式
+////// 
+//
+//	//ここから3ラインの移動式
 	game->m_pointPosition = game->path00_pointList[m_point];
 	game->m_nextPosition = game->path00_pointList[m_point + 1];
 	game->m_pointPosition1 = game->path01_pointList[m_point];
@@ -272,8 +272,9 @@ void Player::Move()
 	//�����Q�[���I�[�o�[�R�}���h
 	if (g_pad[0]->IsPress(enButtonY))
 	{
-		m_arrowState = 3;
-		HP -= 10;
+		//m_arrowState = 3;
+		//HP -= 10;
+		m_score = 0;
 	}
 
 	if (m_arrowState == 4 || m_arrowState == 7)

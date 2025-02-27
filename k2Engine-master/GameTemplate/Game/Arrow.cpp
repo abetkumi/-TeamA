@@ -13,7 +13,7 @@
 
 namespace
 {
-	const Vector3 scale = { 10.0f,10.0f,10.0f };
+	const Vector3 scale = { 2.0f,2.0f,2.0f };
 	const Vector3 scale3 = { 1.0f,1.0f,1.0f };
 	const Vector3 scale2 = { 0.02f,0.02f,0.02f };
 	const float g = 2000.0f;
@@ -81,7 +81,7 @@ bool Arrow::Start()
 
 
 	m_position += m_velocity * 50.0f;
-	m_velocity *= 3000.0f;
+	m_velocity *= 5000.0f;
 	m_rotation.SetRotationDegX(90.0f);
 
 	/*Quaternion tmp;
